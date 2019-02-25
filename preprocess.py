@@ -4,6 +4,7 @@ import argparse
 import time
 from utils.io import get_dataframe_json
 from providers.bow import get_bow_tensor
+from providers.split import split_seed_randomly
 from utils.argcheck import check_float_positive, check_int_positive, shape
 
 
@@ -19,7 +20,10 @@ def main(args):
     df = df[:300]
 
     topk, tensor, keywords = get_bow_tensor(df, args.user_col, args.item_col, args.review_col,
-                                            args.rating_col, [], args.topk, implicit=True)
+                                                args.rating_col, [], args.topk, implicit=True)
+
+
+
 
 
     import ipdb;ipdb.set_trace()
