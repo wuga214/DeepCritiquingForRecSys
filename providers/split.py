@@ -54,18 +54,18 @@ def split_seed_randomly(rating_tensor, ratio=[0.8, 0.1, 0.1],
         rtrain[nonzeros[0][i], nonzeros[1][i], nonzeros[2][i]] = rating_tensor[nonzeros[0][i],
                                                                                nonzeros[1][i],
                                                                                nonzeros[2][i]]
-        rtrain = sparse.COO(rtrain)
+    rtrain = sparse.COO(rtrain)
 
     for i in tqdm(valid_index):
         rvalid[nonzeros[0][i], nonzeros[1][i], nonzeros[2][i]] = rating_tensor[nonzeros[0][i],
                                                                                nonzeros[1][i],
                                                                                nonzeros[2][i]]
-        rvalid = sparse.COO(rvalid)
+    rvalid = sparse.COO(rvalid)
 
     for i in tqdm(test_index):
         rtest[nonzeros[0][i], nonzeros[1][i], nonzeros[2][i]] = rating_tensor[nonzeros[0][i],
                                                                               nonzeros[1][i],
                                                                               nonzeros[2][i]]
-        rtest = sparse.COO(rtest)
+    rtest = sparse.COO(rtest)
 
     return rtrain, rvalid, rtest
