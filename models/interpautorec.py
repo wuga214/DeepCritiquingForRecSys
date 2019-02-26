@@ -27,7 +27,7 @@ class InterpretableAutoRec(object):
         self.weights = {
             'wc1': tf.get_variable('W0', shape=(1, 1, self.input_dim[0], self.embed_dim),
                                    initializer=tf.contrib.layers.xavier_initializer()),
-            'wc2': tf.get_variable('W1', shape=(3, 3, self.embed_dim, self.input_dim[0]),
+            'wc2': tf.get_variable('W1', shape=(1, 1, self.embed_dim, self.input_dim[0]),
                                    initializer=tf.contrib.layers.xavier_initializer()),
         }
 
@@ -38,7 +38,6 @@ class InterpretableAutoRec(object):
                                    initializer=tf.contrib.layers.xavier_initializer()),
         }
 
-
     def get_graph(self):
         self.inputs = tf.placeholder(tf.float32, (None, self.input_dim[0], self.input_dim[1]))
 
@@ -46,17 +45,21 @@ class InterpretableAutoRec(object):
 
         with tf.variable_scope('encode'):
             encoded_kernel = tf.nn.conv2d(x, self.weights['wc1'], [1, 1, 1, 1], padding='SAME')
-            encoded = tf.nn.bias_add(encoded_kernel, self.biases['bc1'])
+            encoded = tf.nn.relu(tf.nn.bias_add(encoded_kernel, self.biases['bc1']))
 
         with tf.variable_scope('decode'):
             decoded_kernel = tf.nn.conv2d(encoded, self.weights['wc2'], [1, 1, 1, 1], padding='SAME')
             decoded = tf.nn.bias_add(decoded_kernel, self.biases['bc2'])
 
-        predict = tf.transpose(tf.reshape(decoded, shape=[-1, self.input_dim[1], self.input_dim[0]]), perm=[0, 2, 1])
+        predict = tf.transpose(tf.reshape(decoded, shape=[-1, self.input_dim[1], self.input_dim[0]]),
+                                    perm=[0, 2, 1])
+
+        self.output = tf.nn.sigmoid(predict)
 
         with tf.variable_scope('loss'):
             l2_loss = tf.nn.l2_loss(self.weights['wc1']) + tf.nn.l2_loss(self.weights['wc2'])
-            sigmoid_loss = tf.nn.sigmoid_cross_entropy_with_logits(labels=self.inputs[:, :, 0], logits=predict[:, :, 0])
+            sigmoid_loss = tf.nn.sigmoid_cross_entropy_with_logits(labels=self.inputs[:, :, 0],
+                                                                   logits=predict[:, :, 0])
             self.loss = tf.reduce_mean(sigmoid_loss) + self.lamb * tf.reduce_mean(l2_loss)
 
         with tf.variable_scope('optimizer'):
@@ -75,13 +78,19 @@ class InterpretableAutoRec(object):
             remaining_size -= batch_size
         return batches
 
-    def train_model(self, rating_matrix, epoch=100, batches=None, **unused):
+    def train_model(self, rating_tensor, epoch=100, batches=None, **unused):
         if batches is None:
-            batches = self.get_batches(rating_matrix, self.batch_size)
+            batches = self.get_batches(rating_tensor, self.batch_size)
 
         # Training
         pbar = tqdm(range(epoch))
         for i in pbar:
             for step in range(len(batches)):
                 feed_dict = {self.inputs: batches[step].todense()}
-                training = self.sess.run([self.train], feed_dict=feed_dict)
+                training, loss = self.sess.run([self.train, self.loss], feed_dict=feed_dict)
+                pbar.set_description("loss:{0}".format(loss))
+
+    def predict(self, batch_tensor):
+        feed_dict = {self.inputs: batch_tensor.todense()}
+        return self.sess.run(self.output, feed_dict=feed_dict)
+
