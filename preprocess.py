@@ -42,7 +42,7 @@ if __name__ == "__main__":
     # Commandline arguments
     parser = argparse.ArgumentParser(description="Preprocessing")
 
-    parser.add_argument('-ratio', dest='ratio', type=ratio, default='0.5,0.2,0.3')
+    parser.add_argument('-ratio', dest='ratio', type=ratio, default='0.8,0.1,0.1')
     parser.add_argument('-uid', dest='user_col', default='reviewerID')
     parser.add_argument('-iid', dest='item_col', default='asin')
     parser.add_argument('-review', dest='review_col', default='reviewText')
