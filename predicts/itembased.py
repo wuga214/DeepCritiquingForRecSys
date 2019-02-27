@@ -11,7 +11,11 @@ def topk_predict(model, Rvalid, topk, n, m, k):
     #     Rtrain_index.append(Rtrain[i].nonzero())
 
     for i in tqdm(range(n)):
+
         results = model.predict(Rvalid[i:i + 1])
+        if results.ndim < 3:
+            results = results.reshape((1, -1, 1))
+
         minimum_index = np.argmin(output_tensor[:, :, 1], axis=1)
         for j in range(m):
             if output_tensor[j, minimum_index[j], 1] < results[0, j, 0]:

@@ -3,7 +3,6 @@ import numpy as np
 from tqdm import tqdm
 from utils.progress import WorkSplitter, inhour
 from scipy.sparse import vstack, hstack
-from utils.regularizers import Regularizer
 
 
 class AutoRec(object):
@@ -12,8 +11,8 @@ class AutoRec(object):
                  embed_dim,
                  batch_size,
                  lamb=0.01,
-                 learning_rate=1e-4,
-                 optimizer=tf.train.RMSPropOptimizer,
+                 learning_rate=1e-3,
+                 optimizer=tf.train.AdamOptimizer,
                  **unused):
         self.input_dim = self.output_dim = input_dim
         self.embed_dim = embed_dim
@@ -33,7 +32,7 @@ class AutoRec(object):
                                          name="Weights")
             encode_bias = tf.Variable(tf.constant(0., shape=[self.embed_dim]), name="Bias")
 
-            self.encoded = tf.nn.relu(tf.matmul(self.inputs, encode_weights) + encode_bias)
+            self.encoded = tf.nn.elu(tf.matmul(self.inputs, encode_weights) + encode_bias)
 
         with tf.variable_scope('decode'):
             self.decode_weights = tf.Variable(tf.truncated_normal([self.embed_dim, self.output_dim], stddev=1 / 500.0),

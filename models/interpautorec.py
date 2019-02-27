@@ -8,8 +8,8 @@ class InterpretableAutoRec(object):
                  embed_dim,
                  batch_size,
                  lamb=0.01,
-                 learning_rate=1e-4,
-                 optimizer=tf.train.RMSPropOptimizer,
+                 learning_rate=1e-3,
+                 optimizer=tf.train.AdamOptimizer,
                  **unused):
         self.input_dim = self.output_dim = input_dim
         self.embed_dim = embed_dim
@@ -17,26 +17,9 @@ class InterpretableAutoRec(object):
         self.lamb = lamb
         self.learning_rate = learning_rate
         self.optimizer = optimizer
-        self.initialize_weights()
         self.get_graph()
         self.sess = tf.Session()
         self.sess.run(tf.global_variables_initializer())
-
-    def initialize_weights(self):
-
-        self.weights = {
-            'wc1': tf.get_variable('W0', shape=(1, 1, self.input_dim[0], self.embed_dim),
-                                   initializer=tf.contrib.layers.xavier_initializer()),
-            'wc2': tf.get_variable('W1', shape=(1, 1, self.embed_dim, self.input_dim[0]),
-                                   initializer=tf.contrib.layers.xavier_initializer()),
-        }
-
-        self.biases = {
-            'bc1': tf.get_variable('B0', shape=self.embed_dim,
-                                   initializer=tf.contrib.layers.xavier_initializer()),
-            'bc2': tf.get_variable('B1', shape=self.input_dim[0],
-                                   initializer=tf.contrib.layers.xavier_initializer()),
-        }
 
     def get_graph(self):
         self.inputs = tf.placeholder(tf.float32, (None, self.input_dim[0], self.input_dim[1]))
@@ -44,12 +27,12 @@ class InterpretableAutoRec(object):
         x = tf.reshape(tf.transpose(self.inputs, perm=[0, 2, 1]), shape=[-1, 1, self.input_dim[1], self.input_dim[0]])
 
         with tf.variable_scope('encode'):
-            encoded_kernel = tf.nn.conv2d(x, self.weights['wc1'], [1, 1, 1, 1], padding='SAME')
-            encoded = tf.nn.relu(tf.nn.bias_add(encoded_kernel, self.biases['bc1']))
+            encoded = tf.layers.conv2d(x, self.embed_dim, 1, activation=tf.nn.relu,
+                                       kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb))
 
         with tf.variable_scope('decode'):
-            decoded_kernel = tf.nn.conv2d(encoded, self.weights['wc2'], [1, 1, 1, 1], padding='SAME')
-            decoded = tf.nn.bias_add(decoded_kernel, self.biases['bc2'])
+            decoded = tf.layers.conv2d(encoded, self.input_dim[0], 1, activation=None,
+                                       kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb))
 
         predict = tf.transpose(tf.reshape(decoded, shape=[-1, self.input_dim[1], self.input_dim[0]]),
                                     perm=[0, 2, 1])
@@ -57,7 +40,7 @@ class InterpretableAutoRec(object):
         self.output = tf.nn.sigmoid(predict)
 
         with tf.variable_scope('loss'):
-            l2_loss = tf.nn.l2_loss(self.weights['wc1']) + tf.nn.l2_loss(self.weights['wc2'])
+            l2_loss = tf.losses.get_regularization_loss()
             sigmoid_loss = tf.nn.sigmoid_cross_entropy_with_logits(labels=self.inputs[:, :, 0],
                                                                    logits=predict[:, :, 0])
             self.loss = tf.reduce_mean(sigmoid_loss) + self.lamb * tf.reduce_mean(l2_loss)
