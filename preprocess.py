@@ -4,8 +4,9 @@ import argparse
 import time
 import sparse
 from utils.io import get_dataframe_json
-from providers.bow import get_bow_tensor
+from providers.bow import get_bow_dataframe
 from providers.split import split_seed_randomly
+from providers.subset import getsubset
 from utils.argcheck import check_float_positive, check_int_positive, shape, ratio
 
 
@@ -16,27 +17,17 @@ def main(args):
 
     # Load Data
     progress.section("Loading Data")
-    df = get_dataframe_json(args.path+args.name)
+    df = getsubset(args.path+args.name, args.user_col, args.item_col, args.review_col, [100, 2000], [100, 2000], 50)
+    # df = get_dataframe_json(args.path+args.name)
     print("Number of Records: {0}".format(len(df)))
+    print("Sparsity: {0}".format(float(len(df))/(df[args.user_col].nunique()*df[args.item_col].nunique())))
 
     progress.section("Tensorfy")
-    topk, tensor, keywords = get_bow_tensor(df, args.user_col, args.item_col, args.review_col,
-                                                args.rating_col, [], args.topk, implicit=True)
+    df, topk, item_map = get_bow_dataframe(df, args.user_col, args.item_col, args.review_col,
+                                           args.rating_col, args.topk, implicit=False)
 
-    print("Tensor Shape: {0}".format(tensor.shape))
-    print("Number of Nonzeros: {0}".format(tensor.nnz))
-
-    progress.section("Split Data")
-    rtrain, rvalid, rtest = split_seed_randomly(tensor, ratio=args.ratio)
-
-    progress.section("Save")
-    sparse.save_npz(args.path + 'Rtrain', rtrain)
-    sparse.save_npz(args.path + 'Rvalid', rvalid)
-    sparse.save_npz(args.path + 'Rtest', rtest)
-
-    with open(args.path+'Keys.txt', 'w') as f:
-        for item in keywords:
-            f.write("%s\n" % item)
+    df.to_csv(args.path+'data.csv')
+    item_map.to_csv(args.path+'item_index.csv')
 
 if __name__ == "__main__":
     # Commandline arguments

@@ -24,16 +24,22 @@ grammar = r"""
     """
 
 
-def get_bow_tensor(df, user_col, item_col, review_col, rating_col, remove_cols, k, implicit=True):
+def get_bow_dataframe(df, user_col, item_col, review_col, rating_col, k, implicit=False):
 
     tagger = PerceptronTagger()
     chunker = nltk.RegexpParser(grammar)
     pos_tag = tagger.tag
 
+    columns_to_drop = df.columns
+
     df['UserID'] = df[user_col].astype('category').cat.rename_categories(range(0, df[user_col].nunique()))
     df['ItemID'] = df[item_col].astype('category').cat.rename_categories(range(0, df[item_col].nunique()))
 
-    df = df.drop([user_col, item_col] + remove_cols, axis=1)
+    item_map = df[[item_col, 'ItemID']]
+
+    # one_hot = pd.get_dummies(df[rating_col], prefix='rating')
+    #
+    # df = df.join(one_hot)
 
     reviews = df[review_col].values
 
@@ -54,29 +60,26 @@ def get_bow_tensor(df, user_col, item_col, review_col, rating_col, remove_cols, 
         topkinReview = [1 if tempCounter[word] > 0 else 0 for (word, wordCount) in topk]
         freqReview.append(topkinReview)
 
+
+    if implicit:
+        df['Value'] = (df[rating_col] > 3)*1
+    else:
+        df['Value'] = df[rating_col]
+
+    df = df.drop(columns_to_drop, axis=1)
+
     # Prepare freqReviewDf
     freqReviewDf = pd.DataFrame(freqReview)
     dfName = []
     for c in topk:
         dfName.append(c[0])
     freqReviewDf.columns = dfName
+
     df = df.join(freqReviewDf)
 
-    bowNames = ['UserID', 'ItemID']
+    #tensor = tensorfy(df, 'UserID', 'ItemID', len(df.columns)-2)
 
-    if implicit:
-        df['Value'] = (df[rating_col] > 3)*1
-        bowNames.append('Value')
-    else:
-        bowNames.append(rating_col)
-
-    bowNames += dfName
-
-    df = df[bowNames]
-
-    tensor = tensorfy(df, 'UserID', 'ItemID', len(bowNames)-2)
-
-    return topk, tensor, bowNames[2:]
+    return df, topk, item_map
 
 
 def tensorfy(df, user_id, item_id, k):

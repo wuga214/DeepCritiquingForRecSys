@@ -22,27 +22,27 @@ def main(args):
 
     n, m, k = Rtrain.shape # Item, User, Text Feature
 
-    progress.section("Train Model")
-    iae = InterpretableAutoRec([m, k], args.rank, 100, args.lamb) # I-AutoRec
-    iae.train_model(Rtrain, args.epoch)
-
-    progress.section("Prediction")
-    predicted = topk_predict(iae, Rtrain, args.topk, n, m, k)
-
-    metric_names = ['R-Precision', 'NDCG', 'Clicks', 'Recall', 'Precision']
-    result = evaluate(predicted[:, :, 0], Rtrain[:, :, 0].tocsr().transpose(), metric_names, [args.topk])
-    print("-")
-    for metric in result.keys():
-        print("{0}:{1}".format(metric, result[metric]))
-
-    # model = AutoRec(m, args.rank, 100, lamb=args.lamb)
-    # model.train_model(Rtrain[:, :, 0].tocsr(), args.epoch)
-    # predicted = topk_predict(model, Rtrain[:, :, 0], args.topk, n, m, 1)
+    # progress.section("Train Model")
+    # iae = InterpretableAutoRec([m, k], args.rank, 100, args.lamb) # I-AutoRec
+    # iae.train_model(Rtrain, args.epoch)
+    #
+    # progress.section("Prediction")
+    # predicted = topk_predict(iae, Rtrain, args.topk, n, m, k)
+    #
     # metric_names = ['R-Precision', 'NDCG', 'Clicks', 'Recall', 'Precision']
-    # result = evaluate(predicted[:, :, 0], Rtrain[:, :, 0].tocsr().transpose(), metric_names, [args.topk])
+    # result = evaluate(predicted[:, :, 0], Rvalid[:, :, 0].tocsr().transpose(), metric_names, [args.topk])
     # print("-")
     # for metric in result.keys():
     #     print("{0}:{1}".format(metric, result[metric]))
+
+    model = AutoRec(m, args.rank, 100, lamb=args.lamb)
+    model.train_model(Rtrain[:, :, 0].tocsr(), args.epoch)
+    predicted = topk_predict(model, Rtrain[:, :, 0], args.topk, n, m, 1)
+    metric_names = ['R-Precision', 'NDCG', 'Clicks', 'Recall', 'Precision']
+    result = evaluate(predicted[:, :, 0], Rvalid[:, :, 0].tocsr().transpose(), metric_names, [args.topk])
+    print("-")
+    for metric in result.keys():
+        print("{0}:{1}".format(metric, result[metric]))
 
 
 
