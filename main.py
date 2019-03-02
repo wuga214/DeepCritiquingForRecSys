@@ -1,12 +1,10 @@
 import sparse
 import argparse
 import time
+import pandas as pd
+from models.incf import INCF
 from utils.progress import WorkSplitter, inhour
 from utils.argcheck import check_float_positive, check_int_positive, shape
-
-from models.interpautorec import InterpretableAutoRec
-from models.autorec import AutoRec
-from predicts.itembased import topk_predict
 from metrics.general_performance import evaluate
 
 def main(args):
@@ -16,34 +14,20 @@ def main(args):
     # Show hyper parameter settings
     progress.section("Parameter Setting")
 
-    progress.section("Load Data")
-    Rtrain = sparse.load_npz(args.path + args.train)
-    Rvalid = sparse.load_npz(args.path + args.valid)
+    df = pd.read_csv(args.path + 'data.csv')
 
-    n, m, k = Rtrain.shape # Item, User, Text Feature
+    data = df.as_matrix()
 
-    # progress.section("Train Model")
-    # iae = InterpretableAutoRec([m, k], args.rank, 100, args.lamb) # I-AutoRec
-    # iae.train_model(Rtrain, args.epoch)
-    #
-    # progress.section("Prediction")
-    # predicted = topk_predict(iae, Rtrain, args.topk, n, m, k)
-    #
-    # metric_names = ['R-Precision', 'NDCG', 'Clicks', 'Recall', 'Precision']
-    # result = evaluate(predicted[:, :, 0], Rvalid[:, :, 0].tocsr().transpose(), metric_names, [args.topk])
-    # print("-")
-    # for metric in result.keys():
-    #     print("{0}:{1}".format(metric, result[metric]))
+    incf = INCF(num_users=df['UserID'].nunique(),
+                 num_items=df['ItemID'].nunique(),
+                 label_dim=1,
+                 text_dim=data.shape[1]-3,
+                 embed_dim=args.rank,
+                 num_layers=2,
+                 batch_size=1000,
+                 lamb=args.lamb)
 
-    model = AutoRec(m, args.rank, 100, lamb=args.lamb)
-    model.train_model(Rtrain[:, :, 0].tocsr(), args.epoch)
-    predicted = topk_predict(model, Rtrain[:, :, 0], args.topk, n, m, 1)
-    metric_names = ['R-Precision', 'NDCG', 'Clicks', 'Recall', 'Precision']
-    result = evaluate(predicted[:, :, 0], Rvalid[:, :, 0].tocsr().transpose(), metric_names, [args.topk])
-    print("-")
-    for metric in result.keys():
-        print("{0}:{1}".format(metric, result[metric]))
-
+    incf.train_model(data, epoch=args.epoch)
 
 
 
@@ -57,8 +41,6 @@ if __name__ == "__main__":
     parser.add_argument('-l', dest='lamb', type=check_float_positive, default=1)
     parser.add_argument('-r', dest='rank', type=check_int_positive, default=100)
     parser.add_argument('-d', dest='path', default="data/video/")
-    parser.add_argument('-t', dest='train', default='Rtrain.npz')
-    parser.add_argument('-v', dest='valid', default='Rvalid.npz')
     parser.add_argument('-k', dest='topk', type=check_int_positive, default=50)
     parser.add_argument('-gpu', dest='gpu', action='store_true')
     args = parser.parse_args()
