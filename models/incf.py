@@ -16,7 +16,7 @@ class INCF(object):
                  batch_size,
                  lamb=0.01,
                  learning_rate=1e-3,
-                 optimizer=tf.train.AdamOptimizer,
+                 optimizer=tf.train.RMSPropOptimizer,
                  **unused):
         self.num_users = num_users
         self.num_items = num_items
@@ -56,21 +56,29 @@ class INCF(object):
                 hi = tf.concat([hi, ho], axis=1)
 
         with tf.variable_scope("prediction"):
-            self.rating_prediction = tf.layers.dense(inputs=hi, units=self.label_dim,
+            rating_prediction = tf.layers.dense(inputs=hi, units=self.label_dim,
                                                      activation=None, name='rating_prediction')
             phrase_prediction = tf.layers.dense(inputs=hi, units=self.text_dim,
                                                 activation=None, name='phrase_prediction')
+            self.rating_prediction = tf.sigmoid(rating_prediction)
             self.phrase_prediction = tf.sigmoid(phrase_prediction)
 
         with tf.variable_scope("rating_loss"):
-            rating_loss = tf.losses.mean_squared_error(labels=self.rating, predictions=self.rating_prediction)
+            rating_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=self.rating, logits=rating_prediction)
 
         with tf.variable_scope("phrase_loss"):
             phrase_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=self.keyphrase, logits=phrase_prediction)
 
+        with tf.variable_scope("l2"):
+            l2_loss = (tf.reduce_mean(tf.nn.l2_loss(self.user_embeddings))
+                       + tf.reduce_mean(tf.nn.l2_loss( self.item_embeddings))
+                       + tf.losses.get_regularization_loss())
+
+
         self.loss = (tf.reduce_mean(rating_loss)
-                     + tf.reduce_mean(phrase_loss)
-                     + tf.losses.get_regularization_loss(self.lamb))
+                     #+ tf.reduce_mean(phrase_loss)
+                     #+ l2_loss
+                     )
 
         with tf.variable_scope('optimizer'):
             self.train = self.optimizer(learning_rate=self.learning_rate).minimize(self.loss)
@@ -106,7 +114,9 @@ class INCF(object):
                 training, loss = self.sess.run([self.train, self.loss], feed_dict=feed_dict)
                 pbar.set_description("loss:{0}".format(loss))
 
-    def predict(self, user_index, item_index):
+    def predict(self, inputs):
+        user_index = inputs[:, 0]
+        item_index = inputs[:, 1]
         feed_dict = {self.users_index: user_index, self.items_index: item_index}
         return self.sess.run([self.rating_prediction, self.phrase_prediction], feed_dict=feed_dict)
 

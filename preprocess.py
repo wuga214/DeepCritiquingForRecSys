@@ -5,7 +5,6 @@ import time
 import sparse
 from utils.io import get_dataframe_json
 from providers.bow import get_bow_dataframe
-from providers.split import split_seed_randomly
 from providers.subset import getsubset
 from utils.argcheck import check_float_positive, check_int_positive, shape, ratio
 
@@ -24,10 +23,10 @@ def main(args):
 
     progress.section("Tensorfy")
     df, topk, item_map = get_bow_dataframe(df, args.user_col, args.item_col, args.review_col,
-                                           args.rating_col, args.topk, implicit=False)
+                                           args.rating_col, args.topk, implicit=True)
 
-    df.to_csv(args.path+'data.csv')
-    item_map.to_csv(args.path+'item_index.csv')
+    df.to_csv(args.path+'data.csv', index=False)
+    item_map.to_csv(args.path+'item_index.csv', index=False)
 
 if __name__ == "__main__":
     # Commandline arguments

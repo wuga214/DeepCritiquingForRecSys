@@ -1,5 +1,4 @@
 import re
-import sparse
 import numpy as np
 import pandas as pd
 from collections import Counter
@@ -77,22 +76,7 @@ def get_bow_dataframe(df, user_col, item_col, review_col, rating_col, k, implici
 
     df = df.join(freqReviewDf)
 
-    #tensor = tensorfy(df, 'UserID', 'ItemID', len(df.columns)-2)
-
     return df, topk, item_map
-
-
-def tensorfy(df, user_id, item_id, k):
-    m = df[user_id].nunique()
-    n = df[item_id].nunique()
-    tensor = sparse.DOK((m, n, k), dtype=np.float32)
-
-    df_numpy = df.as_matrix().astype(int)
-
-    for row in df_numpy:
-        tensor[row[0], row[1]] = row[2:]
-
-    return sparse.COO(tensor)
 
 
 # generator, generate leaves one by one
