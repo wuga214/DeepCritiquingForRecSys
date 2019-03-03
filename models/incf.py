@@ -2,7 +2,8 @@ import tensorflow as tf
 import numpy as np
 from tqdm import tqdm
 from utils.progress import WorkSplitter, inhour
-from scipy.sparse import vstack, hstack
+import scipy.sparse as sparse
+from providers.sampler import negative_data
 
 
 class INCF(object):
@@ -83,8 +84,20 @@ class INCF(object):
         with tf.variable_scope('optimizer'):
             self.train = self.optimizer(learning_rate=self.learning_rate).minimize(self.loss)
 
-    def get_batches(self, data_matrix, batch_size):
+    def get_batches(self, df, batch_size):
+
+        data_matrix = sparse.csr_matrix(df.values)
+        sampled = negative_data(df, 10)
+        data_matrix = sparse.vstack([data_matrix, sampled])
+
+        data_matrix = data_matrix.tocoo()
+
         remaining_size = data_matrix.shape[0]
+
+        idenRows = np.random.permutation(remaining_size)
+        data_matrix.row = idenRows[data_matrix.row]
+        data_matrix = data_matrix.tocsr()
+
         batch_index = 0
         batches = []
         while remaining_size > 0:
@@ -96,15 +109,16 @@ class INCF(object):
             remaining_size -= batch_size
         return batches
 
-    def train_model(self, data_matrix, epoch=100, batches=None, **unused):
+    def train_model(self, df, epoch=100, batches=None, **unused):
+
         if batches is None:
-            batches = self.get_batches(data_matrix, self.batch_size)
+            batches = self.get_batches(df, self.batch_size)
 
         # Training
         pbar = tqdm(range(epoch))
         for i in pbar:
             for step in range(len(batches)):
-                data_batch = batches[step]
+                data_batch = batches[step].toarray()
                 user_index = data_batch[:, 0]
                 item_index = data_batch[:, 1]
                 rating = data_batch[:, 2:3]
@@ -113,6 +127,9 @@ class INCF(object):
                              self.rating: rating, self.keyphrase: keyphrase}
                 training, loss = self.sess.run([self.train, self.loss], feed_dict=feed_dict)
                 pbar.set_description("loss:{0}".format(loss))
+
+            if (i+1) % 5 == 0:
+                batches = self.get_batches(df, self.batch_size)
 
     def predict(self, inputs):
         user_index = inputs[:, 0]

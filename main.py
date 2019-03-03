@@ -1,4 +1,4 @@
-import sparse
+import scipy.sparse as sparse
 import argparse
 import time
 import pandas as pd
@@ -13,26 +13,20 @@ def main(args):
     # Progress bar
     progress = WorkSplitter()
 
-    # Show hyper parameter settings
     progress.section("Parameter Setting")
 
     df = pd.read_csv(args.path + 'data.csv')
 
-    # df['Value'] = (df['Value']>3)*1
-    # df.to_csv(args.path + 'data.csv', index=False)
-
-    data = df.as_matrix()
-
     incf = INCF(num_users=df['UserID'].nunique(),
                  num_items=df['ItemID'].nunique(),
                  label_dim=1,
-                 text_dim=data.shape[1]-3,
+                 text_dim=len(df.columns)-3,
                  embed_dim=args.rank,
-                 num_layers=2,
+                 num_layers=1,
                  batch_size=1000,
                  lamb=args.lamb)
 
-    incf.train_model(data, epoch=args.epoch)
+    incf.train_model(df, epoch=args.epoch)
 
     prediction = elementwisepredictor(incf, df, df['UserID'].nunique(), df['ItemID'].nunique(),
                                       args.topk, batch_size=1000)
