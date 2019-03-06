@@ -40,49 +40,52 @@ class INCF(object):
         self.rating = tf.placeholder(tf.int32, [None, self.label_dim])
         self.keyphrase = tf.placeholder(tf.int32, [None, self.text_dim])
 
-        with tf.variable_scope("embeddings"):
-            self.user_embeddings = tf.Variable(tf.random_normal([self.num_users, self.embed_dim],
-                                                                stddev=1 / (self.embed_dim ** 0.5), dtype=tf.float32))
+        with tf.variable_scope("stage1"):
 
-            self.item_embeddings = tf.Variable(tf.random_normal([self.num_items, self.embed_dim],
-                                                                stddev=1 / (self.embed_dim ** 0.5), dtype=tf.float32))
+            with tf.variable_scope("embeddings"):
+                self.user_embeddings = tf.Variable(tf.random_normal([self.num_users, self.embed_dim],
+                                                                    stddev=1 / (self.embed_dim ** 0.5), dtype=tf.float32))
 
-            users = tf.nn.embedding_lookup(self.user_embeddings, self.users_index, name="user_lookup")
-            items = tf.nn.embedding_lookup(self.item_embeddings, self.items_index, name="item_lookup")
+                self.item_embeddings = tf.Variable(tf.random_normal([self.num_items, self.embed_dim],
+                                                                    stddev=1 / (self.embed_dim ** 0.5), dtype=tf.float32))
 
-        with tf.variable_scope("residual"):
-            hi = tf.concat([users, items], axis=1)
-            for i in range(self.num_layers):
-                ho = tf.layers.dense(inputs=hi, units=self.embed_dim, activation=tf.nn.relu)
-                hi = tf.concat([hi, ho], axis=1)
+                users = tf.nn.embedding_lookup(self.user_embeddings, self.users_index, name="user_lookup")
+                items = tf.nn.embedding_lookup(self.item_embeddings, self.items_index, name="item_lookup")
 
-        with tf.variable_scope("prediction"):
-            rating_prediction = tf.layers.dense(inputs=hi, units=self.label_dim,
-                                                     activation=None, name='rating_prediction')
-            phrase_prediction = tf.layers.dense(inputs=hi, units=self.text_dim,
-                                                activation=None, name='phrase_prediction')
-            self.rating_prediction = tf.sigmoid(rating_prediction)
-            self.phrase_prediction = tf.sigmoid(phrase_prediction)
+            with tf.variable_scope("residual"):
+                hi = tf.concat([users, items], axis=1)
+                for i in range(self.num_layers):
+                    ho = tf.layers.dense(inputs=hi, units=self.embed_dim, activation=tf.nn.relu)
+                    hi = tf.concat([hi, ho], axis=1)
 
-        with tf.variable_scope("rating_loss"):
-            rating_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=self.rating, logits=rating_prediction)
+            with tf.variable_scope("prediction"):
+                rating_prediction = tf.layers.dense(inputs=hi, units=self.label_dim,
+                                                         activation=None, name='rating_prediction')
+                phrase_prediction = tf.layers.dense(inputs=hi, units=self.text_dim,
+                                                    activation=None, name='phrase_prediction')
+                self.rating_prediction = tf.sigmoid(rating_prediction)
+                self.phrase_prediction = tf.sigmoid(phrase_prediction)
 
-        with tf.variable_scope("phrase_loss"):
-            phrase_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=self.keyphrase, logits=phrase_prediction)
+            with tf.variable_scope("rating_loss"):
+                rating_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=self.rating, logits=rating_prediction)
 
-        with tf.variable_scope("l2"):
-            l2_loss = (tf.reduce_mean(tf.nn.l2_loss(self.user_embeddings))
-                       + tf.reduce_mean(tf.nn.l2_loss( self.item_embeddings))
-                       + tf.losses.get_regularization_loss())
+            with tf.variable_scope("phrase_loss"):
+                phrase_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=self.keyphrase, logits=phrase_prediction)
+
+            with tf.variable_scope("l2"):
+                l2_loss = (tf.reduce_mean(tf.nn.l2_loss(self.user_embeddings))
+                           + tf.reduce_mean(tf.nn.l2_loss(self.item_embeddings))
+                           + tf.losses.get_regularization_loss())
 
 
-        self.loss = (tf.reduce_mean(rating_loss)
-                     #+ tf.reduce_mean(phrase_loss)
-                     #+ l2_loss
-                     )
+            self.loss = (tf.reduce_mean(rating_loss)
+                         + 0.1 * tf.reduce_mean(phrase_loss)
+                         #+ l2_loss
+                         )
 
-        with tf.variable_scope('optimizer'):
-            self.train = self.optimizer(learning_rate=self.learning_rate).minimize(self.loss)
+            with tf.variable_scope('optimizer'):
+                self.train = self.optimizer(learning_rate=self.learning_rate).minimize(self.loss)
+
 
     def get_batches(self, df, batch_size):
 
