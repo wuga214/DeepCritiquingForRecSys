@@ -4,6 +4,7 @@ import time
 import pandas as pd
 from models.incf import INCF
 from predicts.topk import elementwisepredictor
+from providers.split import leave_one_out_split
 from utils.reformat import to_sparse_matrix
 from utils.progress import WorkSplitter, inhour
 from utils.argcheck import check_float_positive, check_int_positive, shape
@@ -15,25 +16,28 @@ def main(args):
 
     progress.section("Parameter Setting")
 
-    df = pd.read_csv(args.path + 'data.csv')
+    df = pd.read_csv(args.path + 'Data.csv')
 
-    incf = INCF(num_users=df['UserID'].nunique(),
-                 num_items=df['ItemID'].nunique(),
+    df_train, df_valid = leave_one_out_split(df, 'UserIndex', 0.1)
+
+    incf = INCF(num_users=df['UserIndex'].nunique(),
+                 num_items=df['ItemIndex'].nunique(),
                  label_dim=1,
-                 text_dim=len(df.columns)-3,
+                 text_dim=100,
                  embed_dim=args.rank,
                  num_layers=1,
-                 batch_size=1000,
+                 batch_size=2000,
                  lamb=args.lamb)
 
-    incf.train_model(df, epoch=args.epoch)
+    incf.train_model(df_train, epoch=args.epoch)
 
-    prediction = elementwisepredictor(incf, df, df['UserID'].nunique(), df['ItemID'].nunique(),
+    prediction = elementwisepredictor(incf, df_train, 'UserIndex', 'ItemIndex',
                                       args.topk, batch_size=1000)
 
     metric_names = ['R-Precision', 'NDCG', 'Clicks', 'Recall', 'Precision']
 
-    R_valid = to_sparse_matrix(df, df['UserID'].nunique(), df['ItemID'].nunique(), 'UserID', 'ItemID', 'Value', 3)
+    R_valid = to_sparse_matrix(df_valid, df['UserIndex'].nunique(), df['ItemIndex'].nunique(),
+                               'UserIndex', 'ItemIndex', 'Binary')
 
     result = evaluate(prediction[:, :, 1], R_valid, metric_names, [args.topk])
 
@@ -44,14 +48,14 @@ def main(args):
 
 if __name__ == "__main__":
     # Commandline arguments
-    parser = argparse.ArgumentParser(description="LRec")
+    parser = argparse.ArgumentParser(description="INCF")
 
     parser.add_argument('-e', dest='epoch', type=check_int_positive, default=1)
     parser.add_argument('-a', dest='alpha', type=check_float_positive, default=100.0)
-    parser.add_argument('-l', dest='lamb', type=check_float_positive, default=1)
+    parser.add_argument('-l', dest='lamb', type=check_float_positive, default=10.0)
     parser.add_argument('-r', dest='rank', type=check_int_positive, default=100)
-    parser.add_argument('-d', dest='path', default="data/video/")
-    parser.add_argument('-k', dest='topk', type=check_int_positive, default=500)
+    parser.add_argument('-d', dest='path', default="data/beer/advocate/")
+    parser.add_argument('-k', dest='topk', type=check_int_positive, default=10)
     parser.add_argument('-gpu', dest='gpu', action='store_true')
     args = parser.parse_args()
 
