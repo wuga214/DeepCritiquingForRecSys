@@ -58,6 +58,8 @@ class INCF(object):
                                          activation=tf.nn.relu)
                     hi = tf.concat([hi, ho], axis=1)
 
+                latent = tf.stop_gradient(hi)
+
             with tf.variable_scope("prediction"):
                 rating_prediction = tf.layers.dense(inputs=hi, units=1,
                                                     kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
@@ -65,8 +67,17 @@ class INCF(object):
                 phrase_prediction = tf.layers.dense(inputs=hi, units=self.text_dim,
                                                     kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                     activation=None, name='phrase_prediction')
-                self.rating_prediction = tf.sigmoid(rating_prediction)
-                self.phrase_prediction = tf.sigmoid(phrase_prediction)
+
+                self.rating_prediction = rating_prediction
+                self.phrase_prediction = phrase_prediction
+
+            with tf.variable_scope("looping"):
+                reconstructed_latent = tf.layers.dense(inputs=self.phrase_prediction, units=3*self.embed_dim,
+                                                       kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
+                                                       activation=None, name='latent_reconstruction')
+
+            with tf.variable_scope("latent_reconstruction_loss"):
+                latent_loss = tf.losses.mean_squared_error(labels=latent, predictions=reconstructed_latent)
 
             with tf.variable_scope("rating_loss"):
                 rating_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=tf.reshape(self.rating, [-1, 1]),
@@ -79,9 +90,9 @@ class INCF(object):
             with tf.variable_scope("l2"):
                 l2_loss = tf.losses.get_regularization_loss()
 
-
             self.loss = (tf.reduce_mean(rating_loss)
                          + 0.1 * tf.reduce_mean(phrase_loss)
+                         + 0.1 * tf.reduce_mean(latent_loss)
                          + l2_loss
                          )
 
