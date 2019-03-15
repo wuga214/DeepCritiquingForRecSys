@@ -1,6 +1,7 @@
 import scipy.sparse as sparse
 import argparse
 import time
+import numpy as np
 import pandas as pd
 from models.incf import INCF
 from predicts.topk import elementwisepredictor
@@ -31,19 +32,24 @@ def main(args):
 
     incf.train_model(df_train, epoch=args.epoch)
 
-    prediction = elementwisepredictor(incf, df_train, 'UserIndex', 'ItemIndex',
-                                      args.topk, batch_size=1000)
+    df_key = pd.read_csv(args.path + 'KeyPhrases.csv')
+    keyPhrase = np.array(df_key['Phrases'].tolist())
+
+    prediction, explanation = elementwisepredictor(incf, df_train, 'UserIndex', 'ItemIndex',
+                                                   args.topk, batch_size=1000, explain=True, key_names=keyPhrase)
 
     metric_names = ['R-Precision', 'NDCG', 'Clicks', 'Recall', 'Precision']
 
     R_valid = to_sparse_matrix(df_valid, df['UserIndex'].nunique(), df['ItemIndex'].nunique(),
                                'UserIndex', 'ItemIndex', 'Binary')
 
-    result = evaluate(prediction[:, :, 1], R_valid, metric_names, [args.topk])
+    result = evaluate(prediction, R_valid, metric_names, [args.topk])
 
     print("-")
     for metric in result.keys():
         print("{0}:{1}".format(metric, result[metric]))
+
+    import ipdb; ipdb.set_trace()
 
 
 if __name__ == "__main__":

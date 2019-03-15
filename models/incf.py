@@ -134,8 +134,8 @@ class INCF(object):
                 training, loss = self.sess.run([self.train, self.loss], feed_dict=feed_dict)
                 pbar.set_description("loss:{0}".format(loss))
 
-            if (i+1) % 5 == 0:
-                batches = self.get_batches(df, self.batch_size, user_col, item_col, rating_col, key_col, self.text_dim)
+            #if (i+1) % 5 == 0:
+            batches = self.get_batches(df, self.batch_size, user_col, item_col, rating_col, key_col, self.text_dim)
 
     def predict(self, inputs):
         user_index = inputs[:, 0]
