@@ -24,7 +24,7 @@ def main(args):
     incf = INCF(num_users=df['UserIndex'].nunique(),
                  num_items=df['ItemIndex'].nunique(),
                  label_dim=1,
-                 text_dim=100,
+                 text_dim=args.text_dim,
                  embed_dim=args.rank,
                  num_layers=1,
                  batch_size=2000,
@@ -45,11 +45,19 @@ def main(args):
 
     result = evaluate(prediction, R_valid, metric_names, [args.topk])
 
+    incf.sess.close()
+    tf.reset_default_graph()
+
     print("-")
     for metric in result.keys():
         print("{0}:{1}".format(metric, result[metric]))
 
     import ipdb; ipdb.set_trace()
+#    result_df = pd.DataFrame(result)
+#    previous_df = pd.read_csv("Result.csv", sep='\t', encoding='utf-8')
+#    result_df = pd.concat([previous_df, result_df])
+#    result_df.to_csv("Result.csv", sep='\t', encoding='utf-8', index=False)
+
 
 
 if __name__ == "__main__":
@@ -60,6 +68,7 @@ if __name__ == "__main__":
     parser.add_argument('-a', dest='alpha', type=check_float_positive, default=100.0)
     parser.add_argument('-l', dest='lamb', type=check_float_positive, default=10.0)
     parser.add_argument('-r', dest='rank', type=check_int_positive, default=100)
+    parser.add_argument('-t', dest='text_dim', type=check_int_positive, default=100)
     parser.add_argument('-d', dest='path', default="data/beer/advocate/")
     parser.add_argument('-k', dest='topk', type=check_int_positive, default=10)
     parser.add_argument('-gpu', dest='gpu', action='store_true')
