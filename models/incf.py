@@ -151,6 +151,19 @@ class INCF(object):
         feed_dict = {self.users_index: user_index, self.items_index: item_index}
         return self.sess.run([self.rating_prediction, self.phrase_prediction], feed_dict=feed_dict)
 
+    def refine_predict(self, inputs, critiqued):
+        user_index = inputs[:, 0]
+        item_index = inputs[:, 1]
+        feed_dict = {self.users_index: user_index,
+                     self.items_index: item_index,
+                     self.modified_phrase: critiqued}
+        modified_rating, modified_phrases = self.sess.run([self.modified_rating_prediction,
+                                                           self.modified_phrase_prediction],
+                                                          feed_dict=feed_dict)
+
+        return modified_rating, modified_phrases
+
+
     def create_embeddings(self, df, user_col, item_col, rating_col):
         R = to_sparse_matrix(df, self.num_users, self.num_items, user_col, item_col, rating_col)
         user_embedding, item_embedding = to_svd(R, self.embed_dim)
