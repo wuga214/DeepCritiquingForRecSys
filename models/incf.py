@@ -36,6 +36,7 @@ class INCF(object):
         self.items_index = tf.placeholder(tf.int32, [None], name='item_id')
         self.rating = tf.placeholder(tf.int32, [None], name='rating')
         self.keyphrase = tf.placeholder(tf.int32, [None, self.text_dim], name='key_phrases')
+        self.modified_phrase = tf.placeholder(tf.float32, [None, self.text_dim], name='modified_phrases')
 
         with tf.variable_scope("embeddings"):
             self.user_embeddings = tf.Variable(tf.random_normal([self.num_users, self.embed_dim],
@@ -75,7 +76,11 @@ class INCF(object):
                                                    kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                    activation=None, name='latent_reconstruction')
 
-            modified_latent = (latent + reconstructed_latent)/2.0
+            modified_latent = tf.layers.dense(inputs=self.modified_phrase, units=3*self.embed_dim,
+                                                   kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
+                                                   activation=None, name='latent_reconstruction', reuse=True)
+
+            modified_latent = (latent + modified_latent)/2.0
 
         with tf.variable_scope("prediction", reuse=True):
             rating_prediction = tf.layers.dense(inputs=modified_latent, units=1,
@@ -95,11 +100,11 @@ class INCF(object):
 
             with tf.variable_scope("rating_loss"):
                 rating_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=tf.reshape(self.rating, [-1, 1]),
-                                                              logits=rating_prediction)
+                                                              logits=self.rating_prediction)
 
             with tf.variable_scope("phrase_loss"):
                 phrase_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=self.keyphrase,
-                                                              logits=phrase_prediction)
+                                                              logits=self.phrase_prediction)
 
             with tf.variable_scope("l2"):
                 l2_loss = tf.losses.get_regularization_loss()
@@ -167,6 +172,19 @@ class INCF(object):
         item_index = inputs[:, 1]
         feed_dict = {self.users_index: user_index, self.items_index: item_index}
         return self.sess.run([self.rating_prediction, self.phrase_prediction], feed_dict=feed_dict)
+
+    def refine_predict(self, inputs, critiqued):
+        user_index = inputs[:, 0]
+        item_index = inputs[:, 1]
+        feed_dict = {self.users_index: user_index,
+                     self.items_index: item_index,
+                     self.modified_phrase: critiqued}
+        modified_rating, modified_phrases = self.sess.run([self.modified_rating_prediction,
+                                                           self.modified_phrase_prediction],
+                                                          feed_dict=feed_dict)
+
+        return modified_rating, modified_phrases
+
 
     def create_embeddings(self, df, user_col, item_col, rating_col):
         R = to_sparse_matrix(df, self.num_users, self.num_items, user_col, item_col, rating_col)

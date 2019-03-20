@@ -27,3 +27,9 @@ def to_laplacian(R, rank):
 
     return P*sigma
 
+
+def get_phrase_set(df, user_col, explanation_col, set_col):
+    grouped = df.groupby(user_col).agg(list).reset_index()
+    grouped[set_col] = grouped[explanation_col].apply(lambda x:
+                                                      set([item for sublist in x for item in sublist]))
+    return grouped

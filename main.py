@@ -51,7 +51,6 @@ def main(args):
 
     import ipdb; ipdb.set_trace()
 
-
 if __name__ == "__main__":
     # Commandline arguments
     parser = argparse.ArgumentParser(description="INCF")
