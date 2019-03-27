@@ -19,16 +19,17 @@ def main(args):
 
     df = pd.read_csv(args.path + 'Data.csv')
 
-    df_train, df_valid = leave_one_out_split(df, 'UserIndex', 0.1)
+    df_train, df_valid = leave_one_out_split(df, 'UserIndex', 0.3)
 
     incf = INCF(num_users=df['UserIndex'].nunique(),
-                 num_items=df['ItemIndex'].nunique(),
-                 label_dim=1,
-                 text_dim=args.text_dim,
-                 embed_dim=args.rank,
-                 num_layers=1,
-                 batch_size=2000,
-                 lamb=args.lamb)
+                num_items=df['ItemIndex'].nunique(),
+                label_dim=1,
+                text_dim=args.text_dim,
+                embed_dim=args.rank,
+                num_layers=1,
+                batch_size=2000,
+                lamb=args.lamb,
+                learning_rate=args.alpha)
 
     incf.train_model(df_train, epoch=args.epoch)
 
@@ -36,7 +37,8 @@ def main(args):
     keyPhrase = np.array(df_key['Phrases'].tolist())
 
     prediction, explanation = elementwisepredictor(incf, df_train, 'UserIndex', 'ItemIndex',
-                                                   args.topk, batch_size=1000, explain=True, key_names=keyPhrase)
+                                                   args.topk, batch_size=1000, explain=True,
+                                                   key_names=keyPhrase, topk_key=args.num_keys)
 
     metric_names = ['R-Precision', 'NDCG', 'Clicks', 'Recall', 'Precision']
 
@@ -45,19 +47,11 @@ def main(args):
 
     result = evaluate(prediction, R_valid, metric_names, [args.topk])
 
-    incf.sess.close()
-    tf.reset_default_graph()
-
     print("-")
     for metric in result.keys():
         print("{0}:{1}".format(metric, result[metric]))
 
     import ipdb; ipdb.set_trace()
-#    result_df = pd.DataFrame(result)
-#    previous_df = pd.read_csv("Result.csv", sep='\t', encoding='utf-8')
-#    result_df = pd.concat([previous_df, result_df])
-#    result_df.to_csv("Result.csv", sep='\t', encoding='utf-8', index=False)
-
 
 
 if __name__ == "__main__":
@@ -69,6 +63,7 @@ if __name__ == "__main__":
     parser.add_argument('-l', dest='lamb', type=check_float_positive, default=10.0)
     parser.add_argument('-r', dest='rank', type=check_int_positive, default=100)
     parser.add_argument('-t', dest='text_dim', type=check_int_positive, default=100)
+    parser.add_argument('-nk', dest='num_keys', type=check_int_positive, default=5)
     parser.add_argument('-d', dest='path', default="data/beer/advocate/")
     parser.add_argument('-k', dest='topk', type=check_int_positive, default=10)
     parser.add_argument('-gpu', dest='gpu', action='store_true')
