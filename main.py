@@ -21,10 +21,13 @@ def main(args):
 
     df_train, df_valid = leave_one_out_split(df, 'UserIndex', 0.1)
 
+    df_train.to_csv(args.path + 'Train.csv')
+    df_valid.to_csv(args.path + 'Valid.csv')
+
     incf = INCF(num_users=df['UserIndex'].nunique(),
                  num_items=df['ItemIndex'].nunique(),
                  label_dim=1,
-                 text_dim=100,
+                 text_dim=52,
                  embed_dim=args.rank,
                  num_layers=1,
                  batch_size=2000,

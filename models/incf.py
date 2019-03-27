@@ -28,6 +28,7 @@ class INCF(object):
         self.get_graph()
         self.sess = tf.Session()
         self.sess.run(tf.global_variables_initializer())
+        # print([n.name for n in tf.get_default_graph().as_graph_def().node])
         tf.summary.FileWriter('./graphs', self.sess.graph)
 
     def get_graph(self):
@@ -60,7 +61,7 @@ class INCF(object):
 
             latent = tf.stop_gradient(hi)
 
-        with tf.variable_scope("prediction"):
+        with tf.variable_scope("prediction", reuse=False):
             rating_prediction = tf.layers.dense(inputs=hi, units=1,
                                                 kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                 activation=None, name='rating_prediction')
@@ -74,7 +75,7 @@ class INCF(object):
         with tf.variable_scope("looping"):
             reconstructed_latent = tf.layers.dense(inputs=self.phrase_prediction, units=3*self.embed_dim,
                                                    kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-                                                   activation=None, name='latent_reconstruction')
+                                                   activation=None, name='latent_reconstruction', reuse=False)
 
             modified_latent = tf.layers.dense(inputs=self.modified_phrase, units=3*self.embed_dim,
                                                    kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
@@ -85,10 +86,10 @@ class INCF(object):
         with tf.variable_scope("prediction", reuse=True):
             rating_prediction = tf.layers.dense(inputs=modified_latent, units=1,
                                                 kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-                                                activation=None, name='rating_prediction', reuse=True)
+                                                activation=None, name='rating_prediction')
             phrase_prediction = tf.layers.dense(inputs=modified_latent, units=self.text_dim,
                                                 kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-                                                activation=None, name='phrase_prediction', reuse=True)
+                                                activation=None, name='phrase_prediction')
 
             self.modified_rating_prediction = rating_prediction
             self.modified_phrase_prediction = phrase_prediction
@@ -110,8 +111,8 @@ class INCF(object):
                 l2_loss = tf.losses.get_regularization_loss()
 
             self.loss = (tf.reduce_mean(rating_loss)
-                         + 0.1 * tf.reduce_mean(phrase_loss)
-                         + 0.1 * tf.reduce_mean(latent_loss)
+                         # + 0.1 * tf.reduce_mean(phrase_loss)
+                         # + 0.1 * tf.reduce_mean(latent_loss)
                          + l2_loss
                          )
 
