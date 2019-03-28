@@ -1,5 +1,6 @@
-import numpy as np
 from tqdm import tqdm
+
+import numpy as np
 import pandas as pd
 
 
@@ -16,7 +17,7 @@ def elementwisepredictor(model, train, user_col, item_col, topk,
 
         input_batch = []
         output_batch = []
-        rated_item = train[train[user_col] == i][item_col].as_matrix()
+        rated_item = train[train[user_col] == i][item_col].values
         for j in range(num_item):
             if j in rated_item:
                 continue
@@ -39,8 +40,6 @@ def elementwisepredictor(model, train, user_col, item_col, topk,
                 candidate_keys = key_names[candidate_idx]
                 explanation.append({'UserIndex': i, 'ItemIndex': candidates[j],
                                     'ExplanIndex': candidate_idx, 'Explanation': candidate_keys})
+
     return np.array(prediction), pd.DataFrame(explanation)
-
-
-
 

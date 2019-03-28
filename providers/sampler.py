@@ -34,9 +34,9 @@ def sparsify_keys(key_vector, num_keys):
 
 
 def get_arrays(df, user_col, item_col, rating_col, key_col, num_keys):
-    users = df[user_col].as_matrix()
-    items = df[item_col].as_matrix()
-    ratings = df[rating_col].as_matrix()
+    users = df[user_col].values
+    items = df[item_col].values
+    ratings = df[rating_col].values
     keys = sparsify_keys(df[key_col].apply(ast.literal_eval).values.tolist(), num_keys)
     return [users, items, ratings, keys]
 
@@ -53,3 +53,4 @@ def concate_data(positive, negative, permutation=True):
         ratings = ratings[index]
         keys = keys[index]
     return [np.array(users), np.array(items), np.array(ratings), keys]
+

@@ -6,7 +6,7 @@ from sklearn.utils.extmath import randomized_svd
 def to_sparse_matrix(df, num_user, num_item, user_col, item_col, rating_col):
 
     dok = df[[user_col, item_col, rating_col]].copy()
-    dok = dok.as_matrix()
+    dok = dok.values
     dok = dok[dok[:, 2] > 0]
     shape = [num_user, num_item]
 
@@ -50,3 +50,4 @@ def get_phrase_set(df, user_col, explanation_col, set_col):
     grouped[set_col] = grouped[explanation_col].apply(lambda x:
                                                       set([item for sublist in x for item in sublist]))
     return grouped
+
