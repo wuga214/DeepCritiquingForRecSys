@@ -18,8 +18,8 @@ def elementwisepredictor(model, train, user_col, item_col, topk,
         output_batch = []
         rated_item = train[train[user_col] == i][item_col].as_matrix()
         for j in range(num_item):
-            if j in rated_item:
-                continue
+            # if j in rated_item:
+            #     continue
             input_batch.append([i, j])
             if (j + 1) % batch_size == 0 or (j + 1) == num_item:
                 inputs = np.array(input_batch)

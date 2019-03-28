@@ -43,7 +43,7 @@ def main(args):
 
     metric_names = ['R-Precision', 'NDCG', 'Clicks', 'Recall', 'Precision']
 
-    R_valid = to_sparse_matrix(df_valid, df['UserIndex'].nunique(), df['ItemIndex'].nunique(),
+    R_valid = to_sparse_matrix(df_train, df['UserIndex'].nunique(), df['ItemIndex'].nunique(),
                                'UserIndex', 'ItemIndex', 'Binary')
 
     result = evaluate(prediction, R_valid, metric_names, [args.topk])
