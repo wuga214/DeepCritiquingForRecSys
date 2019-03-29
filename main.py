@@ -27,7 +27,7 @@ def main(args):
     incf = INCF(num_users=df['UserIndex'].nunique(),
                  num_items=df['ItemIndex'].nunique(),
                  label_dim=1,
-                 text_dim=52,
+                 text_dim=100,
                  embed_dim=args.rank,
                  num_layers=1,
                  batch_size=2000,
@@ -43,7 +43,7 @@ def main(args):
 
     metric_names = ['R-Precision', 'NDCG', 'Clicks', 'Recall', 'Precision']
 
-    R_valid = to_sparse_matrix(df_train, df['UserIndex'].nunique(), df['ItemIndex'].nunique(),
+    R_valid = to_sparse_matrix(df_valid, df['UserIndex'].nunique(), df['ItemIndex'].nunique(),
                                'UserIndex', 'ItemIndex', 'Binary')
 
     result = evaluate(prediction, R_valid, metric_names, [args.topk])

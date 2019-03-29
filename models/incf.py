@@ -13,7 +13,7 @@ class INCF(object):
                  num_layers,
                  batch_size,
                  lamb=0.01,
-                 learning_rate=1e-3,
+                 learning_rate=1e-4,
                  optimizer=tf.train.RMSPropOptimizer,
                  **unused):
         self.num_users = num_users
@@ -54,7 +54,7 @@ class INCF(object):
         with tf.variable_scope("residual"):
             hi = tf.concat([users, items], axis=1)
             for i in range(self.num_layers):
-                ho = tf.layers.dense(inputs=hi, units=self.embed_dim,
+                ho = tf.layers.dense(inputs=hi, units=self.embed_dim*2,
                                      kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                      activation=tf.nn.relu)
                 #hi = tf.concat([hi, ho], axis=1)
