@@ -67,38 +67,38 @@ class INCF(object):
                                                 kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                 activation=None, name='rating_prediction')
             phrase_prediction = tf.layers.dense(inputs=hi, units=self.text_dim,
-                                                #kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
+                                                kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                 activation=None, name='phrase_prediction')
 
             self.rating_prediction = rating_prediction
             self.phrase_prediction = phrase_prediction
 
-        # with tf.variable_scope("looping"):
-        #     reconstructed_latent = tf.layers.dense(inputs=self.phrase_prediction, units=self.embed_dim,
-        #                                            kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-        #                                            activation=None, name='latent_reconstruction', reuse=False)
-        #
-        #     modified_latent = tf.layers.dense(inputs=self.modified_phrase, units=self.embed_dim,
-        #                                            kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-        #                                            activation=None, name='latent_reconstruction', reuse=True)
-        #
-        #     modified_latent = (latent + modified_latent)/2.0
-        #
-        # with tf.variable_scope("prediction", reuse=True):
-        #     rating_prediction = tf.layers.dense(inputs=modified_latent, units=1,
-        #                                         kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-        #                                         activation=None, name='rating_prediction')
-        #     phrase_prediction = tf.layers.dense(inputs=modified_latent, units=self.text_dim,
-        #                                         kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-        #                                         activation=None, name='phrase_prediction')
-        #
-        #     self.modified_rating_prediction = rating_prediction
-        #     self.modified_phrase_prediction = phrase_prediction
+        with tf.variable_scope("looping"):
+            reconstructed_latent = tf.layers.dense(inputs=self.phrase_prediction, units=self.embed_dim*2,
+                                                   kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
+                                                   activation=None, name='latent_reconstruction', reuse=False)
+
+            modified_latent = tf.layers.dense(inputs=self.modified_phrase, units=self.embed_dim*2,
+                                                   kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
+                                                   activation=None, name='latent_reconstruction', reuse=True)
+
+            modified_latent = (latent + modified_latent)/2.0
+
+        with tf.variable_scope("prediction", reuse=True):
+            rating_prediction = tf.layers.dense(inputs=modified_latent, units=1,
+                                                kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
+                                                activation=None, name='rating_prediction')
+            phrase_prediction = tf.layers.dense(inputs=modified_latent, units=self.text_dim,
+                                                kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
+                                                activation=None, name='phrase_prediction')
+
+            self.modified_rating_prediction = rating_prediction
+            self.modified_phrase_prediction = phrase_prediction
         #
         with tf.variable_scope("losses"):
 
-            # with tf.variable_scope("latent_reconstruction_loss"):
-            #     latent_loss = tf.losses.mean_squared_error(labels=latent, predictions=reconstructed_latent)
+            with tf.variable_scope("latent_reconstruction_loss"):
+                latent_loss = tf.losses.mean_squared_error(labels=latent, predictions=reconstructed_latent)
 
             with tf.variable_scope("rating_loss"):
                 # rating_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=tf.reshape(self.rating, [-1, 1]),
@@ -106,17 +106,17 @@ class INCF(object):
                 rating_loss = tf.losses.mean_squared_error(labels=tf.reshape(self.rating, [-1, 1]),
                                                            predictions=self.rating_prediction)
 
-            # with tf.variable_scope("phrase_loss"):
-            #     phrase_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=self.keyphrase,
-            #                                                   logits=self.phrase_prediction)
+            with tf.variable_scope("phrase_loss"):
+                phrase_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=self.keyphrase,
+                                                              logits=self.phrase_prediction)
 
             with tf.variable_scope("l2"):
                 l2_loss = tf.losses.get_regularization_loss()
 
             self.loss = (tf.reduce_mean(rating_loss)
-                         # + 0.1 * tf.reduce_mean(phrase_loss)
-                         # + 0.1 * tf.reduce_mean(latent_loss)
-                         # + l2_loss
+                         + 0.1 * tf.reduce_mean(phrase_loss)
+                         + 0.1 * tf.reduce_mean(latent_loss)
+                         + l2_loss
                          )
 
         with tf.variable_scope('optimizer'):
