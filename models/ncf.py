@@ -1,10 +1,10 @@
 import tensorflow as tf
 from tqdm import tqdm
 import scipy.sparse as sparse
-from utils.reformat import to_sparse_matrix, to_laplacian, to_svd
+from utils.reformat import to_sparse_matrix, to_svd
 from providers.sampler import get_negative_sample, get_arrays, concate_data
 
-class INCF(object):
+class NCF(object):
     def __init__(self,
                  num_users,
                  num_items,
@@ -28,7 +28,6 @@ class INCF(object):
         self.get_graph()
         self.sess = tf.Session()
         self.sess.run(tf.global_variables_initializer())
-        # print([n.name for n in tf.get_default_graph().as_graph_def().node])
         tf.summary.FileWriter('./graphs', self.sess.graph)
 
     def get_graph(self):
@@ -57,25 +56,24 @@ class INCF(object):
                 ho = tf.layers.dense(inputs=hi, units=self.embed_dim*2,
                                      kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                      activation=tf.nn.relu)
-                #hi = tf.concat([hi, ho], axis=1)
                 hi = ho
+
+            latent = tf.stop_gradient(hi)
 
         with tf.variable_scope("prediction", reuse=False):
             rating_prediction = tf.layers.dense(inputs=hi, units=1,
                                                 kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                 activation=None, name='rating_prediction')
             phrase_prediction = tf.layers.dense(inputs=hi, units=self.text_dim,
-                                                kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                 activation=None, name='phrase_prediction')
 
             self.rating_prediction = rating_prediction
             self.phrase_prediction = phrase_prediction
 
+        #
         with tf.variable_scope("losses"):
 
             with tf.variable_scope("rating_loss"):
-                # rating_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=tf.reshape(self.rating, [-1, 1]),
-                #                                               logits=self.rating_prediction)
                 rating_loss = tf.losses.mean_squared_error(labels=tf.reshape(self.rating, [-1, 1]),
                                                            predictions=self.rating_prediction)
 
@@ -87,7 +85,6 @@ class INCF(object):
                 l2_loss = tf.losses.get_regularization_loss()
 
             self.loss = (tf.reduce_mean(rating_loss)
-                         + 0.1 * tf.reduce_mean(phrase_loss)
                          + l2_loss
                          )
 

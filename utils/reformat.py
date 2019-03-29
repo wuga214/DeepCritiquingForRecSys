@@ -35,7 +35,11 @@ def to_svd(R, rank):
                                   n_iter=4,
                                   random_state=1)
 
-    return P*np.sqrt(sigma), QT.T*np.sqrt(sigma)
+    return standarize(P*np.sqrt(sigma)), standarize(QT.T*np.sqrt(sigma))
+
+
+def standarize(array):
+    return (array - np.mean(array, axis=0))/np.std(array, axis=0)
 
 
 def get_phrase_set(df, user_col, explanation_col, set_col):
