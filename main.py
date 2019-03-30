@@ -25,11 +25,10 @@ def main(args):
     df = pd.read_csv(args.path + 'Data.csv')
 
     df_train, df_valid = leave_one_out_split(df, 'UserIndex', 0.1)
-
     df_train.to_csv(args.path + 'Train.csv')
     df_valid.to_csv(args.path + 'Valid.csv')
 
-    incf = CNCF(num_users=df['UserIndex'].nunique(),
+    incf = INCF(num_users=df['UserIndex'].nunique(),
                  num_items=df['ItemIndex'].nunique(),
                  label_dim=1,
                  text_dim=100,
@@ -50,8 +49,6 @@ def main(args):
 
     R_valid = to_sparse_matrix(df_valid, df['UserIndex'].nunique(), df['ItemIndex'].nunique(),
                                'UserIndex', 'ItemIndex', 'Binary')
-
-    import ipdb; ipdb.set_trace()
 
     result = evaluate(prediction, R_valid, metric_names, [args.topk])
 

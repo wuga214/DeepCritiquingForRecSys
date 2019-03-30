@@ -136,6 +136,7 @@ def evaluate(matrix_Predict, matrix_Test, metric_names, atK, analytical=False):
 
 
 def evaluate_explanation(df_predict, df_test, metric_names):
+    df_test = df_test[df_test['Binary'] == 1] # Remove negatives
     df_test = df_test[['UserIndex', 'ItemIndex', 'keyVector']]
     df_test = df_test[df_test['keyVector'] != '[]']
     df_test['keyVector'] = df_test['keyVector'].apply(lambda x: eval(x))

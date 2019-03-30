@@ -80,8 +80,8 @@ class INCF(object):
                                                            predictions=self.rating_prediction)
 
             with tf.variable_scope("phrase_loss"):
-                phrase_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=self.keyphrase,
-                                                              logits=self.phrase_prediction)
+                phrase_loss = tf.losses.mean_squared_error(labels=self.keyphrase,
+                                                           predictions=self.phrase_prediction)
 
             with tf.variable_scope("l2"):
                 l2_loss = tf.losses.get_regularization_loss()
