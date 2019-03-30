@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="073dbce9-5da6-45d3-90fe-2896643f478b" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/models/cvncf.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/metrics/general_performance.py" beforeDir="false" afterPath="$PROJECT_DIR$/metrics/general_performance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/incf.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/incf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/predicts/topk.py" beforeDir="false" afterPath="$PROJECT_DIR$/predicts/topk.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,12 +25,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="2201" />
+          <entry key="py" value="3007" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="2201" />
+          <entry key="Python" value="3007" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -49,8 +50,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/utils/reformat.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="36" selection-start-line="36" selection-end-line="36" />
+            <state relative-caret-position="75">
+              <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
                 <marker date="1553902802272" expanded="true" signature="1295:1364" ph="..." />
@@ -62,11 +63,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/models/incf.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="51" column="12" selection-start-line="51" selection-start-column="12" selection-end-line="51" selection-end-column="12" />
+            <state relative-caret-position="-11">
+              <caret line="104" column="52" selection-start-line="104" selection-start-column="52" selection-end-line="104" selection-end-column="52" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
-                <marker date="1553890338303" expanded="true" signature="7446:7452" ph="..." />
+                <marker date="1553973552249" expanded="true" signature="7440:7446" ph="..." />
               </folding>
             </state>
           </provider>
@@ -75,8 +76,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="679">
-              <caret line="50" column="94" selection-start-line="50" selection-start-column="94" selection-end-line="50" selection-end-column="94" />
+            <state relative-caret-position="184">
+              <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
               </folding>
@@ -87,10 +88,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/metrics/general_performance.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="301">
-              <caret line="46" column="4" selection-start-line="46" selection-start-column="4" selection-end-line="46" selection-end-column="4" />
+            <state relative-caret-position="724">
+              <caret line="159" column="26" selection-start-line="159" selection-start-column="22" selection-end-line="159" selection-end-column="26" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
+                <marker date="1553975318380" expanded="true" signature="5998:5999" ph="..." />
               </folding>
             </state>
           </provider>
@@ -112,8 +114,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/predicts/topk.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="32" column="50" selection-start-line="32" selection-start-column="50" selection-end-line="32" selection-end-column="50" />
+            <state relative-caret-position="600">
+              <caret line="40" column="46" selection-start-line="40" selection-start-column="46" selection-end-line="40" selection-end-column="46" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -171,7 +173,6 @@
       <list>
         <option value="$PROJECT_DIR$/utils/progress.py" />
         <option value="$PROJECT_DIR$/utils/argcheck.py" />
-        <option value="$PROJECT_DIR$/metrics/general_performance.py" />
         <option value="$PROJECT_DIR$/models/autorec.py" />
         <option value="$PROJECT_DIR$/predicts/userbased.py" />
         <option value="$PROJECT_DIR$/predicts/itembased.py" />
@@ -184,14 +185,15 @@
         <option value="$PROJECT_DIR$/providers/sampler.py" />
         <option value="$PROJECT_DIR$/providers/split.py" />
         <option value="$PROJECT_DIR$/metrics/critiquing_performance.py" />
-        <option value="$PROJECT_DIR$/predicts/topk.py" />
         <option value="$PROJECT_DIR$/models/cncf.py" />
-        <option value="$PROJECT_DIR$/models/incf.py" />
         <option value="$PROJECT_DIR$/models/ncf.py" />
         <option value="$PROJECT_DIR$/utils/reformat.py" />
         <option value="$PROJECT_DIR$/models/vncf.py" />
         <option value="$PROJECT_DIR$/models/ivncf.py" />
         <option value="$PROJECT_DIR$/models/cvncf.py" />
+        <option value="$PROJECT_DIR$/predicts/topk.py" />
+        <option value="$PROJECT_DIR$/models/incf.py" />
+        <option value="$PROJECT_DIR$/metrics/general_performance.py" />
         <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
@@ -290,6 +292,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1984" y="-11" width="1857" height="1092" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.104477614" />
       <window_info id="Structure" order="1" weight="0.25" />
@@ -397,38 +400,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/metrics/general_performance.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="46" column="4" selection-start-line="46" selection-start-column="4" selection-end-line="46" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils/reformat.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="36" selection-start-line="36" selection-end-line="36" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-            <marker date="1553902802272" expanded="true" signature="1295:1364" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/incf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="51" column="12" selection-start-line="51" selection-start-column="12" selection-end-line="51" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-            <marker date="1553890338303" expanded="true" signature="7446:7452" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/vncf.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="679">
@@ -460,16 +431,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/predicts/topk.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="32" column="50" selection-start-line="32" selection-start-column="50" selection-end-line="32" selection-end-column="50" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/metrics/critiquing_performance.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -488,10 +449,53 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/utils/reformat.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+            <marker date="1553902802272" expanded="true" signature="1295:1364" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/predicts/topk.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="40" column="46" selection-start-line="40" selection-start-column="46" selection-end-line="40" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/incf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-11">
+          <caret line="104" column="52" selection-start-line="104" selection-start-column="52" selection-end-line="104" selection-end-column="52" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+            <marker date="1553973552249" expanded="true" signature="7440:7446" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/metrics/general_performance.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="724">
+          <caret line="159" column="26" selection-start-line="159" selection-start-column="22" selection-end-line="159" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <marker date="1553975318380" expanded="true" signature="5998:5999" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="679">
-          <caret line="50" column="94" selection-start-line="50" selection-start-column="94" selection-end-line="50" selection-end-column="94" />
+        <state relative-caret-position="184">
+          <caret line="25" lean-forward="true" selection-start-line="25" selection-end-line="25" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
           </folding>

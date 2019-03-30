@@ -35,9 +35,10 @@ def elementwisepredictor(model, train, user_col, item_col, topk,
         prediction.append(candidates)
         if explain:
             for j in range(topk):
-                candidate_keys = key_names[np.argsort(user_output[j, 3:])[::-1][:topk_key]]
-                explanation.append({'UserIndex': i, 'ItemIndex': candidates[j], 'Explanation': candidate_keys})
-
+                candidate_idx = np.argsort(user_output[j, 3:])[::-1][:topk_key]
+                candidate_keys = key_names[candidate_idx]
+                explanation.append({'UserIndex': i, 'ItemIndex': candidates[j],
+                                    'ExplanIndex': candidate_idx, 'Explanation': candidate_keys})
     return np.array(prediction), pd.DataFrame(explanation)
 
 

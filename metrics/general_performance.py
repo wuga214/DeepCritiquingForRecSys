@@ -1,14 +1,15 @@
 import numpy as np
+import pandas as pd
 from tqdm import tqdm
 
 
 def recallk(vector_true_dense, hits, **unused):
-    hits = len(hits.nonzero()[0])
+    hits = sum(hits)
     return float(hits)/len(vector_true_dense)
 
 
 def precisionk(vector_predict, hits, **unused):
-    hits = len(hits.nonzero()[0])
+    hits = sum(hits)
     return float(hits)/len(vector_predict)
 
 
@@ -19,7 +20,7 @@ def average_precisionk(vector_predict, hits, **unused):
 
 def r_precision(vector_true_dense, vector_predict, **unused):
     vector_predict_short = vector_predict[:len(vector_true_dense)]
-    hits = len(np.isin(vector_predict_short, vector_true_dense).nonzero()[0])
+    hits = sum(np.isin(vector_predict_short, vector_true_dense))
     return float(hits)/len(vector_true_dense)
 
 
@@ -132,3 +133,33 @@ def evaluate(matrix_Predict, matrix_Test, metric_names, atK, analytical=False):
     output.update(results_summary)
 
     return output
+
+
+def evaluate_explanation(df_predict, df_test, metric_names):
+    df_test = df_test[['UserIndex', 'ItemIndex', 'keyVector']]
+    df_test = df_test[df_test['keyVector'] != '[]']
+    df_test['keyVector'] = df_test['keyVector'].apply(lambda x: eval(x))
+    df_predict = df_predict[['UserIndex','ItemIndex', 'ExplanIndex']]
+    res = pd.merge(df_test, df_predict, how='inner', on=['UserIndex', 'ItemIndex'])
+    res['hits'] = res.apply(lambda x: np.isin(x['ExplanIndex'], x['keyVector']), axis=1)
+
+    global_metrics = {
+        "R-Precision": r_precision,
+        "NDCG": ndcg,
+        "Precision": precisionk,
+        "Recall": recallk,
+        "MAP": average_precisionk
+    }
+
+    for metric in tqdm(metric_names):
+        res[metric] = res.apply(lambda x: global_metrics[metric](vector_true_dense=x['keyVector'],
+                                                                 vector_predict=x['ExplanIndex'],
+                                                                 hits=x['hits']),
+                                axis=1)
+
+    results_summary = dict()
+    for metric in tqdm(metric_names):
+        values = res[metric].values
+        results_summary[metric] = (np.average(values), 1.96*np.std(values)/np.sqrt(len(res)))
+
+    return results_summary

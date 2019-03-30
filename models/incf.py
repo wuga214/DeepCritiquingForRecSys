@@ -87,7 +87,7 @@ class INCF(object):
                 l2_loss = tf.losses.get_regularization_loss()
 
             self.loss = (tf.reduce_mean(rating_loss)
-                         + 0.1 * tf.reduce_mean(phrase_loss)
+                         + tf.reduce_mean(phrase_loss)
                          + l2_loss
                          )
 

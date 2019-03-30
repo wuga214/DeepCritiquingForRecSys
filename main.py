@@ -14,7 +14,7 @@ from providers.split import leave_one_out_split
 from utils.reformat import to_sparse_matrix
 from utils.progress import WorkSplitter, inhour
 from utils.argcheck import check_float_positive, check_int_positive, shape
-from metrics.general_performance import evaluate
+from metrics.general_performance import evaluate, evaluate_explanation
 
 def main(args):
     # Progress bar
@@ -29,7 +29,7 @@ def main(args):
     df_train.to_csv(args.path + 'Train.csv')
     df_valid.to_csv(args.path + 'Valid.csv')
 
-    incf = CVNCF(num_users=df['UserIndex'].nunique(),
+    incf = CNCF(num_users=df['UserIndex'].nunique(),
                  num_items=df['ItemIndex'].nunique(),
                  label_dim=1,
                  text_dim=100,
@@ -51,13 +51,19 @@ def main(args):
     R_valid = to_sparse_matrix(df_valid, df['UserIndex'].nunique(), df['ItemIndex'].nunique(),
                                'UserIndex', 'ItemIndex', 'Binary')
 
+    import ipdb; ipdb.set_trace()
+
     result = evaluate(prediction, R_valid, metric_names, [args.topk])
 
-    print("-")
+    print("-- General Performance")
     for metric in result.keys():
         print("{0}:{1}".format(metric, result[metric]))
 
-    import ipdb; ipdb.set_trace()
+    explanation_result = evaluate_explanation(explanation, df_valid, ['Recall', 'Precision'])
+
+    print("-- Explanation Performance")
+    for metric in explanation_result.keys():
+        print("{0}:{1}".format(metric, explanation_result[metric]))
 
 if __name__ == "__main__":
     # Commandline arguments
