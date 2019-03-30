@@ -6,6 +6,7 @@ import pandas as pd
 from models.ncf import NCF
 from models.incf import INCF
 from models.cncf import CNCF
+from models.vncf import VNCF
 from predicts.topk import elementwisepredictor
 from providers.split import leave_one_out_split
 from utils.reformat import to_sparse_matrix
@@ -26,7 +27,7 @@ def main(args):
     df_train.to_csv(args.path + 'Train.csv')
     df_valid.to_csv(args.path + 'Valid.csv')
 
-    incf = NCF(num_users=df['UserIndex'].nunique(),
+    incf = VNCF(num_users=df['UserIndex'].nunique(),
                  num_items=df['ItemIndex'].nunique(),
                  label_dim=1,
                  text_dim=100,

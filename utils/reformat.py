@@ -28,14 +28,17 @@ def to_laplacian(R, rank):
     return P*sigma
 
 
-def to_svd(R, rank):
+def to_svd(R, rank, standard=True):
 
     P, sigma, QT = randomized_svd(R,
                                   n_components=rank,
                                   n_iter=4,
                                   random_state=1)
 
-    return standarize(P*np.sqrt(sigma)), standarize(QT.T*np.sqrt(sigma))
+    if standard:
+        return standarize(P*np.sqrt(sigma)), standarize(QT.T*np.sqrt(sigma))
+    else:
+        return P*np.sqrt(sigma), QT.T*np.sqrt(sigma)
 
 
 def standarize(array):
