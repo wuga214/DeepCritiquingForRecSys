@@ -15,7 +15,7 @@ def main(args):
     df_data = pd.read_csv(args.path + args.param + '/' + 'Data.csv')
     df_train, df_test = leave_one_out_split(df_data, 'UserIndex', 0.3)
 
-    KeyPhrase = pd.read_csv(args.path + args.param + '/' + 'KeyPhrases.csv')['Phrases'].values
+    keyPhrase = pd.read_csv(args.path + args.param + '/' + 'KeyPhrases.csv')['Phrases'].values
 
     results = converge(df_data, df_train, df_test, keyPhrase, df, table_path, args.name, epochs=50, gpu_on=args.gpu)
 
