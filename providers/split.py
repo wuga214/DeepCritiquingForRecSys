@@ -10,6 +10,7 @@ def random_split(df, ratio=0.2):
 
 def leave_one_out_split(df, user_col, ratio):
     grouped = df.groupby(user_col, as_index=False)
-    valid = grouped.apply(lambda x: x.sample(frac=ratio))
+    valid = grouped.apply(lambda x: x.sample(frac=ratio, random_state=8292))
     train = df.loc[~df.index.isin([x[1] for x in valid.index])]
     return train, valid
+

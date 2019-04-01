@@ -1,8 +1,10 @@
-import tensorflow as tf
-from tqdm import tqdm
-import scipy.sparse as sparse
-from utils.reformat import to_sparse_matrix, to_laplacian, to_svd
 from providers.sampler import get_negative_sample, get_arrays, concate_data
+from tqdm import tqdm
+from utils.reformat import to_sparse_matrix, to_laplacian, to_svd
+
+import scipy.sparse as sparse
+import tensorflow as tf
+
 
 class CVNCF(object):
     def __init__(self,
@@ -106,7 +108,7 @@ class CVNCF(object):
 
             self.modified_rating_prediction = rating_prediction
             self.modified_phrase_prediction = phrase_prediction
-        #
+
         with tf.variable_scope("losses"):
 
             with tf.variable_scope('kl-divergence'):
@@ -220,7 +222,4 @@ class CVNCF(object):
         user_embedding, item_embedding = to_svd(R, self.embed_dim)
         # import ipdb; ipdb.set_trace()
         self.sess.run([self.user_embeddings.assign(user_embedding), self.item_embeddings.assign(item_embedding)])
-
-
-
 
