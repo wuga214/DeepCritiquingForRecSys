@@ -142,7 +142,7 @@ def evaluate_explanation(df_predict, df_test, metric_names):
     df_test['keyVector'] = df_test['keyVector'].apply(lambda x: eval(x))
     df_predict = df_predict[['UserIndex','ItemIndex', 'ExplanIndex']]
     res = pd.merge(df_test, df_predict, how='inner', on=['UserIndex', 'ItemIndex'])
-    res['hits'] = res.apply(lambda x: np.isin(x['ExplanIndex'], x['keyVector']), axis=1)
+    res['hits'] = res.apply(lambda x: list(np.isin(x['ExplanIndex'], x['keyVector'])), axis=1)
 
     global_metrics = {
         "R-Precision": r_precision,
