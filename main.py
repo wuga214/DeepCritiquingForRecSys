@@ -1,3 +1,4 @@
+from metrics.explanation_performance import predict_explanation
 from metrics.general_performance import evaluate, evaluate_explanation
 from predicts.topk import elementwisepredictor
 from providers.split import leave_one_out_split
@@ -61,7 +62,8 @@ def main(args):
     prediction, explanation = elementwisepredictor(model, df_train, args.user_id,
                                                    args.item_id, args.topk,
                                                    batch_size=1024, explain=True,
-                                                   key_names=keyPhrase)
+                                                   key_names=keyPhrase,
+                                                   topk_key=args.topk_key)
 
     metric_names = ['R-Precision', 'NDCG', 'Clicks', 'Recall', 'Precision', 'MAP']
 
@@ -74,7 +76,10 @@ def main(args):
     for metric in result.keys():
         print("{0}:{1}".format(metric, result[metric]))
 
-    explanation_result = evaluate_explanation(explanation, df_valid,
+    df_valid_explanation = predict_explanation(model, df_valid, args.user_id,
+                                               args.item_id, topk_key=args.topk_key)
+
+    explanation_result = evaluate_explanation(df_valid_explanation, df_valid,
                                               ['Recall', 'Precision'])
 
     print("-- Explanation Performance")
@@ -98,6 +103,7 @@ if __name__ == "__main__":
     parser.add_argument('-m', dest='model', default="NCF")
     parser.add_argument('-p', dest='phrase', default="Phrases")
     parser.add_argument('-r', dest='rank', type=check_int_positive, default=200)
+    parser.add_argument('-topk-key', dest='topk_key', type=check_int_positive, default=10)
     parser.add_argument('-u', dest='user_id', default="UserIndex")
     args = parser.parse_args()
 
