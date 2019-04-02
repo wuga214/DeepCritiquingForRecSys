@@ -5,7 +5,8 @@ from utils.argcheck import check_float_positive, check_int_positive, shape
 from utils.modelnames import models
 from utils.progress import WorkSplitter, inhour
 from utils.reformat import to_sparse_matrix
-
+from critique.critique import critique_keyphrase
+from metrics.critiquing_performance import falling_rank
 import argparse
 import numpy as np
 import pandas as pd
@@ -61,27 +62,30 @@ def main(args):
                                                    batch_size=1024, explain=True,
                                                    key_names=keyPhrase,
                                                    topk_key=args.topk_key)
+    #
+    # metric_names = ['R-Precision', 'NDCG', 'Clicks', 'Recall', 'Precision', 'MAP']
+    #
+    # R_valid = to_sparse_matrix(df_valid, num_users, num_items, args.user_id,
+    #                            args.item_id, args.rating)
+    #
+    # result = evaluate(prediction, R_valid, metric_names, [args.topk])
+    #
+    # print("-- General Performance")
+    # for metric in result.keys():
+    #     print("{0}:{1}".format(metric, result[metric]))
+    #
+    # df_valid_explanation = predict_explanation(model, df_valid, args.user_id,
+    #                                            args.item_id, topk_key=args.topk_key)
+    #
+    # explanation_result = evaluate_explanation(df_valid_explanation, df_valid,
+    #                                           ['Recall', 'Precision'])
+    #
+    # print("-- Explanation Performance")
+    # for metric in explanation_result.keys():
+    #     print("{0}:{1}".format(metric, explanation_result[metric]))
 
-    metric_names = ['R-Precision', 'NDCG', 'Clicks', 'Recall', 'Precision', 'MAP']
-
-    R_valid = to_sparse_matrix(df_valid, num_users, num_items, args.user_id,
-                               args.item_id, args.rating)
-
-    result = evaluate(prediction, R_valid, metric_names, [args.topk])
-
-    print("-- General Performance")
-    for metric in result.keys():
-        print("{0}:{1}".format(metric, result[metric]))
-
-    df_valid_explanation = predict_explanation(model, df_valid, args.user_id,
-                                               args.item_id, topk_key=args.topk_key)
-
-    explanation_result = evaluate_explanation(df_valid_explanation, df_valid,
-                                              ['Recall', 'Precision'])
-
-    print("-- Explanation Performance")
-    for metric in explanation_result.keys():
-        print("{0}:{1}".format(metric, explanation_result[metric]))
+    r_b, r_f, k = critique_keyphrase(model, 9, num_items, 15, topk_key=10)
+    print(falling_rank(r_b.tolist(), r_f.tolist(), k))
 
 
 if __name__ == "__main__":
@@ -105,4 +109,3 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     main(args)
-
