@@ -13,7 +13,8 @@ def main(args):
     df = find_best_hyperparameters(table_path+args.param, 'NDCG')
 
     df_data = pd.read_csv(args.path + args.param + '/' + 'Data.csv')
-    df_train, df_test = leave_one_out_split(df_data, 'UserIndex', 0.3)
+    df_train = pd.read_csv(args.path + args.param + '/' + 'Train.csv')
+    df_test = pd.read_csv(args.path + args.param + '/' + 'Test.csv')
 
     keyPhrase = pd.read_csv(args.path + args.param + '/' + 'KeyPhrases.csv')['Phrases'].values
 
