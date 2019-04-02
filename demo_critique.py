@@ -1,6 +1,7 @@
 from metrics.general_performance import evaluate, evaluate_explanation
 from predicts.topk import elementwisepredictor, predict_explanation
 from providers.split import leave_one_out_split
+from tqdm import tqdm
 from utils.argcheck import check_float_positive, check_int_positive, shape
 from utils.modelnames import models
 from utils.progress import WorkSplitter, inhour
@@ -55,13 +56,14 @@ def main(args):
                                learning_rate=args.alpha)
 
     model.train_model(df_train, epoch=args.epoch)
-
+    """
     progress.section("Predict")
     prediction, explanation = elementwisepredictor(model, df_train, args.user_id,
                                                    args.item_id, args.topk,
                                                    batch_size=1024, explain=True,
                                                    key_names=keyPhrase,
                                                    topk_key=args.topk_key)
+    """
     #
     # metric_names = ['R-Precision', 'NDCG', 'Clicks', 'Recall', 'Precision', 'MAP']
     #
@@ -84,8 +86,12 @@ def main(args):
     # for metric in explanation_result.keys():
     #     print("{0}:{1}".format(metric, explanation_result[metric]))
 
-    r_b, r_f, k = critique_keyphrase(model, 9, num_items, 15, topk_key=10)
-    print(falling_rank(r_b.tolist(), r_f.tolist(), k))
+    falling_rank_result = []
+    for user in tqdm(range(num_users)):
+        r_b, r_f, k = critique_keyphrase(model, user, num_items, topk_key=10)
+        falling_rank_result.append(falling_rank(r_b.tolist(), r_f.tolist(), k))
+    mean_falling_rank = np.mean(falling_rank_result)
+    import ipdb; ipdb.set_trace()
 
 
 if __name__ == "__main__":
@@ -109,3 +115,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     main(args)
+
