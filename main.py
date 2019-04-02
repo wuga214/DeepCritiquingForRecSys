@@ -35,13 +35,11 @@ def main(args):
     num_items=df[args.item_id].nunique()
     print("Dataset U-I Dimensions: ({}, {})".format(num_users, num_items))
 
-    df_train, df_valid = leave_one_out_split(df, args.user_id, 0.3)
-
+    df_train = pd.read_csv(args.path + 'Train.csv')
     if args.validation:
-        df_train, df_valid = leave_one_out_split(df_train, args.user_id, 0.3)
-
-    df_train.to_csv(args.path + 'Train.csv')
-    df_valid.to_csv(args.path + 'Valid.csv')
+        df_valid = pd.read_csv(args.path + 'Valid.csv')
+    else:
+        df_valid = pd.read_csv(args.path + 'Test.csv')
 
     keyPhrase = pd.read_csv(args.path + 'KeyPhrases.csv')[args.phrase].values
 

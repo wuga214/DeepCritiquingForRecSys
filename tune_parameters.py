@@ -14,8 +14,8 @@ def main(args):
     params['models'] = {params['models']: models[params['models']]}
 
     df_data = pd.read_csv(args.path + 'Data.csv')
-    df_train, _ = leave_one_out_split(df_data, 'UserIndex', 0.3)
-    df_train, df_valid = leave_one_out_split(df_train, 'UserIndex', 0.3)
+    df_train = pd.read_csv(args.path + 'Train.csv')
+    df_valid = pd.read_csv(args.path + 'Valid.csv')
 
     keyPhrase = pd.read_csv(args.path + 'KeyPhrases.csv')['Phrases'].values
 
