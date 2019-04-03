@@ -6,7 +6,7 @@ import scipy.sparse as sparse
 import tensorflow as tf
 
 
-class INCF(object):
+class CNCF(object):
     def __init__(self,
                  num_users,
                  num_items,
@@ -62,6 +62,8 @@ class INCF(object):
                 #hi = tf.concat([hi, ho], axis=1)
                 hi = ho
 
+            latent = tf.stop_gradient(hi)
+
         with tf.variable_scope("prediction", reuse=False):
             rating_prediction = tf.layers.dense(inputs=hi, units=1,
                                                 kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
@@ -74,11 +76,11 @@ class INCF(object):
             self.phrase_prediction = phrase_prediction
 
         with tf.variable_scope("looping"):
-            reconstructed_latent = tf.layers.dense(inputs=self.phrase_prediction, units=3*self.embed_dim,
+            reconstructed_latent = tf.layers.dense(inputs=self.phrase_prediction, units=self.embed_dim*2,
                                                    kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-                                                   activation=None, name='latent_reconstruction')
+                                                   activation=None, name='latent_reconstruction', reuse=False)
 
-            modified_latent = tf.layers.dense(inputs=self.modified_phrase, units=3*self.embed_dim,
+            modified_latent = tf.layers.dense(inputs=self.modified_phrase, units=self.embed_dim*2,
                                                    kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                    activation=None, name='latent_reconstruction', reuse=True)
 
@@ -87,15 +89,18 @@ class INCF(object):
         with tf.variable_scope("prediction", reuse=True):
             rating_prediction = tf.layers.dense(inputs=modified_latent, units=1,
                                                 kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-                                                activation=None, name='rating_prediction', reuse=True)
+                                                activation=None, name='rating_prediction')
             phrase_prediction = tf.layers.dense(inputs=modified_latent, units=self.text_dim,
                                                 kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-                                                activation=None, name='phrase_prediction', reuse=True)
+                                                activation=None, name='phrase_prediction')
 
             self.modified_rating_prediction = rating_prediction
             self.modified_phrase_prediction = phrase_prediction
 
         with tf.variable_scope("losses"):
+
+            with tf.variable_scope("latent_reconstruction_loss"):
+                latent_loss = tf.losses.mean_squared_error(labels=latent, predictions=reconstructed_latent)
 
             with tf.variable_scope("rating_loss"):
                 # rating_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=tf.reshape(self.rating, [-1, 1]),
@@ -112,6 +117,7 @@ class INCF(object):
 
             self.loss = (tf.reduce_mean(rating_loss)
                          + tf.reduce_mean(phrase_loss)
+                         + tf.reduce_mean(latent_loss)
                          + l2_loss
                          )
 
@@ -173,8 +179,24 @@ class INCF(object):
         feed_dict = {self.users_index: user_index, self.items_index: item_index}
         return self.sess.run([self.rating_prediction, self.phrase_prediction], feed_dict=feed_dict)
 
+    # def refine_predict(self, inputs, critiqued):
+    #     user_index = inputs[:, 0]
+    #     item_index = inputs[:, 1]
+    #     feed_dict = {self.users_index: user_index,
+    #                  self.items_index: item_index,
+    #                  self.modified_phrase: critiqued}
+    #     modified_rating, modified_phrases = self.sess.run([self.modified_rating_prediction,
+    #                                                        self.modified_phrase_prediction],
+    #                                                       feed_dict=feed_dict)
+    #
+    #     return modified_rating, modified_phrases
+
+
     def create_embeddings(self, df, user_col, item_col, rating_col):
         R = to_sparse_matrix(df, self.num_users, self.num_items, user_col, item_col, rating_col)
+        # user_embedding = to_laplacian(R, self.embed_dim)
+        # item_embedding = to_laplacian(R.T, self.embed_dim)
         user_embedding, item_embedding = to_svd(R, self.embed_dim)
+        # import ipdb; ipdb.set_trace()
         self.sess.run([self.user_embeddings.assign(user_embedding), self.item_embeddings.assign(item_embedding)])
 

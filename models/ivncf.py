@@ -6,7 +6,7 @@ import scipy.sparse as sparse
 import tensorflow as tf
 
 
-class INCF(object):
+class IVNCF(object):
     def __init__(self,
                  num_users,
                  num_items,
@@ -40,6 +40,8 @@ class INCF(object):
         self.rating = tf.placeholder(tf.int32, [None], name='rating')
         self.keyphrase = tf.placeholder(tf.int32, [None, self.text_dim], name='key_phrases')
         self.modified_phrase = tf.placeholder(tf.float32, [None, self.text_dim], name='modified_phrases')
+        self.sampling = tf.placeholder(tf.bool)
+        self.corruption = tf.placeholder(tf.float32)
 
         with tf.variable_scope("embeddings"):
             self.user_embeddings = tf.Variable(tf.random_normal([self.num_users, self.embed_dim],
@@ -55,47 +57,37 @@ class INCF(object):
 
         with tf.variable_scope("residual"):
             hi = tf.concat([users, items], axis=1)
+
+            hi = tf.nn.dropout(hi, 1 - self.corruption)
+
             for i in range(self.num_layers):
                 ho = tf.layers.dense(inputs=hi, units=self.embed_dim*2,
                                      kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-                                     activation=tf.nn.relu)
-                #hi = tf.concat([hi, ho], axis=1)
+                                     activation=tf.nn.tanh)
                 hi = ho
 
+        with tf.variable_scope('latent'):
+            self.mean = hi[:, :self.embed_dim]
+            logstd = hi[:, self.embed_dim:]
+            self.logstd = logstd
+            self.stddev = tf.exp(logstd)
+            epsilon = tf.random_normal(tf.shape(self.stddev))
+            self.z = tf.cond(self.sampling, lambda: self.mean + self.stddev * epsilon, lambda: self.mean)
+
         with tf.variable_scope("prediction", reuse=False):
-            rating_prediction = tf.layers.dense(inputs=hi, units=1,
+            rating_prediction = tf.layers.dense(inputs=self.z, units=1,
                                                 kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                 activation=None, name='rating_prediction')
-            phrase_prediction = tf.layers.dense(inputs=hi, units=self.text_dim,
-                                                kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
+            phrase_prediction = tf.layers.dense(inputs=self.z, units=self.text_dim,
                                                 activation=None, name='phrase_prediction')
 
             self.rating_prediction = rating_prediction
             self.phrase_prediction = phrase_prediction
 
-        with tf.variable_scope("looping"):
-            reconstructed_latent = tf.layers.dense(inputs=self.phrase_prediction, units=3*self.embed_dim,
-                                                   kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-                                                   activation=None, name='latent_reconstruction')
-
-            modified_latent = tf.layers.dense(inputs=self.modified_phrase, units=3*self.embed_dim,
-                                                   kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-                                                   activation=None, name='latent_reconstruction', reuse=True)
-
-            modified_latent = (latent + modified_latent)/2.0
-
-        with tf.variable_scope("prediction", reuse=True):
-            rating_prediction = tf.layers.dense(inputs=modified_latent, units=1,
-                                                kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-                                                activation=None, name='rating_prediction', reuse=True)
-            phrase_prediction = tf.layers.dense(inputs=modified_latent, units=self.text_dim,
-                                                kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-                                                activation=None, name='phrase_prediction', reuse=True)
-
-            self.modified_rating_prediction = rating_prediction
-            self.modified_phrase_prediction = phrase_prediction
-
         with tf.variable_scope("losses"):
+
+            with tf.variable_scope('kl-divergence'):
+                kl = self._kl_diagnormal_stdnormal(self.mean, logstd)
 
             with tf.variable_scope("rating_loss"):
                 # rating_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=tf.reshape(self.rating, [-1, 1]),
@@ -111,12 +103,20 @@ class INCF(object):
                 l2_loss = tf.losses.get_regularization_loss()
 
             self.loss = (tf.reduce_mean(rating_loss)
-                         + tf.reduce_mean(phrase_loss)
+                         + 0.1 * tf.reduce_mean(phrase_loss)
+                         + kl
                          + l2_loss
                          )
 
         with tf.variable_scope('optimizer'):
             self.train = self.optimizer(learning_rate=self.learning_rate).minimize(self.loss)
+
+    @staticmethod
+    def _kl_diagnormal_stdnormal(mu, log_std):
+        var_square = tf.exp(2 * log_std)
+        kl = 0.5 * tf.reduce_mean(tf.square(mu) + var_square - 1. - 2 * log_std -1)
+
+        return kl
 
     def get_batches(self, df, batch_size, user_col, item_col, rating_col, key_col, num_keys):
 
@@ -158,8 +158,8 @@ class INCF(object):
                 item_index = data_batch[1]
                 rating = data_batch[2]
                 keyphrase = data_batch[3].todense()
-                feed_dict = {self.users_index: user_index, self.items_index: item_index,
-                             self.rating: rating, self.keyphrase: keyphrase}
+                feed_dict = {self.users_index: user_index, self.items_index: item_index, self.corruption: 0.1,
+                             self.rating: rating, self.keyphrase: keyphrase, self.sampling: True}
 
                 training, loss = self.sess.run([self.train, self.loss], feed_dict=feed_dict)
                 pbar.set_description("loss:{0}".format(loss))
@@ -170,7 +170,8 @@ class INCF(object):
     def predict(self, inputs):
         user_index = inputs[:, 0]
         item_index = inputs[:, 1]
-        feed_dict = {self.users_index: user_index, self.items_index: item_index}
+        feed_dict = {self.users_index: user_index, self.items_index: item_index,
+                     self.sampling: False, self.corruption: 0}
         return self.sess.run([self.rating_prediction, self.phrase_prediction], feed_dict=feed_dict)
 
     def create_embeddings(self, df, user_col, item_col, rating_col):

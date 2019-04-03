@@ -1,12 +1,12 @@
 from providers.sampler import get_negative_sample, get_arrays, concate_data
 from tqdm import tqdm
-from utils.reformat import to_sparse_matrix, to_laplacian, to_svd
+from utils.reformat import to_sparse_matrix, to_svd
 
 import scipy.sparse as sparse
 import tensorflow as tf
 
 
-class INCF(object):
+class NCF(object):
     def __init__(self,
                  num_users,
                  num_items,
@@ -30,7 +30,6 @@ class INCF(object):
         self.get_graph()
         self.sess = tf.Session()
         self.sess.run(tf.global_variables_initializer())
-        # print([n.name for n in tf.get_default_graph().as_graph_def().node])
         tf.summary.FileWriter('./graphs', self.sess.graph)
 
     def get_graph(self):
@@ -59,7 +58,6 @@ class INCF(object):
                 ho = tf.layers.dense(inputs=hi, units=self.embed_dim*2,
                                      kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                      activation=tf.nn.relu)
-                #hi = tf.concat([hi, ho], axis=1)
                 hi = ho
 
         with tf.variable_scope("prediction", reuse=False):
@@ -67,51 +65,25 @@ class INCF(object):
                                                 kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                 activation=None, name='rating_prediction')
             phrase_prediction = tf.layers.dense(inputs=hi, units=self.text_dim,
-                                                kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                 activation=None, name='phrase_prediction')
 
             self.rating_prediction = rating_prediction
             self.phrase_prediction = phrase_prediction
 
-        with tf.variable_scope("looping"):
-            reconstructed_latent = tf.layers.dense(inputs=self.phrase_prediction, units=3*self.embed_dim,
-                                                   kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-                                                   activation=None, name='latent_reconstruction')
-
-            modified_latent = tf.layers.dense(inputs=self.modified_phrase, units=3*self.embed_dim,
-                                                   kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-                                                   activation=None, name='latent_reconstruction', reuse=True)
-
-            modified_latent = (latent + modified_latent)/2.0
-
-        with tf.variable_scope("prediction", reuse=True):
-            rating_prediction = tf.layers.dense(inputs=modified_latent, units=1,
-                                                kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-                                                activation=None, name='rating_prediction', reuse=True)
-            phrase_prediction = tf.layers.dense(inputs=modified_latent, units=self.text_dim,
-                                                kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-                                                activation=None, name='phrase_prediction', reuse=True)
-
-            self.modified_rating_prediction = rating_prediction
-            self.modified_phrase_prediction = phrase_prediction
-
         with tf.variable_scope("losses"):
 
             with tf.variable_scope("rating_loss"):
-                # rating_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=tf.reshape(self.rating, [-1, 1]),
-                #                                               logits=self.rating_prediction)
                 rating_loss = tf.losses.mean_squared_error(labels=tf.reshape(self.rating, [-1, 1]),
                                                            predictions=self.rating_prediction)
 
             with tf.variable_scope("phrase_loss"):
-                phrase_loss = tf.losses.mean_squared_error(labels=self.keyphrase,
-                                                           predictions=self.phrase_prediction)
+                phrase_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=self.keyphrase,
+                                                              logits=self.phrase_prediction)
 
             with tf.variable_scope("l2"):
                 l2_loss = tf.losses.get_regularization_loss()
 
             self.loss = (tf.reduce_mean(rating_loss)
-                         + tf.reduce_mean(phrase_loss)
                          + l2_loss
                          )
 

@@ -1,10 +1,11 @@
-import numpy as np
 from tqdm import tqdm
+
+import numpy as np
 import pandas as pd
 
 
 def elementwisepredictor(model, train, user_col, item_col, topk,
-                         batch_size=1000, explain=False, key_names=None, topk_key=5):
+                         batch_size=1000, explain=False, key_names=None, topk_key=10):
 
     prediction = []
     explanation = []
@@ -16,7 +17,7 @@ def elementwisepredictor(model, train, user_col, item_col, topk,
 
         input_batch = []
         output_batch = []
-        rated_item = train[train[user_col] == i][item_col].as_matrix()
+        rated_item = train[train[user_col] == i][item_col].values
         for j in range(num_item):
             if j in rated_item:
                 continue
@@ -35,11 +36,10 @@ def elementwisepredictor(model, train, user_col, item_col, topk,
         prediction.append(candidates)
         if explain:
             for j in range(topk):
-                candidate_keys = key_names[np.argsort(user_output[j, 3:])[::-1][:topk_key]]
-                explanation.append({'UserIndex': i, 'ItemIndex': candidates[j], 'Explanation': candidate_keys})
+                candidate_idx = np.argsort(user_output[j, 3:])[::-1][:topk_key]
+                candidate_keys = key_names[candidate_idx]
+                explanation.append({'UserIndex': i, 'ItemIndex': candidates[j],
+                                    'ExplanIndex': candidate_idx, 'Explanation': candidate_keys})
 
     return np.array(prediction), pd.DataFrame(explanation)
-
-
-
 
