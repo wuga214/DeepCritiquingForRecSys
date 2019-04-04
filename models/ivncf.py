@@ -1,9 +1,8 @@
 from providers.sampler import get_negative_sample, get_arrays, concate_data
 from tqdm import tqdm
 from utils.reformat import to_sparse_matrix, to_laplacian, to_svd
-
-import scipy.sparse as sparse
 import tensorflow as tf
+import random
 
 
 class IVNCF(object):
@@ -31,7 +30,7 @@ class IVNCF(object):
         self.sess = tf.Session()
         self.sess.run(tf.global_variables_initializer())
         # print([n.name for n in tf.get_default_graph().as_graph_def().node])
-        tf.summary.FileWriter('./graphs', self.sess.graph)
+        # tf.summary.FileWriter('./graphs', self.sess.graph)
 
     def get_graph(self):
 
@@ -139,6 +138,7 @@ class IVNCF(object):
                 batches.append(train_array)
             batch_index += 1
             remaining_size -= batch_size
+            random.shuffle(batches)
         return batches
 
     def train_model(self, df, epoch=100, batches=None,

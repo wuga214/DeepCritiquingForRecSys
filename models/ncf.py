@@ -1,9 +1,8 @@
 from providers.sampler import get_negative_sample, get_arrays, concate_data
 from tqdm import tqdm
 from utils.reformat import to_sparse_matrix, to_svd
-
-import scipy.sparse as sparse
 import tensorflow as tf
+import random
 
 
 class NCF(object):
@@ -30,7 +29,7 @@ class NCF(object):
         self.get_graph()
         self.sess = tf.Session()
         self.sess.run(tf.global_variables_initializer())
-        tf.summary.FileWriter('./graphs', self.sess.graph)
+        # tf.summary.FileWriter('./graphs', self.sess.graph)
 
     def get_graph(self):
 
@@ -111,6 +110,7 @@ class NCF(object):
                 batches.append(train_array)
             batch_index += 1
             remaining_size -= batch_size
+            random.shuffle(batches)
         return batches
 
     def train_model(self, df, epoch=100, batches=None,

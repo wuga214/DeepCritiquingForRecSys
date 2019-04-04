@@ -2,6 +2,8 @@ from providers.sampler import get_negative_sample, get_arrays, concate_data
 from tqdm import tqdm
 from utils.reformat import to_sparse_matrix, to_svd
 import tensorflow as tf
+import numpy as np
+import random
 
 
 class CNCF(object):
@@ -29,7 +31,7 @@ class CNCF(object):
         self.sess = tf.Session()
         self.sess.run(tf.global_variables_initializer())
         # print([n.name for n in tf.get_default_graph().as_graph_def().node])
-        tf.summary.FileWriter('./graphs', self.sess.graph)
+        # tf.summary.FileWriter('./graphs', self.sess.graph)
 
     def get_graph(self):
 
@@ -79,17 +81,17 @@ class CNCF(object):
                                                    activation=None, name='latent_reconstruction', reuse=False)
 
             modified_latent = tf.layers.dense(inputs=self.modified_phrase, units=self.embed_dim*2,
-                                                   kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
+                                                   # kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                    activation=None, name='latent_reconstruction', reuse=True)
 
             modified_latent = (latent + modified_latent)/2.0
 
         with tf.variable_scope("prediction", reuse=True):
             rating_prediction = tf.layers.dense(inputs=modified_latent, units=1,
-                                                kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
+                                                # kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                 activation=None, name='rating_prediction')
             phrase_prediction = tf.layers.dense(inputs=modified_latent, units=self.text_dim,
-                                                kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
+                                                # kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                 activation=None, name='phrase_prediction')
 
             self.modified_rating_prediction = rating_prediction
@@ -143,6 +145,7 @@ class CNCF(object):
                 batches.append(train_array)
             batch_index += 1
             remaining_size -= batch_size
+            random.shuffle(batches)
         return batches
 
     def train_model(self, df, epoch=100, batches=None,
