@@ -1,8 +1,11 @@
+import os
+
 import pandas as pd
 import json
 import ast
 from tqdm import tqdm
 import yaml
+import stat
 from os import listdir
 from os.path import isfile, join
 from ast import literal_eval
@@ -54,3 +57,15 @@ def find_best_hyperparameters(folder_path, meatric):
 
     return df
 
+
+def get_file_names(folder_path, extension='.yml'):
+    return [f for f in listdir(folder_path) if isfile(join(folder_path, f)) and f.endswith(extension)]
+
+def write_file(folder_path, file_name, content, exe=False):
+    full_path = folder_path+'/'+file_name
+    with open(full_path, 'w') as the_file:
+        the_file.write(content)
+
+    if exe:
+        st = os.stat(full_path)
+        os.chmod(full_path, st.st_mode | stat.S_IEXEC)
