@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 python3 tune_parameters.py -d data/CDsVinyl/ -n CDsVinyl/ncf.csv -y config/ncf.yml -gpu
 python3 tune_parameters.py -d data/CDsVinyl/ -n CDsVinyl/incf.csv -y config/incf.yml -gpu
 python3 tune_parameters.py -d data/CDsVinyl/ -n CDsVinyl/cncf.csv -y config/cncf.yml -gpu

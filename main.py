@@ -49,7 +49,7 @@ def main(args):
                                text_dim=len(keyPhrase),
                                embed_dim=args.rank,
                                num_layers=1,
-                               batch_size=1024,
+                               batch_size=512,
                                lamb=args.lamb,
                                learning_rate=args.alpha)
 
@@ -58,7 +58,7 @@ def main(args):
     progress.section("Predict")
     prediction, explanation = elementwisepredictor(model, df_train, args.user_id,
                                                    args.item_id, args.topk,
-                                                   batch_size=1024, explain=True,
+                                                   batch_size=512, explain=True,
                                                    key_names=keyPhrase,
                                                    topk_key=args.topk_key)
 
