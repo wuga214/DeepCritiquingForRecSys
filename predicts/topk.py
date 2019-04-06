@@ -5,7 +5,7 @@ import pandas as pd
 
 
 def elementwisepredictor(model, train, user_col, item_col, topk,
-                         batch_size=1000, explain=False, key_names=None, topk_key=10):
+                         batch_size=1024, explain=False, key_names=None, topk_key=10):
 
     prediction = []
     explanation = []

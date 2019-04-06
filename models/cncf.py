@@ -128,6 +128,9 @@ class CNCF(object):
 
         remaining_size = len(df)
 
+        if batch_size > 4096:
+            df = df.iloc[np.random.permutation(len(df))]
+
         batch_index = 0
         batches = []
         while remaining_size > 0:

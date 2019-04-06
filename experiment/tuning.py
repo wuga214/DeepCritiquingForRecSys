@@ -18,7 +18,7 @@ def hyper_parameter_tuning(df_data, df_train, df_valid, keyPhrase, params, save_
     try:
         df = load_dataframe_csv(table_path, save_path)
     except:
-        df = pd.DataFrame(columns=['model', 'rank', 'num_layers', 'batch_size', 'lambda', 'topK', 'learning_rate', 'epoch'])
+        df = pd.DataFrame(columns=['model', 'rank', 'num_layers', 'train_batch_size', 'predict_batch_size', 'lambda', 'topK', 'learning_rate', 'epoch'])
 
     for algorithm in params['models']:
 
@@ -26,59 +26,62 @@ def hyper_parameter_tuning(df_data, df_train, df_valid, keyPhrase, params, save_
 
             for num_layers in params['num_layers']:
 
-                for batch_size in params['batch_size']:
+                for train_batch_size in params['train_batch_size']:
 
-                    for lam in params['lambda']:
+                    for predict_batch_size in params['predict_batch_size']:
 
-                        for learning_rate in params['learning_rate']:
+                        for lam in params['lambda']:
 
-                            for epoch in params['epoch']:
+                            for learning_rate in params['learning_rate']:
 
-                                if ((df['model'] == algorithm) &
-                                    (df['rank'] == rank) &
-                                    (df['num_layers'] == num_layers) &
-                                    (df['batch_size'] == batch_size) &
-                                    (df['lambda'] == lam) &
-                                    (df['learning_rate'] == learning_rate) &
-                                    (df['epoch'] == epoch)).any():
-                                    continue
+                                for epoch in params['epoch']:
 
-                                format = "model: {0}, rank: {1}, num_layers: {2}, batch_size: {3}, lambda: {4}, learning_rate: {5}, epoch: {6}"
-                                progress.section(format.format(algorithm, rank, num_layers, batch_size, lam, learning_rate, epoch))
+                                    if ((df['model'] == algorithm) &
+                                        (df['rank'] == rank) &
+                                        (df['num_layers'] == num_layers) &
+                                        (df['train_batch_size'] == train_batch_size) &
+                                        (df['predict_batch_size'] == predict_batch_size) &
+                                        (df['lambda'] == lam) &
+                                        (df['learning_rate'] == learning_rate) &
+                                        (df['epoch'] == epoch)).any():
+                                        continue
 
-                                model = params['models'][algorithm](num_users=df_data['UserIndex'].nunique(),
-                                                                    num_items=df_data['ItemIndex'].nunique(),
-                                                                    text_dim=len(keyPhrase),
-                                                                    embed_dim=rank,
-                                                                    num_layers=num_layers,
-                                                                    batch_size=batch_size,
-                                                                    lamb=lam,
-                                                                    learning_rate=learning_rate)
+                                    format = "model: {0}, rank: {1}, num_layers: {2}, train_batch_size: {3}, predict_batch_size: {4}, lambda: {5}, learning_rate: {6}, epoch: {7}"
+                                    progress.section(format.format(algorithm, rank, num_layers, train_batch_size, predict_batch_size, lam, learning_rate, epoch))
 
-                                model.train_model(df_train, epoch=epoch)
+                                    model = params['models'][algorithm](num_users=df_data['UserIndex'].nunique(),
+                                                                        num_items=df_data['ItemIndex'].nunique(),
+                                                                        text_dim=len(keyPhrase),
+                                                                        embed_dim=rank,
+                                                                        num_layers=num_layers,
+                                                                        batch_size=train_batch_size,
+                                                                        lamb=lam,
+                                                                        learning_rate=learning_rate)
 
-                                progress.subsection("Prediction")
+                                    model.train_model(df_train, epoch=epoch)
 
-                                prediction, explanation = elementwisepredictor(model, df_train, 'UserIndex', 'ItemIndex',
-                                                                               params['topK'][-1], batch_size=batch_size, explain=True, key_names=keyPhrase)
+                                    progress.subsection("Prediction")
 
-                                progress.subsection("Evaluation")
+                                    prediction, explanation = elementwisepredictor(model, df_train, 'UserIndex', 'ItemIndex',
+                                                                                params['topK'][-1], batch_size=predict_batch_size, explain=True, key_names=keyPhrase)
 
-                                R_valid = to_sparse_matrix(df_valid, df_data['UserIndex'].nunique(), df_data['ItemIndex'].nunique(), 'UserIndex', 'ItemIndex', 'Binary')
+                                    progress.subsection("Evaluation")
 
-                                result = evaluate(prediction, R_valid, params['metric'], params['topK'])
+                                    R_valid = to_sparse_matrix(df_valid, df_data['UserIndex'].nunique(), df_data['ItemIndex'].nunique(), 'UserIndex', 'ItemIndex', 'Binary')
 
-                                result_dict = {'model': algorithm, 'rank': rank, 'num_layers': num_layers,
-                                               'batch_size': batch_size, 'lambda': lam,
-                                               'learning_rate': learning_rate, 'epoch': epoch}
+                                    result = evaluate(prediction, R_valid, params['metric'], params['topK'])
 
-                                for name in result.keys():
-                                    result_dict[name] = [round(result[name][0], 4), round(result[name][1], 4)]
+                                    result_dict = {'model': algorithm, 'rank': rank, 'num_layers': num_layers,
+                                                   'train_batch_size': train_batch_size, 'predict_batch_size': predict_batch_size,
+                                                   'lambda': lam, 'learning_rate': learning_rate, 'epoch': epoch}
 
-                                df = df.append(result_dict, ignore_index=True)
+                                    for name in result.keys():
+                                        result_dict[name] = [round(result[name][0], 4), round(result[name][1], 4)]
 
-                                model.sess.close()
-                                tf.reset_default_graph()
+                                    df = df.append(result_dict, ignore_index=True)
 
-                                save_dataframe_csv(df, table_path, save_path)
+                                    model.sess.close()
+                                    tf.reset_default_graph()
+
+                                    save_dataframe_csv(df, table_path, save_path)
 
