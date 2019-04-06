@@ -1,6 +1,7 @@
 from providers.sampler import get_negative_sample, get_arrays, concate_data
 from tqdm import tqdm
 from utils.reformat import to_sparse_matrix, to_svd
+import numpy as np
 import tensorflow as tf
 import random
 
@@ -92,6 +93,9 @@ class NCF(object):
     def get_batches(self, df, batch_size, user_col, item_col, rating_col, key_col, num_keys):
 
         remaining_size = len(df)
+
+        if batch_size > 4096:
+            df = df.iloc[np.random.permutation(len(df))]
 
         batch_index = 0
         batches = []

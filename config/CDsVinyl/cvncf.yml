@@ -1,0 +1,11 @@
+parameters:
+    models: CVNCF
+    rank: [100, 200]
+    num_layers: [1]
+    batch_size: [512]
+    lambda: [0.00005, 0.0001, 0.001]
+    topK: [5, 10, 15, 20, 50]
+    learning_rate: [0.0001, 0.0005, 0.001]
+    epoch: [150]
+    metric: [R-Precision, NDCG, Clicks, Precision, Recall, MAP]
+

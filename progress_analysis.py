@@ -18,7 +18,7 @@ def main(args):
 
     keyPhrase = pd.read_csv(args.path + args.param + '/' + 'KeyPhrases.csv')['Phrases'].values
 
-    results = converge(df_data, df_train, df_test, keyPhrase, df, table_path, args.name, epochs=50, gpu_on=args.gpu)
+    results = converge(df_data, df_train, df_test, keyPhrase, df, table_path, args.name, epochs=150, gpu_on=args.gpu)
 
     show_training_progress(results, hue='model', metric='NDCG', name="epoch_vs_ndcg")
 

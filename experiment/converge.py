@@ -17,7 +17,7 @@ def converge(df_data, df_train, df_test, keyPhrase, df, table_path, file_name, e
 
     results = pd.DataFrame(columns=['model', 'rank', 'lambda', 'epoch', 'optimizer'])
 
-    for run in range(5):
+    for run in range(3):
 
         for idx, row in df.iterrows():
             row = row.to_dict()
@@ -37,11 +37,11 @@ def converge(df_data, df_train, df_test, keyPhrase, df, table_path, file_name, e
                                          text_dim=len(keyPhrase),
                                          embed_dim=row['rank'],
                                          num_layers=row['num_layers'],
-                                         batch_size=row['batch_size'],
+                                         batch_size=row['train_batch_size'],
                                          lamb=row['lambda'],
                                          learning_rate=row['learning_rate'])
 
-            batches = model.get_batches(df_train, batch_size=row['batch_size'],
+            batches = model.get_batches(df_train, batch_size=row['train_batch_size'],
                                         user_col='UserIndex', item_col='ItemIndex',
                                         rating_col='Binary', key_col='keyVector',
                                         num_keys=len(keyPhrase))
@@ -55,7 +55,7 @@ def converge(df_data, df_train, df_test, keyPhrase, df, table_path, file_name, e
                 prediction, explanation = elementwisepredictor(model, df_train,
                                                                'UserIndex', 'ItemIndex',
                                                                row['topK'][0],
-                                                               batch_size=row['batch_size'],
+                                                               batch_size=row['predict_batch_size'],
                                                                explain=True,
                                                                key_names=keyPhrase)
 
