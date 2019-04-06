@@ -17,7 +17,7 @@ def converge(df_data, df_train, df_test, keyPhrase, df, table_path, file_name, e
 
     results = pd.DataFrame(columns=['model', 'rank', 'lambda', 'epoch', 'optimizer'])
 
-    for run in range(5):
+    for run in range(3):
 
         for idx, row in df.iterrows():
             row = row.to_dict()
