@@ -101,10 +101,10 @@ if __name__ == "__main__":
     parser.add_argument('-l', dest='lamb', type=check_float_positive, default=1.0)
     parser.add_argument('-m', dest='model', default="NCF")
     parser.add_argument('-p', dest='phrase', default="Phrases")
-    parser.add_argument('-predict-batch-size', dest='predict_batch_size', type=check_int_positive, default=512)
+    parser.add_argument('-predict-batch-size', dest='predict_batch_size', type=check_int_positive, default=128)
     parser.add_argument('-r', dest='rank', type=check_int_positive, default=200)
     parser.add_argument('-topk-key', dest='topk_key', type=check_int_positive, default=10)
-    parser.add_argument('-train-batch-size', dest='train_batch_size', type=check_int_positive, default=512)
+    parser.add_argument('-train-batch-size', dest='train_batch_size', type=check_int_positive, default=128)
     parser.add_argument('-u', dest='user_id', default="UserIndex")
     args = parser.parse_args()
 

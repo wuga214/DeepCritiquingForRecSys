@@ -1,4 +1,4 @@
-from providers.sampler import get_negative_sample, get_arrays, concate_data
+from providers.sampler import get_negative_sample, get_arrays, concate_data, get_batches
 from tqdm import tqdm
 from utils.reformat import to_sparse_matrix, to_laplacian, to_svd
 import numpy as np
@@ -16,7 +16,7 @@ class IVNCF(object):
                  batch_size,
                  lamb=0.01,
                  learning_rate=1e-4,
-                 optimizer=tf.train.RMSPropOptimizer,
+                 optimizer=tf.train.AdamOptimizer,
                  **unused):
         self.num_users = num_users
         self.num_items = num_items
@@ -118,40 +118,14 @@ class IVNCF(object):
 
         return kl
 
-    def get_batches(self, df, batch_size, user_col, item_col, rating_col, key_col, num_keys):
-
-        remaining_size = len(df)
-
-        if batch_size > 4096:
-            df = df.iloc[np.random.permutation(len(df))]
-
-        batch_index = 0
-        batches = []
-        while remaining_size > 0:
-            if remaining_size < batch_size:
-                df_batch = df[batch_index*batch_size:]
-                positive_data = get_arrays(df_batch, user_col, item_col, rating_col, key_col, num_keys)
-                negative_data = get_negative_sample(df_batch, self.num_items, user_col, item_col, 10, num_keys)
-                train_array = concate_data(positive_data, negative_data)
-                batches.append(train_array)
-            else:
-                df_batch = df[batch_index*batch_size:(batch_index+1)*batch_size]
-                positive_data = get_arrays(df_batch, user_col, item_col, rating_col, key_col, num_keys)
-                negative_data = get_negative_sample(df_batch, self.num_items, user_col, item_col, 10, num_keys)
-                train_array = concate_data(positive_data, negative_data)
-                batches.append(train_array)
-            batch_index += 1
-            remaining_size -= batch_size
-            random.shuffle(batches)
-        return batches
-
     def train_model(self, df, epoch=100, batches=None,
                     user_col='UserIndex', item_col='ItemIndex', rating_col='Binary', key_col='keyVector', **unused):
 
         self.create_embeddings(df, user_col, item_col, rating_col)
 
         if batches is None:
-            batches = self.get_batches(df, self.batch_size, user_col, item_col, rating_col, key_col, self.text_dim)
+            batches = get_batches(df, self.batch_size, user_col, item_col,
+                                  rating_col, key_col, self.num_items, self.text_dim)
 
         # Training
         pbar = tqdm(range(epoch))
@@ -169,7 +143,8 @@ class IVNCF(object):
                 pbar.set_description("loss:{0}".format(loss))
 
             #if (i+1) % 5 == 0:
-            batches = self.get_batches(df, self.batch_size, user_col, item_col, rating_col, key_col, self.text_dim)
+            batches = get_batches(df, self.batch_size, user_col, item_col,
+                                  rating_col, key_col, self.num_items, self.text_dim)
 
     def predict(self, inputs):
         user_index = inputs[:, 0]

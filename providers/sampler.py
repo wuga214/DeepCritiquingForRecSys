@@ -1,5 +1,6 @@
 import ast
 import numpy as np
+import random
 import scipy.sparse as sparse
 
 
@@ -54,3 +55,30 @@ def concate_data(positive, negative, permutation=True):
         keys = keys[index]
     return [np.array(users), np.array(items), np.array(ratings), keys]
 
+
+def get_batches(df, batch_size, user_col, item_col, rating_col, key_col, num_items, num_keys):
+
+    remaining_size = len(df)
+
+    if batch_size > 4096:
+        df = df.iloc[np.random.permutation(len(df))]
+
+    batch_index = 0
+    batches = []
+    while remaining_size > 0:
+        if remaining_size < batch_size:
+            df_batch = df[ batch_index *batch_size:]
+            positive_data = get_arrays(df_batch, user_col, item_col, rating_col, key_col, num_keys)
+            negative_data = get_negative_sample(df_batch, num_items, user_col, item_col, 10, num_keys)
+            train_array = concate_data(positive_data, negative_data)
+            batches.append(train_array)
+        else:
+            df_batch = df[ batch_index *batch_size:( batch_index +1 ) *batch_size]
+            positive_data = get_arrays(df_batch, user_col, item_col, rating_col, key_col, num_keys)
+            negative_data = get_negative_sample(df_batch, num_items, user_col, item_col, 10, num_keys)
+            train_array = concate_data(positive_data, negative_data)
+            batches.append(train_array)
+        batch_index += 1
+        remaining_size -= batch_size
+    random.shuffle(batches)
+    return batches

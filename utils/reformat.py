@@ -32,7 +32,7 @@ def to_svd(R, rank, standard=True):
 
     P, sigma, QT = randomized_svd(R,
                                   n_components=rank,
-                                  n_iter=4,
+                                  n_iter=7,
                                   random_state=1)
 
     if standard:
