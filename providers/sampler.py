@@ -1,84 +1,88 @@
-import ast
 import numpy as np
+import pandas as pd
 import random
 import scipy.sparse as sparse
 
 
-def get_negative_sample(df, num_item, user_col, item_col, size_per_user, num_keys):
-    m = df[user_col].unique()
+class Negative_Sampler(object):
+    def __init__(self, df, user_col, item_col, rating_col, key_col, num_items, batch_size, num_keys, negative_sampling_size=10):
+        self.df = df
+        self.user_col = user_col
+        self.item_col = item_col
+        self.rating_col = rating_col
+        self.key_col = key_col
+        self.num_items = num_items
+        self.batch_size = batch_size
+        self.num_keys = num_keys
+        self.negative_sampling_size = negative_sampling_size
+        self.prepare_positive_sampling()
+        self.prepare_negative_sampling()
 
-    users = []
-    items = []
+    def concate_data(self, permutation=True):
+        self.users = np.concatenate([self.pos_users, self.neg_users])
+        self.items = np.concatenate([self.pos_items, self.neg_items])
+        self.ratings = np.concatenate([self.pos_ratings, self.neg_ratings])
+        self.keys = sparse.vstack([self.pos_keys, self.neg_keys])
+        if permutation:
+            index = np.random.permutation(len(self.users))
+            self.users = self.users[index]
+            self.items = self.items[index]
+            self.ratings = self.ratings[index]
+            self.keys = self.keys[index]
 
-    for i in m:
-        sampled_items = np.random.choice(num_item, size_per_user, replace=False)
-        # observed_items = df[df[user_col] == i][item_col].tolist() #.as_matrix().flatten()
-        # sampled_items = sampled_items[~np.isin(sampled_items, observed_items)]
-        users += [i] * len(sampled_items)
-        items += sampled_items.tolist()
+    def sparsify_keys(self):
+        df_keys = self.df[[self.key_col]].assign(row_index=np.arange(len(self.df)))
+        series_key = df_keys.set_index(['row_index'])[self.key_col].apply(pd.Series).stack().reset_index(level=1, drop=True)
 
-    ratings = [0] * len(users)
-    keys = sparse.csr_matrix((len(users), num_keys))
+        row = series_key.index.values
+        col = series_key.values.astype(int)
 
-    return [np.array(users), np.array(items), np.array(ratings), keys]
+        return sparse.csr_matrix((np.ones(len(row)), (row, col)), shape=(len(self.df), self.num_keys))
 
+    def prepare_positive_sampling(self):
+        self.pos_users = self.df[self.user_col].values
+        self.pos_items = self.df[self.item_col].values
+        self.pos_ratings = np.ones(len(self.pos_users))
+        self.pos_keys = self.sparsify_keys()
 
-def sparsify_keys(key_vector, num_keys):
-    indecs = []
-    for i in range(len(key_vector)):
-        for j in key_vector[i]:
-            indecs.append([i, j])
+    def prepare_negative_sampling(self):
+        self.df_user = self.df[[self.user_col, self.item_col]].groupby(self.user_col)[self.item_col].apply(list).to_frame().reset_index()
+        self.df_user['Num_Pos'] = self.df_user[self.item_col].str.len()
+        self.df_user['Unobserved'] = self.df_user[self.item_col].apply(lambda observed_items: np.setdiff1d(np.arange(self.num_items), observed_items))
+        self.df_user['Num_Unobserved'] = self.df_user['Unobserved'].str.len()
+        self.df_user['Num_Neg'] = self.df_user['Num_Pos'] * self.negative_sampling_size
+        self.df_user.loc[self.df_user.Num_Neg > self.df_user.Num_Unobserved, 'Num_Neg'] = self.df_user.Num_Unobserved
 
-    indecs = np.array(indecs)
-    return sparse.csr_matrix((np.ones(len(indecs)), (indecs[:, 0], indecs[:, 1])),
-                             shape=(len(key_vector), num_keys))
+    def sample_negative(self):
+        self.df_user['Sampled_Items'] = self.df_user.apply(lambda row: np.random.choice(row['Unobserved'], row['Num_Neg'], replace=False), axis=1)
+        series_user = self.df_user.set_index([self.user_col])['Sampled_Items'].apply(pd.Series).stack().reset_index(level=1, drop=True)
 
+        self.neg_users = series_user.index.values
+        self.neg_items = series_user.values.astype(int)
+        self.neg_ratings = np.zeros(len(self.neg_users))
+        self.neg_keys = sparse.csr_matrix((len(self.neg_users), self.num_keys))
 
-def get_arrays(df, user_col, item_col, rating_col, key_col, num_keys):
-    users = df[user_col].values
-    items = df[item_col].values
-    ratings = df[rating_col].values
-    keys = sparsify_keys(df[key_col].apply(ast.literal_eval).values.tolist(), num_keys)
-    return [users, items, ratings, keys]
+    def get_batches(self):
+        self.sample_negative()
+        self.concate_data()
 
+        remaining_size = len(self.users)
 
-def concate_data(positive, negative, permutation=True):
-    users = np.concatenate([positive[0], negative[0]])
-    items = np.concatenate([positive[1], negative[1]])
-    ratings = np.concatenate([positive[2], negative[2]])
-    keys = sparse.vstack([positive[3], negative[3]])
-    if permutation:
-        index = np.random.permutation(len(users))
-        users = users[index]
-        items = items[index]
-        ratings = ratings[index]
-        keys = keys[index]
-    return [np.array(users), np.array(items), np.array(ratings), keys]
+        batch_index = 0
+        batches = []
+        while remaining_size > 0:
+            if remaining_size < self.batch_size:
+                batches.append([self.users[batch_index*self.batch_size:],
+                                self.items[batch_index*self.batch_size:],
+                                self.ratings[batch_index*self.batch_size:],
+                                self.keys[batch_index*self.batch_size:]])
+            else:
+                batches.append([self.users[batch_index*self.batch_size:(batch_index+1)*self.batch_size],
+                                self.items[batch_index*self.batch_size:(batch_index+1)*self.batch_size],
+                                self.ratings[batch_index*self.batch_size:(batch_index+1)*self.batch_size],
+                                self.keys[batch_index*self.batch_size:(batch_index+1)*self.batch_size]])
+            batch_index += 1
+            remaining_size -= self.batch_size
+        random.shuffle(batches)
+        return batches
 
-
-def get_batches(df, batch_size, user_col, item_col, rating_col, key_col, num_items, num_keys):
-
-    remaining_size = len(df)
-
-    if batch_size > 4096:
-        df = df.iloc[np.random.permutation(len(df))]
-
-    batch_index = 0
-    batches = []
-    while remaining_size > 0:
-        if remaining_size < batch_size:
-            df_batch = df[ batch_index *batch_size:]
-            positive_data = get_arrays(df_batch, user_col, item_col, rating_col, key_col, num_keys)
-            negative_data = get_negative_sample(df_batch, num_items, user_col, item_col, 10, num_keys)
-            train_array = concate_data(positive_data, negative_data)
-            batches.append(train_array)
-        else:
-            df_batch = df[ batch_index *batch_size:( batch_index +1 ) *batch_size]
-            positive_data = get_arrays(df_batch, user_col, item_col, rating_col, key_col, num_keys)
-            negative_data = get_negative_sample(df_batch, num_items, user_col, item_col, 10, num_keys)
-            train_array = concate_data(positive_data, negative_data)
-            batches.append(train_array)
-        batch_index += 1
-        remaining_size -= batch_size
-    random.shuffle(batches)
-    return batches

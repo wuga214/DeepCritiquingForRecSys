@@ -1,5 +1,6 @@
 from metrics.general_performance import evaluate
 from predicts.topk import elementwisepredictor
+from providers.sampler import Negative_Sampler
 from tqdm import tqdm
 from utils.io import load_dataframe_csv, save_dataframe_csv, load_yaml
 from utils.progress import WorkSplitter
@@ -11,14 +12,13 @@ import pandas as pd
 import tensorflow as tf
 
 
-def hyper_parameter_tuning(df_data, df_train, df_valid, keyPhrase, params, save_path, gpu_on=True):
+def hyper_parameter_tuning(num_users, num_items, df_train, df_valid, keyPhrase, params, save_path, gpu_on=True):
     progress = WorkSplitter()
     table_path = load_yaml('config/global.yml', key='path')['tables']
-
     try:
         df = load_dataframe_csv(table_path, save_path)
     except:
-        df = pd.DataFrame(columns=['model', 'rank', 'num_layers', 'train_batch_size', 'predict_batch_size', 'lambda', 'topK', 'learning_rate', 'epoch'])
+        df = pd.DataFrame(columns=['model', 'rank', 'num_layers', 'train_batch_size', 'predict_batch_size', 'lambda', 'topK', 'learning_rate', 'epoch', 'negative_sampling_size'])
 
     for algorithm in params['models']:
 
@@ -36,52 +36,65 @@ def hyper_parameter_tuning(df_data, df_train, df_valid, keyPhrase, params, save_
 
                                 for epoch in params['epoch']:
 
-                                    if ((df['model'] == algorithm) &
-                                        (df['rank'] == rank) &
-                                        (df['num_layers'] == num_layers) &
-                                        (df['train_batch_size'] == train_batch_size) &
-                                        (df['predict_batch_size'] == predict_batch_size) &
-                                        (df['lambda'] == lam) &
-                                        (df['learning_rate'] == learning_rate) &
-                                        (df['epoch'] == epoch)).any():
-                                        continue
+                                    for negative_sampling_size in params['negative_sampling_size']:
 
-                                    format = "model: {0}, rank: {1}, num_layers: {2}, train_batch_size: {3}, predict_batch_size: {4}, lambda: {5}, learning_rate: {6}, epoch: {7}"
-                                    progress.section(format.format(algorithm, rank, num_layers, train_batch_size, predict_batch_size, lam, learning_rate, epoch))
+                                        if ((df['model'] == algorithm) &
+                                            (df['rank'] == rank) &
+                                            (df['num_layers'] == num_layers) &
+                                            (df['train_batch_size'] == train_batch_size) &
+                                            (df['predict_batch_size'] == predict_batch_size) &
+                                            (df['lambda'] == lam) &
+                                            (df['learning_rate'] == learning_rate) &
+                                            (df['epoch'] == epoch) &
+                                            (df['negative_sampling_size'] == negative_sampling_size)).any():
+                                            continue
 
-                                    model = params['models'][algorithm](num_users=df_data['UserIndex'].nunique(),
-                                                                        num_items=df_data['ItemIndex'].nunique(),
-                                                                        text_dim=len(keyPhrase),
-                                                                        embed_dim=rank,
-                                                                        num_layers=num_layers,
-                                                                        batch_size=train_batch_size,
-                                                                        lamb=lam,
-                                                                        learning_rate=learning_rate)
+                                        format = "model: {0}, rank: {1}, num_layers: {2}, train_batch_size: {3}, predict_batch_size: {4}, lambda: {5}, learning_rate: {6}, epoch: {7}, negative_sampling_size: {8}"
+                                        progress.section(format.format(algorithm, rank, num_layers, train_batch_size, predict_batch_size, lam, learning_rate, epoch, negative_sampling_size))
 
-                                    model.train_model(df_train, epoch=epoch)
+                                        progress.subsection("Initializing Negative Sampler")
 
-                                    progress.subsection("Prediction")
+                                        negative_sampler = Negative_Sampler(df_train[['UserIndex', 'ItemIndex', 'keyVector']],
+                                                                            'UserIndex', 'ItemIndex', 'Binary', 'keyVector',
+                                                                            num_items=num_items, batch_size=train_batch_size,
+                                                                            num_keys=len(keyPhrase),
+                                                                            negative_sampling_size=negative_sampling_size)
 
-                                    prediction, explanation = elementwisepredictor(model, df_train, 'UserIndex', 'ItemIndex',
-                                                                                params['topK'][-1], batch_size=predict_batch_size, explain=True, key_names=keyPhrase)
+                                        model = params['models'][algorithm](num_users=num_users,
+                                                                            num_items=num_items,
+                                                                            text_dim=len(keyPhrase),
+                                                                            embed_dim=rank,
+                                                                            num_layers=num_layers,
+                                                                            batch_size=train_batch_size,
+                                                                            negative_sampler=negative_sampler,
+                                                                            lamb=lam,
+                                                                            learning_rate=learning_rate)
 
-                                    progress.subsection("Evaluation")
+                                        model.train_model(df_train, epoch=epoch)
 
-                                    R_valid = to_sparse_matrix(df_valid, df_data['UserIndex'].nunique(), df_data['ItemIndex'].nunique(), 'UserIndex', 'ItemIndex', 'Binary')
+                                        progress.subsection("Prediction")
 
-                                    result = evaluate(prediction, R_valid, params['metric'], params['topK'])
+                                        prediction, explanation = elementwisepredictor(model, df_train, 'UserIndex', 'ItemIndex',
+                                                                                       params['topK'][-1], batch_size=predict_batch_size, explain=True, key_names=keyPhrase)
 
-                                    result_dict = {'model': algorithm, 'rank': rank, 'num_layers': num_layers,
-                                                   'train_batch_size': train_batch_size, 'predict_batch_size': predict_batch_size,
-                                                   'lambda': lam, 'learning_rate': learning_rate, 'epoch': epoch}
+                                        progress.subsection("Evaluation")
 
-                                    for name in result.keys():
-                                        result_dict[name] = [round(result[name][0], 4), round(result[name][1], 4)]
+                                        R_valid = to_sparse_matrix(df_valid, num_users, num_items, 'UserIndex', 'ItemIndex', 'Binary')
 
-                                    df = df.append(result_dict, ignore_index=True)
+                                        result = evaluate(prediction, R_valid, params['metric'], params['topK'])
 
-                                    model.sess.close()
-                                    tf.reset_default_graph()
+                                        result_dict = {'model': algorithm, 'rank': rank, 'num_layers': num_layers,
+                                                       'train_batch_size': train_batch_size, 'predict_batch_size': predict_batch_size,
+                                                       'lambda': lam, 'learning_rate': learning_rate, 'epoch': epoch,
+                                                       'negative_sampling_size': negative_sampling_size}
 
-                                    save_dataframe_csv(df, table_path, save_path)
+                                        for name in result.keys():
+                                            result_dict[name] = [round(result[name][0], 4), round(result[name][1], 4)]
+
+                                        df = df.append(result_dict, ignore_index=True)
+
+                                        model.sess.close()
+                                        tf.reset_default_graph()
+
+                                        save_dataframe_csv(df, table_path, save_path)
 

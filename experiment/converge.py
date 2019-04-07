@@ -1,5 +1,6 @@
 from metrics.general_performance import evaluate
 from predicts.topk import elementwisepredictor
+from providers.sampler import Negative_Sampler
 from utils.io import save_dataframe_csv
 from utils.modelnames import models
 from utils.progress import WorkSplitter
@@ -10,12 +11,12 @@ import pandas as pd
 import tensorflow as tf
 
 
-def converge(df_data, df_train, df_test, keyPhrase, df, table_path, file_name, epochs=10, gpu_on=True):
+def converge(num_users, num_items, df_train, df_test, keyPhrase, df, table_path, file_name, epochs=10, gpu_on=True):
     progress = WorkSplitter()
 
     valid_models = models.keys()
 
-    results = pd.DataFrame(columns=['model', 'rank', 'lambda', 'epoch', 'optimizer'])
+    results = pd.DataFrame(columns=['model', 'rank', 'num_layers', 'train_batch_size', 'predict_batch_size', 'lambda', 'topK', 'learning_rate', 'epoch', 'negative_sampling_size', 'optimizer'])
 
     for run in range(3):
 
@@ -30,21 +31,25 @@ def converge(df_data, df_train, df_test, keyPhrase, df, table_path, file_name, e
             row['topK'] = [10]
 
             if 'optimizer' not in row.keys():
-                row['optimizer'] = 'RMSProp'
+                row['optimizer'] = 'Adam'
 
-            model = models[row['model']](num_users=df_data['UserIndex'].nunique(),
-                                         num_items=df_data['ItemIndex'].nunique(),
+            negative_sampler = Negative_Sampler(df_train[['UserIndex', 'ItemIndex', 'keyVector']],
+                                                'UserIndex', 'ItemIndex', 'Binary', 'keyVector',
+                                                num_items=num_items, batch_size=row['train_batch_size'],
+                                                num_keys=len(keyPhrase),
+                                                negative_sampling_size=row['negative_sampling_size'])
+
+            model = models[row['model']](num_users=num_users,
+                                         num_items=num_items,
                                          text_dim=len(keyPhrase),
                                          embed_dim=row['rank'],
                                          num_layers=row['num_layers'],
                                          batch_size=row['train_batch_size'],
+                                         negative_sampler=negative_sampler,
                                          lamb=row['lambda'],
                                          learning_rate=row['learning_rate'])
 
-            batches = model.get_batches(df_train, batch_size=row['train_batch_size'],
-                                        user_col='UserIndex', item_col='ItemIndex',
-                                        rating_col='Binary', key_col='keyVector',
-                                        num_keys=len(keyPhrase))
+            batches = negative_sampler.get_batches()
 
             epoch_batch = 5
 
@@ -59,8 +64,7 @@ def converge(df_data, df_train, df_test, keyPhrase, df, table_path, file_name, e
                                                                explain=True,
                                                                key_names=keyPhrase)
 
-                R_test = to_sparse_matrix(df_test, df_data['UserIndex'].nunique(),
-                                          df_data['ItemIndex'].nunique(),
+                R_test = to_sparse_matrix(df_test, num_users, num_items,
                                           'UserIndex', 'ItemIndex', 'Binary')
 
                 result = evaluate(prediction, R_test, row['metric'], row['topK'])
@@ -68,9 +72,15 @@ def converge(df_data, df_train, df_test, keyPhrase, df, table_path, file_name, e
                 # Note Finished yet
                 result_dict = {'model': row['model'],
                                'rank': row['rank'],
+                               'num_layers': row['num_layers'],
+                               'train_batch_size': row['train_batch_size'],
+                               'predict_batch_size': row['predict_batch_size'],
                                'lambda': row['lambda'],
-                               'optimizer': row['optimizer'],
-                               'epoch': (i+1)*epoch_batch}
+                               'topK': row['topK'][0],
+                               'learning_rate': row['learning_rate'],
+                               'epoch': (i+1)*epoch_batch,
+                               'negative_sampling_size': row['negative_sampling_size'],
+                               'optimizer': row['optimizer']}
 
                 for name in result.keys():
                     result_dict[name] = round(result[name][0], 4)
