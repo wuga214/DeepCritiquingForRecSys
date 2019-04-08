@@ -85,6 +85,7 @@ class IVNCF(object):
             self.phrase_prediction = phrase_prediction
 
         with tf.variable_scope("losses"):
+            phrase_condition = tf.stop_gradient(tf.cast(tf.reduce_max(self.keyphrase, axis=1), tf.float32))
 
             with tf.variable_scope('kl-divergence'):
                 kl = self._kl_diagnormal_stdnormal(self.mean, logstd)
@@ -97,7 +98,7 @@ class IVNCF(object):
 
             with tf.variable_scope("phrase_loss"):
                 phrase_loss = tf.losses.mean_squared_error(labels=self.keyphrase,
-                                                           predictions=self.phrase_prediction)
+                                                           predictions=self.phrase_prediction) * phrase_condition
 
             with tf.variable_scope("l2"):
                 l2_loss = tf.losses.get_regularization_loss()

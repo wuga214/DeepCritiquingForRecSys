@@ -111,11 +111,13 @@ class CVNCF(object):
 
         with tf.variable_scope("losses"):
 
+            phrase_condition = tf.stop_gradient(tf.cast(tf.reduce_max(self.keyphrase, axis=1), tf.float32))
+
             with tf.variable_scope('kl-divergence'):
                 kl = self._kl_diagnormal_stdnormal(self.mean, logstd)
 
             with tf.variable_scope("latent_reconstruction_loss"):
-                latent_loss = tf.losses.mean_squared_error(labels=latent, predictions=reconstructed_latent)
+                latent_loss = tf.losses.mean_squared_error(labels=latent, predictions=reconstructed_latent) * phrase_condition
 
             with tf.variable_scope("rating_loss"):
                 # rating_loss = tf.losses.sigmoid_cross_entropy(multi_class_labels=tf.reshape(self.rating, [-1, 1]),
@@ -125,7 +127,7 @@ class CVNCF(object):
 
             with tf.variable_scope("phrase_loss"):
                 phrase_loss = tf.losses.mean_squared_error(labels=self.keyphrase,
-                                                           predictions=self.phrase_prediction)
+                                                           predictions=self.phrase_prediction) * phrase_condition
 
             with tf.variable_scope("l2"):
                 l2_loss = tf.losses.get_regularization_loss()
