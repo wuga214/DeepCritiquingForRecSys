@@ -43,11 +43,11 @@ class NCF(object):
         with tf.variable_scope("embeddings"):
             self.user_embeddings = tf.Variable(tf.random_normal([self.num_users, self.embed_dim],
                                                                 stddev=1 / (self.embed_dim ** 0.5),
-                                                                dtype=tf.float32), trainable=False)
+                                                                dtype=tf.float32), trainable=True)
 
             self.item_embeddings = tf.Variable(tf.random_normal([self.num_items, self.embed_dim],
                                                                 stddev=1 / (self.embed_dim ** 0.5),
-                                                                dtype=tf.float32), trainable=False)
+                                                                dtype=tf.float32), trainable=True)
 
             users = tf.nn.embedding_lookup(self.user_embeddings, self.users_index, name="user_lookup")
             items = tf.nn.embedding_lookup(self.item_embeddings, self.items_index, name="item_lookup")

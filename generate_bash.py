@@ -11,7 +11,7 @@ def main(args):
     pattern = "#!/usr/bin/env bash\n" \
               "source {0}\n" \
               "cd {1}\n" \
-              "python tune_parameters.py -d {2} -n {3}/{4}.csv -y config/{4}.yml\n"
+              "python tune_parameters.py -d {2} -n {3}/{4}.csv -y config/{3}/{4}.yml\n"
 
     for setting in yaml_files:
         name, extension = os.path.splitext(setting)
