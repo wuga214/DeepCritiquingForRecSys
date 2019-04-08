@@ -131,9 +131,9 @@ class CVNCF(object):
                 l2_loss = tf.losses.get_regularization_loss()
 
             self.loss = (tf.reduce_mean(rating_loss)
-                         + 0.1 * tf.reduce_mean(phrase_loss)
-                         + 0.1 * tf.reduce_mean(latent_loss)
-                         + kl
+                         + tf.reduce_mean(phrase_loss)
+                         + tf.reduce_mean(latent_loss)
+                         + 0.01 * kl
                          + l2_loss
                          )
 
@@ -143,7 +143,7 @@ class CVNCF(object):
     @staticmethod
     def _kl_diagnormal_stdnormal(mu, log_std):
         var_square = tf.exp(2 * log_std)
-        kl = 0.5 * tf.reduce_mean(tf.square(mu) + var_square - 1. - 2 * log_std -1)
+        kl = 0.5 * tf.reduce_mean(tf.square(mu) + var_square - 1. - 2 * log_std)
         return kl
 
     def train_model(self, df, epoch=100, batches=None,
