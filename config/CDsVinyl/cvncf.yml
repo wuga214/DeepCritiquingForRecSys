@@ -8,5 +8,6 @@ parameters:
     topK: [5, 10, 15, 20, 50]
     learning_rate: [0.0001, 0.0005, 0.001]
     epoch: [300]
+    negative_sampling_size: [10]
     metric: [R-Precision, NDCG, Clicks, Precision, Recall, MAP]
 

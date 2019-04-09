@@ -1,4 +1,3 @@
-from providers.sampler import get_negative_sample, get_arrays, concate_data, get_batches
 from tqdm import tqdm
 from utils.reformat import to_sparse_matrix, to_svd
 import numpy as np
@@ -14,6 +13,7 @@ class NCF(object):
                  embed_dim,
                  num_layers,
                  batch_size,
+                 negative_sampler,
                  lamb=0.01,
                  learning_rate=1e-4,
                  optimizer=tf.train.AdamOptimizer,
@@ -24,6 +24,7 @@ class NCF(object):
         self.embed_dim = embed_dim
         self.num_layers = num_layers
         self.batch_size = batch_size
+        self.negative_sampler = negative_sampler
         self.lamb = lamb
         self.learning_rate = learning_rate
         self.optimizer = optimizer
@@ -96,8 +97,7 @@ class NCF(object):
         self.create_embeddings(df, user_col, item_col, rating_col)
 
         if batches is None:
-            batches = get_batches(df, self.batch_size, user_col, item_col,
-                                  rating_col, key_col, self.num_items, self.text_dim)
+            batches = self.negative_sampler.get_batches()
 
         # Training
         pbar = tqdm(range(epoch))
@@ -115,8 +115,7 @@ class NCF(object):
                 pbar.set_description("loss:{0}".format(loss))
 
             #if (i+1) % 5 == 0:
-            batches = get_batches(df, self.batch_size, user_col, item_col,
-                                  rating_col, key_col, self.num_items, self.text_dim)
+            batches = self.negative_sampler.get_batches()
 
     def predict(self, inputs):
         user_index = inputs[:, 0]

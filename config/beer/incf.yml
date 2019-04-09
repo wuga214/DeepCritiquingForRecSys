@@ -2,11 +2,12 @@ parameters:
     models: INCF
     rank: [100, 200]
     num_layers: [1]
-    train_batch_size: [16384]
-    predict_batch_size: [512]
+    train_batch_size: [128]
+    predict_batch_size: [128]
     lambda: [0.0001, 0.001, 0.01]
     topK: [5, 10, 15, 20, 50]
     learning_rate: [0.0001, 0.0005, 0.001]
     epoch: [150]
+    negative_sampling_size: [10]
     metric: [R-Precision, NDCG, Clicks, Precision, Recall, MAP]
 
