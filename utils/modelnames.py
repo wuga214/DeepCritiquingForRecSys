@@ -4,6 +4,8 @@ from models.incf import INCF
 from models.ivncf import IVNCF
 from models.ncf import NCF
 from models.vncf import VNCF
+from models.user_pop import UserPop
+from models.item_pop import ItemPop
 
 models = {
     "NCF": NCF,
@@ -14,3 +16,11 @@ models = {
     "CVNCF": CVNCF
 }
 
+explanable_models = {
+    "INCF": INCF,
+    "CNCF": CNCF,
+    "IVNCF": IVNCF,
+    "CVNCF": CVNCF,
+    "UserPop": UserPop,
+    "ItemPop": ItemPop
+}

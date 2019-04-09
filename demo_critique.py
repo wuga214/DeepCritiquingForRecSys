@@ -4,7 +4,7 @@ from providers.sampler import Negative_Sampler
 from providers.split import leave_one_out_split
 from tqdm import tqdm
 from utils.argcheck import check_float_positive, check_int_positive, shape
-from utils.modelnames import models
+from utils.modelnames import explanable_models
 from utils.progress import WorkSplitter, inhour
 from utils.reformat import to_sparse_matrix
 from critique.critique import critique_keyphrase
@@ -61,15 +61,15 @@ def main(args):
                                         negative_sampling_size=args.negative_sampling_size)
 
     progress.section("Train")
-    model = models[args.model](num_users=num_users,
-                               num_items=num_items,
-                               text_dim=len(keyPhrase),
-                               embed_dim=args.rank,
-                               num_layers=1,
-                               batch_size=args.train_batch_size,
-                               negative_sampler=negative_sampler,
-                               lamb=args.lamb,
-                               learning_rate=args.alpha)
+    model = explanable_models[args.model](num_users=num_users,
+                                          num_items=num_items,
+                                          text_dim=len(keyPhrase),
+                                          embed_dim=args.rank,
+                                          num_layers=1,
+                                          batch_size=args.train_batch_size,
+                                          negative_sampler=negative_sampler,
+                                          lamb=args.lamb,
+                                          learning_rate=args.alpha)
 
     model.train_model(df_train, epoch=args.epoch)
     """
@@ -91,22 +91,22 @@ def main(args):
     # for metric in result.keys():
     #     print("{0}:{1}".format(metric, result[metric]))
     #
-    # df_valid_explanation = predict_explanation(model, df_valid, args.user_col,
-    #                                            args.item_col, topk_key=args.topk_key)
-    #
-    # explanation_result = evaluate_explanation(df_valid_explanation, df_valid,
-    #                                           ['Recall', 'Precision'])
-    #
-    # print("-- Explanation Performance")
-    # for metric in explanation_result.keys():
-    #     print("{0}:{1}".format(metric, explanation_result[metric]))
+    df_valid_explanation = predict_explanation(model, df_valid, args.user_col,
+                                               args.item_col, topk_key=args.topk_key)
 
-    falling_rank_result = []
-    for user in tqdm(range(num_users)):
-        r_b, r_f, k = critique_keyphrase(model, user, num_items, topk_key=10)
-        falling_rank_result.append(falling_rank(r_b.tolist(), r_f.tolist(), k))
-    mean_falling_rank = np.mean(falling_rank_result)
-    import ipdb; ipdb.set_trace()
+    explanation_result = evaluate_explanation(df_valid_explanation, df_valid,
+                                              ['Recall', 'Precision'])
+
+    print("-- Explanation Performance")
+    for metric in explanation_result.keys():
+        print("{0}:{1}".format(metric, explanation_result[metric]))
+
+    # falling_rank_result = []
+    # for user in tqdm(range(num_users)):
+    #     r_b, r_f, k = critique_keyphrase(model, user, num_items, topk_key=10)
+    #     falling_rank_result.append(falling_rank(r_b.tolist(), r_f.tolist(), k))
+    # mean_falling_rank = np.mean(falling_rank_result)
+    # import ipdb; ipdb.set_trace()
 
 
 if __name__ == "__main__":
