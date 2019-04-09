@@ -1,5 +1,6 @@
 import itertools
 import matplotlib.pyplot as plt
+#matplotlib.use('Agg')
 import seaborn as sns
 from utils.io import load_yaml
 from ast import literal_eval

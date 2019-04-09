@@ -4,10 +4,9 @@ parameters:
     num_layers: [1]
     train_batch_size: [128]
     predict_batch_size: [128]
-    lambda: [0.0001, 0.001, 0.01]
+    lambda: [0.00005, 0.0001, 0.001, 0.01]
     topK: [5, 10, 15, 20, 50]
-    learning_rate: [0.0001, 0.0005, 0.001]
-    epoch: [150]
+    learning_rate: [0.0001, 0.0005, 0.001, 0.005]
+    epoch: [100]
     negative_sampling_size: [10]
     metric: [R-Precision, NDCG, Clicks, Precision, Recall, MAP]
-

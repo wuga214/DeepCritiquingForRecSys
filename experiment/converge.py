@@ -19,7 +19,7 @@ def converge(num_users, num_items, df_train, df_test, keyPhrase, df, table_path,
     results = pd.DataFrame(columns=['model', 'rank', 'num_layers', 'train_batch_size', 'predict_batch_size',
                                     'lambda', 'topK', 'learning_rate', 'epoch', 'negative_sampling_size', 'optimizer'])
 
-    for run in range(3):
+    for run in range(1):
 
         for idx, row in df.iterrows():
             row = row.to_dict()
