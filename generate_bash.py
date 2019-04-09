@@ -5,7 +5,9 @@ import os
 
 def main(args):
     bash_path = load_yaml('config/global.yml', key='path')['bashes']
-    yaml_files = get_file_names('config', extension='.yml')
+
+    config_path = 'config/{}'.format(args.problem)
+    yaml_files = get_file_names(config_path, extension='.yml')
     project_path = "~/InterpretableAutoRec"
 
     pattern = "#!/usr/bin/env bash\n" \
