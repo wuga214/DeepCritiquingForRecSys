@@ -162,7 +162,7 @@ def evaluate_explanation(df_predict, df_test, metric_names, atK):
 
         for metric in tqdm(global_metric_names):
             res[metric] = res.apply(lambda x: global_metrics[metric](vector_true_dense=x['keyVector'],
-                                                                     vector_predict=x['ExplanIndex'],
+                                                                     vector_predict=x['ExplanIndex'][:k],
                                                                      hits=x['hits']),
                                     axis=1)
         results_summary = dict()

@@ -1,0 +1,3 @@
+parameters:
+    topK: [5, 10, 15, 20]
+    metric: [NDCG, Precision, Recall, MAP]

@@ -1,5 +1,6 @@
 from metrics.general_performance import evaluate, evaluate_explanation
 from predicts.topk import elementwisepredictor, predict_explanation
+from utils.modelnames import explanable_models
 from providers.sampler import Negative_Sampler
 from tqdm import tqdm
 from utils.io import load_dataframe_csv, save_dataframe_csv, load_yaml
@@ -12,10 +13,16 @@ import pandas as pd
 import tensorflow as tf
 
 
-def explain(num_users, num_items, df_train, df_valid, keyPhrase, params, save_path, gpu_on=True):
+def explain(num_users, num_items, df_train, df_valid, keyPhrase, params, load_path, save_path, gpu_on=True):
     progress = WorkSplitter()
     table_path = load_yaml('config/global.yml', key='path')['tables']
-    df = load_dataframe_csv(table_path, save_path)
+    df = load_dataframe_csv(table_path, load_path)
+
+    try:
+        output_df = load_dataframe_csv(table_path, save_path)
+    except:
+        output_df = pd.DataFrame(columns=['model', 'rank', 'num_layers', 'train_batch_size', 'predict_batch_size',
+                                          'lambda', 'topK', 'learning_rate', 'epoch', 'negative_sampling_size'])
 
     for index, row in df.iterrows():
 
@@ -43,15 +50,15 @@ def explain(num_users, num_items, df_train, df_valid, keyPhrase, params, save_pa
                                             num_keys=len(keyPhrase),
                                             negative_sampling_size=negative_sampling_size)
 
-        model = params['models'][algorithm](num_users=num_users,
-                                            num_items=num_items,
-                                            text_dim=len(keyPhrase),
-                                            embed_dim=rank,
-                                            num_layers=num_layers,
-                                            batch_size=train_batch_size,
-                                            negative_sampler=negative_sampler,
-                                            lamb=lam,
-                                            learning_rate=learning_rate)
+        model = explanable_models[algorithm](num_users=num_users,
+                                             num_items=num_items,
+                                             text_dim=len(keyPhrase),
+                                             embed_dim=rank,
+                                             num_layers=num_layers,
+                                             batch_size=train_batch_size,
+                                             negative_sampler=negative_sampler,
+                                             lamb=lam,
+                                             learning_rate=learning_rate)
 
         model.train_model(df_train, epoch=epoch)
 
@@ -73,7 +80,7 @@ def explain(num_users, num_items, df_train, df_valid, keyPhrase, params, save_pa
         for name in explanation_result.keys():
             result_dict[name] = [round(explanation_result[name][0], 4), round(explanation_result[name][1], 4)]
 
-        df = df.append(result_dict, ignore_index=True)
+        output_df = output_df.append(result_dict, ignore_index=True)
 
         try:
             model.sess.close()
@@ -81,7 +88,7 @@ def explain(num_users, num_items, df_train, df_valid, keyPhrase, params, save_pa
         except:
             pass
 
-        save_dataframe_csv(df, table_path, save_path)
+        save_dataframe_csv(output_df, table_path, save_path)
 
 
 
