@@ -135,32 +135,40 @@ def evaluate(matrix_Predict, matrix_Test, metric_names, atK, analytical=False):
     return output
 
 
-def evaluate_explanation(df_predict, df_test, metric_names):
+def evaluate_explanation(df_predict, df_test, metric_names, atK):
     df_test = df_test[df_test['Binary'] == 1] # Remove negatives
     df_test = df_test[['UserIndex', 'ItemIndex', 'keyVector']]
     df_test = df_test[df_test['keyVector'] != '[]']
     df_test['keyVector'] = df_test['keyVector'].apply(lambda x: eval(x))
     df_predict = df_predict[['UserIndex','ItemIndex', 'ExplanIndex']]
     res = pd.merge(df_test, df_predict, how='inner', on=['UserIndex', 'ItemIndex'])
-    res['hits'] = res.apply(lambda x: list(np.isin(x['ExplanIndex'], x['keyVector'])), axis=1)
 
     global_metrics = {
-        "R-Precision": r_precision,
+        # "R-Precision": r_precision,
         "NDCG": ndcg,
         "Precision": precisionk,
         "Recall": recallk,
         "MAP": average_precisionk
     }
 
-    for metric in tqdm(metric_names):
-        res[metric] = res.apply(lambda x: global_metrics[metric](vector_true_dense=x['keyVector'],
-                                                                 vector_predict=x['ExplanIndex'],
-                                                                 hits=x['hits']),
-                                axis=1)
+    output = dict()
 
-    results_summary = dict()
-    for metric in tqdm(metric_names):
-        values = res[metric].values
-        results_summary[metric] = (np.average(values), 1.96*np.std(values)/np.sqrt(len(res)))
+    num_interactionss = len(res)
 
-    return results_summary
+    for k in atK:
+        res['hits'] = res.apply(lambda x: list(np.isin(x['ExplanIndex'][:k], x['keyVector'])), axis=1)
+
+        global_metric_names = list(set(metric_names).intersection(global_metrics.keys()))
+
+        for metric in tqdm(global_metric_names):
+            res[metric] = res.apply(lambda x: global_metrics[metric](vector_true_dense=x['keyVector'],
+                                                                     vector_predict=x['ExplanIndex'],
+                                                                     hits=x['hits']),
+                                    axis=1)
+        results_summary = dict()
+        for name in global_metric_names:
+            results_summary['{0}@{1}'.format(name, k)] = (np.average(res[name]),
+                                                          1.96 * np.std(res[name]) / np.sqrt(num_interactionss))
+        output.update(results_summary)
+
+    return output

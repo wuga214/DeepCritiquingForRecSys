@@ -92,7 +92,7 @@ def main(args):
                                                args.item_col, topk_key=args.topk_key)
 
     explanation_result = evaluate_explanation(df_valid_explanation, df_valid,
-                                              ['Recall', 'Precision'])
+                                              ['Recall', 'Precision'], [args.topk_key])
 
     print("-- Explanation Performance")
     for metric in explanation_result.keys():

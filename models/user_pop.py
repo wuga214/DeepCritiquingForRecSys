@@ -18,8 +18,6 @@ class UserPop(object):
         df_user = pd.DataFrame({user_col: range(self.num_users)})
         df_user_pop = pd.merge(df_user, df_user_pop, how='left', on=user_col)
 
-        df_user_pop[df_user_pop[key_col].isnull()][key_col] = []
-
         df_user_pop[key_col] = df_user_pop[key_col].apply(lambda x: self.udf(x))
         df_user_pop['Unobserved'] = (df_user_pop[key_col]
                                      .apply(lambda observed_items: np.setdiff1d(np.arange(self.text_dim),

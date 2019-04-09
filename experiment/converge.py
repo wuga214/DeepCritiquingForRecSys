@@ -16,7 +16,8 @@ def converge(num_users, num_items, df_train, df_test, keyPhrase, df, table_path,
 
     valid_models = models.keys()
 
-    results = pd.DataFrame(columns=['model', 'rank', 'num_layers', 'train_batch_size', 'predict_batch_size', 'lambda', 'topK', 'learning_rate', 'epoch', 'negative_sampling_size', 'optimizer'])
+    results = pd.DataFrame(columns=['model', 'rank', 'num_layers', 'train_batch_size', 'predict_batch_size',
+                                    'lambda', 'topK', 'learning_rate', 'epoch', 'negative_sampling_size', 'optimizer'])
 
     for run in range(3):
 
