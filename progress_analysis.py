@@ -2,8 +2,9 @@ import ast
 import argparse
 import numpy as np
 import pandas as pd
-from experiment.converge import converge
+from experiment.converge import converge, explanation_converge
 from providers.split import leave_one_out_split
+from utils.argcheck import check_float_positive, check_int_positive, shape
 from utils.io import find_best_hyperparameters, load_yaml
 from plots.rec_plots import show_training_progress
 
@@ -24,8 +25,12 @@ def main(args):
 
     keyPhrase = pd.read_csv(args.path + args.param + '/' + 'KeyPhrases.csv')['Phrases'].values
 
-    results = converge(num_users, num_items, df_train, df_test, keyPhrase, df, table_path, args.name,
-                       epochs=args.epochs, gpu_on=args.gpu)
+    if args.explanation:
+        results = explanation_converge(num_users, num_items, df_train, df_test, keyPhrase, df, table_path, args.name,
+                                       epochs=args.epochs, gpu_on=args.gpu)
+    else:
+        results = converge(num_users, num_items, df_train, df_test, keyPhrase, df, table_path, args.name,
+                           epochs=args.epochs, gpu_on=args.gpu)
 
     show_training_progress(results, hue='model', metric='NDCG', name="epoch_vs_ndcg")
 
@@ -38,12 +43,13 @@ if __name__ == "__main__":
     parser.add_argument('-type', dest='type', default='optimizer')
     parser.add_argument('-b', dest='rating_col', default="Binary")
     parser.add_argument('-d', dest='path', default="data/")
-    parser.add_argument('-e', dest='epochs', default=200)
+    parser.add_argument('-e', dest='epochs', type=check_int_positive, default=100)
     parser.add_argument('-i', dest='item_id', default="ItemIndex")
     parser.add_argument('-key-col', dest='key_col', default="keyVector")
     parser.add_argument('-n', dest='name', default="convergence_analysis.csv")
     parser.add_argument('-p', dest='param', default='beer')
     parser.add_argument('-u', dest='user_id', default="UserIndex")
+    parser.add_argument('--explanation', dest='explanation', action="store_true")
 
     args = parser.parse_args()
 
