@@ -23,10 +23,7 @@ def critique_keyphrase(model, user_index, num_items, topk_key=10):
     inputs = np.array([[user_index, item_index] for item_index in range(num_items)])
     rating, explanation = model.predict(inputs)
 
-    explanation_rank_list = np.empty((0, topk_key))
-    for explanation_score in explanation:
-        explanation_rank = np.argsort(explanation_score)[::-1][:topk_key]
-        explanation_rank_list = np.append(explanation_rank_list, [explanation_rank], axis=0)
+    explanation_rank_list = np.argsort(-explanation, axis=1)[:, :topk_key]
 
     unique_keyphrase = np.unique(explanation_rank_list)
     keyphrase_index = int(np.random.choice(unique_keyphrase, 1)[0])

@@ -91,22 +91,23 @@ def main(args):
     # for metric in result.keys():
     #     print("{0}:{1}".format(metric, result[metric]))
     #
-    df_valid_explanation = predict_explanation(model, df_valid, args.user_col,
-                                               args.item_col, topk_key=args.topk_key)
+    # df_valid_explanation = predict_explanation(model, df_valid, args.user_col,
+    #                                            args.item_col, topk_key=args.topk_key)
+    #
+    # explanation_result = evaluate_explanation(df_valid_explanation, df_valid,
+    #                                           ['Recall', 'Precision'], [args.topk_key])
+    #
+    # print("-- Explanation Performance")
+    # for metric in explanation_result.keys():
+    #     print("{0}:{1}".format(metric, explanation_result[metric]))
 
-    explanation_result = evaluate_explanation(df_valid_explanation, df_valid,
-                                              ['Recall', 'Precision'], [args.topk_key])
-
-    print("-- Explanation Performance")
-    for metric in explanation_result.keys():
-        print("{0}:{1}".format(metric, explanation_result[metric]))
-
-    # falling_rank_result = []
-    # for user in tqdm(range(num_users)):
-    #     r_b, r_f, k = critique_keyphrase(model, user, num_items, topk_key=10)
-    #     falling_rank_result.append(falling_rank(r_b.tolist(), r_f.tolist(), k))
-    # mean_falling_rank = np.mean(falling_rank_result)
-    # import ipdb; ipdb.set_trace()
+    random_users = np.random.choice(num_users, 100)
+    falling_rank_result = []
+    for user in tqdm(random_users):
+        r_b, r_f, k = critique_keyphrase(model, user, num_items, topk_key=10)
+        falling_rank_result.append(falling_rank(r_b.tolist(), r_f.tolist(), k))
+    mean_falling_rank = np.mean(falling_rank_result)
+    import ipdb; ipdb.set_trace()
 
 
 if __name__ == "__main__":
@@ -124,12 +125,12 @@ if __name__ == "__main__":
     parser.add_argument('-key-col', dest='key_col', default="keyVector")
     parser.add_argument('-l', dest='lamb', type=check_float_positive, default=1.0)
     parser.add_argument('-m', dest='model', default="NCF")
-    parser.add_argument('-negative-sampling-size', dest='negative_sampling_size', type=check_int_positive, default=10)
+    parser.add_argument('-negative-sampling-size', dest='negative_sampling_size', type=check_int_positive, default=1)
     parser.add_argument('-p', dest='phrase', default="Phrases")
-    parser.add_argument('-predict-batch-size', dest='predict_batch_size', type=check_int_positive, default=512)
+    parser.add_argument('-predict-batch-size', dest='predict_batch_size', type=check_int_positive, default=128)
     parser.add_argument('-r', dest='rank', type=check_int_positive, default=200)
     parser.add_argument('-topk-key', dest='topk_key', type=check_int_positive, default=10)
-    parser.add_argument('-train-batch-size', dest='train_batch_size', type=check_int_positive, default=512)
+    parser.add_argument('-train-batch-size', dest='train_batch_size', type=check_int_positive, default=128)
     parser.add_argument('-u', dest='user_col', default="UserIndex")
     args = parser.parse_args()
 
