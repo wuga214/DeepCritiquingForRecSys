@@ -24,7 +24,8 @@ def main(args):
 
     keyPhrase = pd.read_csv(args.path + args.param + '/' + 'KeyPhrases.csv')['Phrases'].values
 
-    results = converge(num_users, num_items, df_train, df_test, keyPhrase, df, table_path, args.name, epochs=20, gpu_on=args.gpu)
+    results = converge(num_users, num_items, df_train, df_test, keyPhrase, df, table_path, args.name,
+                       epochs=args.epochs, gpu_on=args.gpu)
 
     show_training_progress(results, hue='model', metric='NDCG', name="epoch_vs_ndcg")
 
@@ -37,6 +38,7 @@ if __name__ == "__main__":
     parser.add_argument('-type', dest='type', default='optimizer')
     parser.add_argument('-b', dest='rating_col', default="Binary")
     parser.add_argument('-d', dest='path', default="data/")
+    parser.add_argument('-e', dest='epochs', default=200)
     parser.add_argument('-i', dest='item_id', default="ItemIndex")
     parser.add_argument('-key-col', dest='key_col', default="keyVector")
     parser.add_argument('-n', dest='name', default="convergence_analysis.csv")
