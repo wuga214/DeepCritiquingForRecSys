@@ -1,4 +1,5 @@
 path:
   tables: tables/
   bashes: cluster_bash/
+  pretrained: pretrained/
   figs: figs

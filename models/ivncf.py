@@ -158,3 +158,12 @@ class IVNCF(object):
         user_embedding, item_embedding = to_svd(R, self.embed_dim)
         self.sess.run([self.user_embeddings.assign(user_embedding), self.item_embeddings.assign(item_embedding)])
 
+    def save_model(self, path, name):
+        saver = tf.train.Saver()
+        save_path = saver.save(self.sess, "{0}/{1}/model.ckpt".format(path, name))
+        print("Model saved in path: %s" % save_path)
+
+    def load_model(self, path, name):
+        saver = tf.train.Saver()
+        saver.restore(self.sess, "{0}/{1}/model.ckpt".format(path, name))
+
