@@ -55,8 +55,10 @@ def converge(num_users, num_items, df_train, df_test, keyPhrase, df, table_path,
             epoch_batch = 10
 
             for i in range(epochs//epoch_batch):
-
-                model.train_model(df_train, epoch=epoch_batch, batches=batches)
+                if i == 0:
+                    model.train_model(df_train, epoch=epoch_batch, batches=batches, init_embedding=True)
+                else:
+                    model.train_model(df_train, epoch=epoch_batch, batches=batches, init_embedding=False)
 
                 prediction, explanation = elementwisepredictor(model, df_train,
                                                                'UserIndex', 'ItemIndex',
@@ -142,7 +144,10 @@ def explanation_converge(num_users, num_items, df_train, df_test, keyPhrase, df,
 
             for i in range(epochs//epoch_batch):
 
-                model.train_model(df_train, epoch=epoch_batch, batches=batches)
+                if i == 0:
+                    model.train_model(df_train, epoch=epoch_batch, batches=batches, init_embedding=True)
+                else:
+                    model.train_model(df_train, epoch=epoch_batch, batches=batches, init_embedding=False)
 
                 df_valid_explanation = predict_explanation(model, df_test, 'UserIndex',
                                                            'ItemIndex', topk_key=row['topK'][0])

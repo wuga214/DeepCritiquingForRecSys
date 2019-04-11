@@ -150,9 +150,11 @@ class CVNCF(object):
         return kl
 
     def train_model(self, df, epoch=100, batches=None,
-                    user_col='UserIndex', item_col='ItemIndex', rating_col='Binary', key_col='keyVector', **unused):
+                    user_col='UserIndex', item_col='ItemIndex', rating_col='Binary',
+                    key_col='keyVector', init_embedding=True, **unused):
 
-        self.create_embeddings(df, user_col, item_col, rating_col)
+        if init_embedding:
+            self.create_embeddings(df, user_col, item_col, rating_col)
 
         if batches is None:
             batches = self.negative_sampler.get_batches()
