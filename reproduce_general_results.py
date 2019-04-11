@@ -18,14 +18,14 @@ def main(args):
     df_train = df_train[df_train[args.rating_col] == 1]
     df_train[args.key_col] = df_train[args.key_col].apply(ast.literal_eval)
 
-    df_valid = pd.read_csv(args.path + 'Valid.csv')
+    df_test = pd.read_csv(args.path + 'Test.csv')
 
     keyPhrase = pd.read_csv(args.path + 'KeyPhrases.csv')['Phrases'].values
 
     params = dict()
     params['problem'] = args.problem
 
-    excute(num_users, num_items, df_train, df_valid, keyPhrase, params,
+    excute(num_users, num_items, df_train, df_test, keyPhrase, params,
            save_path=args.save)
 
 
