@@ -52,7 +52,7 @@ def converge(num_users, num_items, df_train, df_test, keyPhrase, df, table_path,
 
             batches = negative_sampler.get_batches()
 
-            epoch_batch = 5
+            epoch_batch = 10
 
             for i in range(epochs//epoch_batch):
 
@@ -62,7 +62,7 @@ def converge(num_users, num_items, df_train, df_test, keyPhrase, df, table_path,
                                                                'UserIndex', 'ItemIndex',
                                                                row['topK'][0],
                                                                batch_size=row['predict_batch_size'],
-                                                               explain=True,
+                                                               explain=False,
                                                                key_names=keyPhrase)
 
                 R_test = to_sparse_matrix(df_test, num_users, num_items,
@@ -138,7 +138,7 @@ def explanation_converge(num_users, num_items, df_train, df_test, keyPhrase, df,
 
             batches = negative_sampler.get_batches()
 
-            epoch_batch = 5
+            epoch_batch = 10
 
             for i in range(epochs//epoch_batch):
 
