@@ -43,7 +43,7 @@ if __name__ == "__main__":
     parser.add_argument('-type', dest='type', default='optimizer')
     parser.add_argument('-b', dest='rating_col', default="Binary")
     parser.add_argument('-d', dest='path', default="data/")
-    parser.add_argument('-e', dest='epochs', type=check_int_positive, default=200)
+    parser.add_argument('-e', dest='epochs', type=check_int_positive, default=300)
     parser.add_argument('-i', dest='item_id', default="ItemIndex")
     parser.add_argument('-key-col', dest='key_col', default="keyVector")
     parser.add_argument('-n', dest='name', default="convergence_analysis.csv")

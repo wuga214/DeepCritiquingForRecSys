@@ -29,7 +29,7 @@ def excute(num_users, num_items, df_train, df_test, keyPhrase, params, save_path
         predict_batch_size = row['predict_batch_size']
         lam = row['lambda']
         learning_rate = row['learning_rate']
-        epoch = row['epoch']
+        epoch = 300
         negative_sampling_size = row['negative_sampling_size']
 
         row['topK'] = [5, 10, 15, 20, 50]
@@ -60,11 +60,11 @@ def excute(num_users, num_items, df_train, df_test, keyPhrase, params, save_path
                                   learning_rate=learning_rate)
 
         pretrained_path = load_yaml('config/global.yml', key='path')['pretrained']
-        try:
-            model.load_model(pretrained_path+params['problem'], row['model'])
-        except:
-            model.train_model(df_train, epoch=epoch)
-            model.save_model(pretrained_path+params['problem'], row['model'])
+        # try:
+        #     model.load_model(pretrained_path+params['problem'], row['model'])
+        # except:
+        model.train_model(df_train, epoch=epoch)
+        # model.save_model(pretrained_path+params['problem'], row['model'])
 
         prediction, explanation = elementwisepredictor(model, df_train,
                                                        'UserIndex', 'ItemIndex',

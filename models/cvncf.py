@@ -74,7 +74,7 @@ class CVNCF(object):
             epsilon = tf.random_normal(tf.shape(self.stddev))
             self.z = tf.cond(self.sampling, lambda: self.mean + self.stddev * epsilon, lambda: self.mean)
 
-            latent = tf.stop_gradient(hi)
+            latent = tf.stop_gradient(tf.concat([self.mean, logstd], axis=1))
 
         with tf.variable_scope("prediction", reuse=False):
             rating_prediction = tf.layers.dense(inputs=self.z, units=1,
@@ -184,18 +184,18 @@ class CVNCF(object):
                      self.sampling: False, self.corruption: 0}
         return self.sess.run([self.rating_prediction, self.phrase_prediction], feed_dict=feed_dict)
 
-    # def refine_predict(self, inputs, critiqued):
-    #     user_index = inputs[:, 0]
-    #     item_index = inputs[:, 1]
-    #     feed_dict = {self.users_index: user_index,
-    #                  self.items_index: item_index,
-    #                  self.modified_phrase: critiqued}
-    #     modified_rating, modified_phrases = self.sess.run([self.modified_rating_prediction,
-    #                                                        self.modified_phrase_prediction],
-    #                                                       feed_dict=feed_dict)
-    #
-    #     return modified_rating, modified_phrases
+    def refine_predict(self, inputs, critiqued):
+        user_index = inputs[:, 0]
+        item_index = inputs[:, 1]
+        feed_dict = {self.users_index: user_index,
+                     self.items_index: item_index,
+                     self.modified_phrase: critiqued,
+                     self.sampling: False, self.corruption: 0}
+        modified_rating, modified_phrases = self.sess.run([self.modified_rating_prediction,
+                                                           self.modified_phrase_prediction],
+                                                          feed_dict=feed_dict)
 
+        return modified_rating, modified_phrases
 
     def create_embeddings(self, df, user_col, item_col, rating_col):
         R = to_sparse_matrix(df, self.num_users, self.num_items, user_col, item_col, rating_col)

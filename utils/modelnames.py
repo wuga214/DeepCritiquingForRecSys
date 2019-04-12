@@ -24,3 +24,8 @@ explanable_models = {
     "UserPop": UserPop,
     "ItemPop": ItemPop
 }
+
+critiquing_models = {
+    "CNCF": CNCF,
+    "CVNCF": CVNCF
+}

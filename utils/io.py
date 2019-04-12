@@ -44,16 +44,29 @@ def load_yaml(path, key='parameters'):
             print(exc)
 
 
-def find_best_hyperparameters(folder_path, meatric):
+def find_best_hyperparameters(folder_path, metric):
     csv_files = [join(folder_path, f) for f in listdir(folder_path)
                  if isfile(join(folder_path, f)) and f.endswith('.csv')]
     best_settings = []
     for record in csv_files:
         df = pd.read_csv(record)
-        df[meatric+'_Score'] = df[meatric].map(lambda x: literal_eval(x)[0])
-        best_settings.append(df.loc[df[meatric+'_Score'].idxmax()].to_dict())
+        df[metric+'_Score'] = df[metric].map(lambda x: literal_eval(x)[0])
+        best_settings.append(df.loc[df[metric+'_Score'].idxmax()].to_dict())
 
-    df = pd.DataFrame(best_settings).drop(meatric+'_Score', axis=1)
+    df = pd.DataFrame(best_settings).drop(metric+'_Score', axis=1)
+
+    return df
+
+
+def load_dataframe_folder(folder_path):
+    csv_files = [join(folder_path, f) for f in listdir(folder_path)
+                 if isfile(join(folder_path, f)) and f.endswith('.csv')]
+    dfs = []
+    for record in csv_files:
+        df = pd.read_csv(record)
+        dfs.append(df)
+
+    df = pd.concat(dfs)
 
     return df
 
