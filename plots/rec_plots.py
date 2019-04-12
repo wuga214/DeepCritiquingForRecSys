@@ -21,7 +21,7 @@ def show_training_progress(df, hue='model', metric='NDCG', name="epoch_vs_ndcg",
 
 def show_critiquing(df, name="falling_rank", x='model', y='Falling Rank', hue='type', save=True):
     fig, ax = plt.subplots(figsize=(8, 4))
-    ax = sns.boxplot(x=x, y=y, hue=hue, data=df, palette="Set3")
+    ax = sns.violinplot(x=x, y=y, hue=hue, data=df, palette="Set3")
     plt.tight_layout()
     if save:
         fig_path = load_yaml('config/global.yml', key='path')['figs']

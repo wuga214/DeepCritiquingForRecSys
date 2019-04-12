@@ -19,11 +19,14 @@ def demo_critique_keyphrase(model, user_index, num_items, keyphrase_index, topk_
     return np.argsort(rating.flatten())[::-1], np.argsort(modified_rating.flatten())[::-1], affected_items
 
 
-def critique_keyphrase(model, user_index, num_items, topk_key=10):
+def critique_keyphrase(model, user_index, num_items, topk_key=10, topk_item=500):
     inputs = np.array([[user_index, item_index] for item_index in range(num_items)])
     rating, explanation = model.predict(inputs)
 
-    explanation_rank_list = np.argsort(-explanation, axis=1)[:, :topk_key]
+    rating_order = np.argsort(rating.flatten())[::-1]
+    top_items = rating_order[:topk_item]
+
+    explanation_rank_list = np.argsort(-explanation[top_items], axis=1)[:, :topk_key]
 
     unique_keyphrase = np.unique(explanation_rank_list)
     keyphrase_index = int(np.random.choice(unique_keyphrase, 1)[0])
@@ -34,5 +37,5 @@ def critique_keyphrase(model, user_index, num_items, topk_key=10):
 
     modified_rating, modified_explanation = model.refine_predict(inputs, explanation)
 
-    return np.argsort(rating.flatten())[::-1], np.argsort(modified_rating.flatten())[::-1], affected_items
+    return rating_order, np.argsort(modified_rating.flatten())[::-1], affected_items
 

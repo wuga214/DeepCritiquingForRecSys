@@ -33,8 +33,8 @@ def critiquing(num_users, num_items, df_train, keyPhrase, params, num_critique, 
         predict_batch_size = row['predict_batch_size']
         lam = row['lambda']
         learning_rate = row['learning_rate']
-        epoch = 300
-        negative_sampling_size = 5
+        epoch = 50
+        negative_sampling_size = 1
 
         format = "model: {0}, rank: {1}, num_layers: {2}, train_batch_size: {3}, " \
                  "predict_batch_size: {4}, lambda: {5}, learning_rate: {6}, epoch: {7}, negative_sampling_size: {8}"
@@ -68,9 +68,9 @@ def critiquing(num_users, num_items, df_train, keyPhrase, params, num_critique, 
         for i in range(3):
             random_users = np.random.choice(num_users, num_critique)
             for user in tqdm(random_users):
-                r_b, r_f, k = critique_keyphrase(model, user, num_items, topk_key=10)
+                r_b, r_f, k = critique_keyphrase(model, user, num_items, topk_key=10, topk_item=500)
                 affected_falling_rank_result.append(falling_rank(r_b.tolist(), r_f.tolist(), k))
-                not_k = np.array(range(num_items))
+                not_k = np.array(r_b.tolist()[:500])
                 not_k = not_k[~np.in1d(not_k, k)]
                 inaffected_falling_rank_result.append(falling_rank(r_b.tolist(), r_f.tolist(), not_k))
 

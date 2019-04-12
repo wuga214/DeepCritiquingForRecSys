@@ -59,7 +59,7 @@ class CNCF(object):
             for i in range(self.num_layers):
                 ho = tf.layers.dense(inputs=hi, units=self.embed_dim*2,
                                      kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
-                                     activation=tf.nn.elu)
+                                     activation=tf.nn.relu)
                 #hi = tf.concat([hi, ho], axis=1)
                 hi = ho
 
@@ -85,7 +85,7 @@ class CNCF(object):
                                                    # kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                    activation=None, name='latent_reconstruction', reuse=True)
 
-            modified_latent = (latent + modified_latent)/2.0
+            modified_latent = (latent + tf.nn.relu(modified_latent))/2.0
 
         with tf.variable_scope("prediction", reuse=True):
             rating_prediction = tf.layers.dense(inputs=modified_latent, units=1,
