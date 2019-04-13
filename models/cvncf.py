@@ -95,7 +95,7 @@ class CVNCF(object):
                                                    # kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                    activation=None, name='latent_reconstruction', reuse=True)
 
-            modified_latent = (latent + modified_latent)/2.0
+            modified_latent = (latent + tf.nn.relu(modified_latent))/2.0
             modified_mean = modified_latent[:, :self.embed_dim]
 
 

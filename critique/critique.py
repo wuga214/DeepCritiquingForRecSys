@@ -30,7 +30,7 @@ def critique_keyphrase(model, user_index, num_items, topk_key=10):
 
     affected_items = np.where(explanation_rank_list == keyphrase_index)[0]
 
-    explanation[:, keyphrase_index] = 0
+    explanation[:, keyphrase_index] = np.min(explanation, axis=1)
 
     modified_rating, modified_explanation = model.refine_predict(inputs, explanation)
 

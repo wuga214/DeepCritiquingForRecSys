@@ -31,10 +31,10 @@ def critiquing(num_users, num_items, df_train, keyPhrase, params, num_critique, 
         num_layers = row['num_layers']
         train_batch_size = row['train_batch_size']
         predict_batch_size = row['predict_batch_size']
-        lam = row['lambda']
-        learning_rate = row['learning_rate']
-        epoch = 300
-        negative_sampling_size = 5
+        lam = 0.0001
+        learning_rate = 0.0005
+        epoch = 200
+        negative_sampling_size = 1
 
         format = "model: {0}, rank: {1}, num_layers: {2}, train_batch_size: {3}, " \
                  "predict_batch_size: {4}, lambda: {5}, learning_rate: {6}, epoch: {7}, negative_sampling_size: {8}"
@@ -60,12 +60,17 @@ def critiquing(num_users, num_items, df_train, keyPhrase, params, num_critique, 
                                              lamb=lam,
                                              learning_rate=learning_rate)
 
-        model.train_model(df_train, epoch=epoch)
+        pretrained_path = load_yaml('config/global.yml', key='path')['pretrained']
+        try:
+            model.load_model(pretrained_path+params['problem'], row['model'])
+        except:
+            model.train_model(df_train, epoch=epoch)
+            model.save_model(pretrained_path+params['problem'], row['model'])
 
         affected_falling_rank_result = []
         inaffected_falling_rank_result = []
 
-        for i in range(3):
+        for i in range(10):
             random_users = np.random.choice(num_users, num_critique)
             for user in tqdm(random_users):
                 r_b, r_f, k = critique_keyphrase(model, user, num_items, topk_key=10)
