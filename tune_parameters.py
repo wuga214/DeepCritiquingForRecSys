@@ -1,4 +1,4 @@
-from experiment.tuning import hyper_parameter_tuning
+from experiment.tuning import hyper_parameter_tuning, explanation_parameter_tuning
 from providers.split import leave_one_out_split
 from utils.io import save_dataframe_csv, load_yaml
 from utils.modelnames import models
@@ -25,13 +25,18 @@ def main(args):
 
     keyPhrase = pd.read_csv(args.path + 'KeyPhrases.csv')['Phrases'].values
 
-    hyper_parameter_tuning(num_users, num_items, df_train, df_valid, keyPhrase, params, save_path=args.name, gpu_on=args.gpu)
+    if args.explanation:
+        explanation_parameter_tuning(num_users, num_items, df_train, df_valid, keyPhrase, params,
+                                     save_path=args.name, gpu_on=args.gpu)
+    else:
+        hyper_parameter_tuning(num_users, num_items, df_train, df_valid, keyPhrase, params,
+                               save_path=args.name, gpu_on=args.gpu)
 
 
 if __name__ == "__main__":
     # Commandline arguments
     parser = argparse.ArgumentParser(description="ParameterTuning")
-
+    parser.add_argument('--explanation', dest='explanation', action="store_true")
     parser.add_argument('-gpu', dest='gpu', action='store_true')
     parser.add_argument('-b', dest='rating_col', default="Binary")
     parser.add_argument('-d', dest='path', default="data/Beer/")

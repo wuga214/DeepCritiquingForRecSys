@@ -62,14 +62,14 @@ class CVNCF(object):
             hi = tf.nn.dropout(hi, 1 - self.corruption)
 
             for i in range(self.num_layers):
-                ho = tf.layers.dense(inputs=hi, units=self.embed_dim*2,
+                ho = tf.layers.dense(inputs=hi, units=self.embed_dim*4,
                                      kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                      activation=None)
                 hi = ho
 
         with tf.variable_scope('latent'):
-            self.mean = tf.nn.relu(hi[:, :self.embed_dim])
-            logstd = tf.nn.tanh(hi[:, self.embed_dim:])*3
+            self.mean = tf.nn.relu(hi[:, :self.embed_dim*2])
+            logstd = tf.nn.tanh(hi[:, self.embed_dim*2:])*3
             self.stddev = tf.exp(logstd)
             epsilon = tf.random_normal(tf.shape(self.stddev))
             self.z = tf.cond(self.sampling, lambda: self.mean + self.stddev * epsilon, lambda: self.mean)
@@ -81,22 +81,23 @@ class CVNCF(object):
                                                 kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                 activation=None, name='rating_prediction')
             phrase_prediction = tf.layers.dense(inputs=self.z, units=self.text_dim,
+                                                kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                 activation=None, name='phrase_prediction')
 
             self.rating_prediction = rating_prediction
             self.phrase_prediction = phrase_prediction
 
         with tf.variable_scope("looping"):
-            reconstructed_latent = tf.layers.dense(inputs=self.phrase_prediction, units=self.embed_dim*2,
+            reconstructed_latent = tf.layers.dense(inputs=self.phrase_prediction, units=self.embed_dim*4,
                                                    kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                    activation=None, name='latent_reconstruction', reuse=False)
 
-            modified_latent = tf.layers.dense(inputs=self.modified_phrase, units=self.embed_dim*2,
+            modified_latent = tf.layers.dense(inputs=self.modified_phrase, units=self.embed_dim*4,
                                                    # kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                    activation=None, name='latent_reconstruction', reuse=True)
 
             modified_latent = (latent + tf.nn.relu(modified_latent))/2.0
-            modified_mean = modified_latent[:, :self.embed_dim]
+            modified_mean = modified_latent[:, :self.embed_dim*2]
 
 
         with tf.variable_scope("prediction", reuse=True):
