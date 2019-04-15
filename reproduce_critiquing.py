@@ -32,7 +32,7 @@ if __name__ == "__main__":
     parser.add_argument('-i', dest='item_id', default="ItemIndex")
     parser.add_argument('-key-col', dest='key_col', default="keyVector")
     parser.add_argument('-p', dest='problem', default="CDsVinyl")
-    parser.add_argument('-s', dest='save', default="CD_Critiquing.csv")
+    parser.add_argument('-s', dest='save', default="CD_Critiquing")
     parser.add_argument('-f', dest='figure', default="CD_Falling_Rank")
     parser.add_argument('-u', dest='user_id', default="UserIndex")
     parser.add_argument('-c', dest='critiquing', type=check_int_positive, default=300)

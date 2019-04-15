@@ -11,6 +11,7 @@ import tensorflow as tf
 from tqdm import tqdm
 from critique.critique import critique_keyphrase
 from metrics.critiquing_performance import falling_rank
+from metrics.critiquing_performance import critiquing_evaluation
 from plots.rec_plots import show_critiquing
 
 
@@ -19,7 +20,8 @@ def critiquing(num_users, num_items, df_train, keyPhrase, params, num_critique, 
     table_path = load_yaml('config/global.yml', key='path')['tables']
     df = find_best_hyperparameters(table_path + params['problem'], 'NDCG')
 
-    dfs = []
+    dfs_box = []
+    dfs_map = []
 
     for index, row in df.iterrows():
 
@@ -31,8 +33,8 @@ def critiquing(num_users, num_items, df_train, keyPhrase, params, num_critique, 
         num_layers = row['num_layers']
         train_batch_size = row['train_batch_size']
         predict_batch_size = row['predict_batch_size']
-        lam = 0.0001
-        learning_rate = 0.0005
+        lam = row['lambda']
+        learning_rate = row['learning_rate']
         epoch = 200
         negative_sampling_size = 1
 
@@ -67,32 +69,18 @@ def critiquing(num_users, num_items, df_train, keyPhrase, params, num_critique, 
             model.train_model(df_train, epoch=epoch)
             model.save_model(pretrained_path+params['problem'], row['model'])
 
-        affected_falling_rank_result = []
-        inaffected_falling_rank_result = []
+        df_box, df_map = critiquing_evaluation(model, algorithm, num_users, num_items, num_critique, topk=[5, 10, 20])
 
-        for i in range(10):
-            random_users = np.random.choice(num_users, num_critique)
-            for user in tqdm(random_users):
-                r_b, r_f, k = critique_keyphrase(model, user, num_items, topk_key=10)
-                affected_falling_rank_result.append(falling_rank(r_b.tolist(), r_f.tolist(), k))
-                not_k = np.array(range(num_items))
-                not_k = not_k[~np.in1d(not_k, k)]
-                inaffected_falling_rank_result.append(falling_rank(r_b.tolist(), r_f.tolist(), not_k))
-
-        df_affected = pd.DataFrame.from_dict({'Falling Rank': affected_falling_rank_result})
-        df_affected['type'] = 'Affected'
-        df_inaffected = pd.DataFrame.from_dict({'Falling Rank': inaffected_falling_rank_result})
-        df_inaffected['type'] = 'Unaffected'
-        df_box = pd.concat([df_inaffected, df_affected])
-
-        df_box['model'] = algorithm
-
-        dfs.append(df_box)
+        dfs_box.append(df_box)
+        dfs_map.append(df_map)
 
         model.sess.close()
         tf.reset_default_graph()
 
-    df_output = pd.concat(dfs)
-    save_dataframe_csv(df_output, table_path, name=save_path)
+    df_output = pd.concat(dfs_box)
+    save_dataframe_csv(df_output, table_path, name=save_path+'_FR.csv')
+
+    df_output_map = pd.concat(dfs_map)
+    save_dataframe_csv(df_output_map, table_path, name=save_path+'_MAP.csv')
 
     show_critiquing(df_output, name=figure_path, x='model', y='Falling Rank', hue='type', save=True)
