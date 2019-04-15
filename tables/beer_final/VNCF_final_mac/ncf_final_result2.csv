@@ -1,0 +1,2 @@
+model,rank,num_layers,train_batch_size,predict_batch_size,lambda,topK,learning_rate,epoch,negative_sampling_size,Clicks,MAP@10,MAP@15,MAP@20,MAP@5,MAP@50,NDCG,Precision@10,Precision@15,Precision@20,Precision@5,Precision@50,R-Precision,Recall@10,Recall@15,Recall@20,Recall@5,Recall@50
+NCF,100,1,128,128,0.01,50,0.0001,,5,3.2611,0.0329,0.0303,0.0283,0.037,0.0219,0.1124,0.0272,0.0239,0.0216,0.0321,0.0146,0.0343,0.1069,0.1386,0.164,0.065,0.2611
