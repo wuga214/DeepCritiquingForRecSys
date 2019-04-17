@@ -8,6 +8,7 @@ sns.axes_style("white")
 
 def show_training_progress(df, hue='model', metric='NDCG', name="epoch_vs_ndcg", save=True):
     fig, ax = plt.subplots(figsize=(6, 3))
+    df = df.sort_values(by=['model'])
     #plt.axhline(y=0.165, color='r', linestyle='-')
     ax = sns.lineplot(x='epoch', y=metric, hue=hue, style=hue, data=df, ci=68)
     ax.set_xlabel("Epoch")
@@ -23,6 +24,7 @@ def show_training_progress(df, hue='model', metric='NDCG', name="epoch_vs_ndcg",
 
 
 def show_critiquing(df, name="falling_rank", x='model', y='Falling Rank', hue='type', save=True):
+    df = df.sort_values(by=['model'])
     fig, ax = plt.subplots(figsize=(4, 4))
     ax = sns.boxplot(x=x, y=y, hue=hue, data=df, palette="Set3", width=0.7)
     ax.set_xlabel("Model")

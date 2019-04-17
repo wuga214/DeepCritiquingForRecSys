@@ -12,11 +12,6 @@ def falling_rank(rank_before, rank_after, item_affected):
     sum_rank_after = sum([rank_after.index(x) for x in item_affected])
     return (sum_rank_after - sum_rank_before)/float(len(item_affected))
 
-# def falling_rank(rank_before, rank_after, item_affected):
-#     rank_before = np.array([rank_before.index(x) for x in item_affected])
-#     rank_after = np.array([rank_after.index(x) for x in item_affected])
-#     return np.sum((rank_after-rank_before) > 0)/float(len(rank_before)) - np.sum((rank_before-rank_after) > 0)/float(len(rank_before))
-
 
 def critiquing_evaluation(model, model_name, num_users, num_items, num_critique, topk):
 
@@ -27,7 +22,7 @@ def critiquing_evaluation(model, model_name, num_users, num_items, num_critique,
 
     map_results = [[] for k in topk]
 
-    for i in range(1):
+    for i in range(5):
         random_users = np.random.choice(num_users, num_critique)
         for user in tqdm(random_users):
             r_b, r_f, affected_items = critique_keyphrase(model, user, num_items, topk_key=10)
@@ -46,7 +41,7 @@ def critiquing_evaluation(model, model_name, num_users, num_items, num_critique,
     map_results_dict = dict()
     map_results_dict['model'] = model_name
     for i, k in enumerate(topk):
-        map_results_dict['MAP@{0}'.format(k)] = (np.average(map_results[i]), 1.96*np.std(map_results[i])/np.sqrt(10*num_critique))
+        map_results_dict['MAP@{0}'.format(k)] = map_results[i]
     df_map = pd.DataFrame(map_results_dict)
 
     df_affected = pd.DataFrame.from_dict({'Falling Rank': affected_falling_rank_result})

@@ -35,7 +35,7 @@ if __name__ == "__main__":
     parser.add_argument('-s', dest='save', default="CD_Critiquing")
     parser.add_argument('-f', dest='figure', default="CD_Falling_Rank")
     parser.add_argument('-u', dest='user_id', default="UserIndex")
-    parser.add_argument('-c', dest='critiquing', type=check_int_positive, default=300)
+    parser.add_argument('-c', dest='critiquing', type=check_int_positive, default=500)
     args = parser.parse_args()
 
     main(args)

@@ -18,7 +18,8 @@ from plots.rec_plots import show_critiquing
 def critiquing(num_users, num_items, df_train, keyPhrase, params, num_critique, save_path, figure_path):
     progress = WorkSplitter()
     table_path = load_yaml('config/global.yml', key='path')['tables']
-    df = find_best_hyperparameters(table_path + params['problem'], 'NDCG')
+    #df = find_best_hyperparameters(table_path + params['problem'], 'NDCG@10')
+    df = pd.read_csv('tables/explanation/CDsVinyl/hyper_parameters.csv')
 
     dfs_box = []
     dfs_map = []
