@@ -65,6 +65,8 @@ class CNCF(object):
 
             latent = tf.stop_gradient(hi)
 
+            self.mean = latent
+
         with tf.variable_scope("prediction", reuse=False):
             rating_prediction = tf.layers.dense(inputs=hi, units=1,
                                                 kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
@@ -85,6 +87,7 @@ class CNCF(object):
                                                    # kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                    activation=None, name='latent_reconstruction', reuse=True)
 
+            self.modified_mean = tf.nn.relu(modified_latent)
             modified_latent = (latent + tf.nn.relu(modified_latent))/2.0
 
         with tf.variable_scope("prediction", reuse=True):
@@ -172,6 +175,18 @@ class CNCF(object):
 
         return modified_rating, modified_phrases
 
+    def density_shifting_estimate(self, inputs, critiqued):
+        user_index = inputs[:, 0]
+        item_index = inputs[:, 1]
+        feed_dict = {self.users_index: user_index,
+                     self.items_index: item_index,
+                     self.modified_phrase: critiqued
+                     }
+        mean, modified_mean = self.sess.run([self.mean,
+                                             self.modified_mean],
+                                            feed_dict=feed_dict)
+
+        return mean, modified_mean
 
     def create_embeddings(self, df, user_col, item_col, rating_col):
         R = to_sparse_matrix(df, self.num_users, self.num_items, user_col, item_col, rating_col)

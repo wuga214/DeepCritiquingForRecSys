@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
-from critique.critique import critique_keyphrase
+from critique.critique import critique_keyphrase, latent_density
 from metrics.general_performance import ndcg, precisionk, recallk, average_precisionk
 
 
@@ -53,3 +53,36 @@ def critiquing_evaluation(model, model_name, num_users, num_items, num_critique,
     df_fr['model'] = model_name
 
     return df_fr, df_map
+
+
+def latent_density_evaluation(model, model_name, num_users, num_items, num_critique):
+
+    df_list = []
+
+    for i in range(1):
+        random_users = np.random.choice(num_users, num_critique)
+        for user in tqdm(random_users):
+            mean, modified_mean, init_mag, critiqued_mag = latent_density(model, user, num_items, topk_key=10)
+            initial_dict = dict()
+            initial_dict['model'] = model_name
+            initial_dict['stage'] = "Initial"
+            modified_dict = dict()
+            modified_dict['model'] = model_name
+            modified_dict['stage'] = "Modified"
+
+            initial_dict['UserIndex'] = user
+            initial_dict["X"] = mean[:, 0].tolist()
+            initial_dict["Y"] = mean[:, 1].tolist()
+            initial_dict['Magnitude'] = init_mag.tolist()
+            modified_dict['UserIndex'] = user
+            modified_dict["X"] = modified_mean[:, 0].tolist()
+            modified_dict["Y"] = modified_mean[:, 1].tolist()
+            modified_dict["" \
+                          ""] = critiqued_mag.tolist()
+
+            df_list.append(pd.DataFrame(initial_dict))
+            df_list.append(pd.DataFrame(modified_dict))
+
+    df = pd.concat(df_list)
+
+    return df

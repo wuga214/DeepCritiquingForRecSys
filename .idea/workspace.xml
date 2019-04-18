@@ -2,33 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="073dbce9-5da6-45d3-90fe-2896643f478b" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/experiment/density.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/reproduce_latent_analysis.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/Untitled1-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/.ipynb_checkpoints/Untitled1-checkpoint.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Untitled1.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Untitled1.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/experiment/critiquing.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/critiquing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/critique/critique.py" beforeDir="false" afterPath="$PROJECT_DIR$/critique/critique.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/figs/CD_Falling_Rank.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/figs/CD_Falling_Rank.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/figs/convergence.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/figs/convergence.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/metrics/critiquing_performance.py" beforeDir="false" afterPath="$PROJECT_DIR$/metrics/critiquing_performance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/rec_plots.py" beforeDir="false" afterPath="$PROJECT_DIR$/plots/rec_plots.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/reproduce_critiquing.py" beforeDir="false" afterPath="$PROJECT_DIR$/reproduce_critiquing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/cncf.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/cncf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/cvncf.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/cvncf.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tables/CD_Critiquing_FR.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CD_Critiquing_FR.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tables/CD_Critiquing_MAP.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CD_Critiquing_MAP.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/CD_convergence/CD_convergence_analysis_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CD_convergence/CD_convergence_analysis_1.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/CD_convergence/CD_convergence_analysis_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CD_convergence/CD_convergence_analysis_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/CD_convergence/CD_convergence_analysis_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CD_convergence/CD_convergence_analysis_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/CD_convergence/CD_convergence_analysis_4.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CD_convergence/CD_convergence_analysis_4.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/CD_convergence/CD_convergence_analysis_5.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CD_convergence/CD_convergence_analysis_5.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/CD_explanation_convergence/CD_explanation_convergence_analysis_1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CD_explanation_convergence/CD_explanation_convergence_analysis_1.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/CD_explanation_convergence/CD_explanation_convergence_analysis_2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CD_explanation_convergence/CD_explanation_convergence_analysis_2.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/CD_explanation_convergence/CD_explanation_convergence_analysis_3.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CD_explanation_convergence/CD_explanation_convergence_analysis_3.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/CD_explanation_convergence/CD_explanation_convergence_analysis_4.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CD_explanation_convergence/CD_explanation_convergence_analysis_4.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/CD_explanation_convergence/CD_explanation_convergence_analysis_5.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CD_explanation_convergence/CD_explanation_convergence_analysis_5.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/CDsVinyl/cncf.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CDsVinyl/cncf.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/CDsVinyl/cvncf.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CDsVinyl/cvncf.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/CDsVinyl/incf.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CDsVinyl/incf.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/CDsVinyl/ivncf.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CDsVinyl/ivncf.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/CDsVinyl/ncf.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CDsVinyl/ncf.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/CDsVinyl/vncf.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CDsVinyl/vncf.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/explanation/CDsVinyl/hyper_parameters.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/explanation/CDsVinyl/hyper_parameters.csv" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -51,7 +36,7 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="5" />
-          <entry key="py" value="9549" />
+          <entry key="py" value="10616" />
           <entry key="sh" value="3" />
           <entry key="yml" value="130" />
         </counts>
@@ -60,7 +45,7 @@
         <counts>
           <entry key="Bash" value="3" />
           <entry key="PLAIN_TEXT" value="5" />
-          <entry key="Python" value="9549" />
+          <entry key="Python" value="10616" />
           <entry key="YAML" value="130" />
         </counts>
       </usages-collector>
@@ -69,7 +54,7 @@
           <entry key="csv" value="1" />
           <entry key="ipynb" value="1" />
           <entry key="png" value="1" />
-          <entry key="py" value="144" />
+          <entry key="py" value="151" />
           <entry key="sh" value="8" />
           <entry key="yml" value="39" />
         </counts>
@@ -80,7 +65,7 @@
           <entry key="IPNB" value="1" />
           <entry key="Image" value="1" />
           <entry key="PLAIN_TEXT" value="3" />
-          <entry key="Python" value="144" />
+          <entry key="Python" value="151" />
           <entry key="YAML" value="37" />
         </counts>
       </usages-collector>
@@ -88,39 +73,26 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/metrics/critiquing_performance.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
+            <state relative-caret-position="259">
+              <caret line="49" column="40" lean-forward="true" selection-start-line="49" selection-start-column="40" selection-end-line="49" selection-end-column="40" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
-                <marker date="1555380280927" expanded="true" signature="612:613" ph="..." />
+                <marker date="1555547439507" expanded="true" signature="628:629" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/show_curves.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-                <marker date="1555014444627" expanded="true" signature="138:274" ph="..." />
-                <marker date="1555014444627" expanded="true" signature="273:274" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/plots/rec_plots.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="21" column="9" lean-forward="true" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
+            <state relative-caret-position="450">
+              <caret line="30" column="52" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="52" />
               <folding>
+                <element signature="e#0#16#0" expanded="true" />
                 <marker date="1555457838909" expanded="true" signature="995:996" ph="..." />
               </folding>
             </state>
@@ -128,10 +100,28 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/cvncf.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="244">
+              <caret line="72" column="40" selection-start-line="72" selection-start-column="40" selection-end-line="72" selection-end-column="40" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/models/cncf.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="510">
+              <caret line="92" column="48" selection-start-line="92" selection-start-column="48" selection-end-line="92" selection-end-column="48" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/experiment/critiquing.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="604">
-              <caret line="72" column="38" lean-forward="true" selection-start-line="72" selection-start-column="38" selection-end-line="72" selection-end-column="38" />
+            <state relative-caret-position="255">
+              <caret line="17" column="4" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="4" />
               <folding>
                 <element signature="e#0#70#0" expanded="true" />
                 <marker date="1555394647530" expanded="true" signature="3156:3262" ph="..." />
@@ -141,33 +131,36 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/utils/modelnames.py">
+        <entry file="file://$PROJECT_DIR$/experiment/density.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="27" selection-start-line="27" selection-end-line="27" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tune_parameters.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
-              <caret line="28" column="27" selection-start-line="28" selection-start-column="8" selection-end-line="28" selection-end-column="36" />
+            <state relative-caret-position="694">
+              <caret line="71" column="33" selection-start-line="71" selection-start-column="33" selection-end-line="71" selection-end-column="33" />
               <folding>
-                <element signature="e#0#82#0" expanded="true" />
+                <element signature="e#0#70#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/experiment/tuning.py">
+        <entry file="file://$PROJECT_DIR$/reproduce_latent_analysis.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="159" selection-start-line="159" selection-end-line="159" />
+            <state relative-caret-position="315">
+              <caret line="21" column="16" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="16" />
               <folding>
-                <element signature="e#0#70#0" expanded="true" />
+                <element signature="e#0#56#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/reproduce_critiquing.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret selection-end-line="40" selection-end-column="14" />
+              <folding>
+                <element signature="e#0#44#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -183,22 +176,13 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reproduce_critiquing.py">
+        <entry file="file://$PROJECT_DIR$/critique/critique.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="21" column="10" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
+            <state relative-caret-position="364">
+              <caret line="32" selection-start-line="32" selection-end-line="32" />
               <folding>
-                <element signature="e#0#44#0" expanded="true" />
+                <element signature="e#0#18#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/experiment/explanation.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="18" column="6" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -227,6 +211,7 @@
       <find>params</find>
       <find>meatric</find>
       <find>embed_</find>
+      <find>latent_density_estimation</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -235,8 +220,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/tune_parameters.sh" />
-        <option value="$PROJECT_DIR$/config/cncf.yml" />
         <option value="$PROJECT_DIR$/config/cvncf.yml" />
         <option value="$PROJECT_DIR$/config/default.yml" />
         <option value="$PROJECT_DIR$/config/incf.yml" />
@@ -275,17 +258,19 @@
         <option value="$PROJECT_DIR$/progress_analysis.py" />
         <option value="$PROJECT_DIR$/experiment/excute.py" />
         <option value="$PROJECT_DIR$/cluster_bash/CDsVinyl/CDsVinyl-cncf.sh" />
-        <option value="$PROJECT_DIR$/models/cncf.py" />
-        <option value="$PROJECT_DIR$/critique/critique.py" />
         <option value="$PROJECT_DIR$/experiment/tuning.py" />
         <option value="$PROJECT_DIR$/tune_parameters.py" />
-        <option value="$PROJECT_DIR$/models/cvncf.py" />
         <option value="$PROJECT_DIR$/models/ivncf.py" />
         <option value="$PROJECT_DIR$/models/vncf.py" />
-        <option value="$PROJECT_DIR$/metrics/critiquing_performance.py" />
         <option value="$PROJECT_DIR$/reproduce_critiquing.py" />
         <option value="$PROJECT_DIR$/experiment/critiquing.py" />
+        <option value="$PROJECT_DIR$/reproduce_latent_analysis.py" />
+        <option value="$PROJECT_DIR$/experiment/density.py" />
         <option value="$PROJECT_DIR$/plots/rec_plots.py" />
+        <option value="$PROJECT_DIR$/models/cncf.py" />
+        <option value="$PROJECT_DIR$/models/cvncf.py" />
+        <option value="$PROJECT_DIR$/critique/critique.py" />
+        <option value="$PROJECT_DIR$/metrics/critiquing_performance.py" />
       </list>
     </option>
   </component>
@@ -394,11 +379,12 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/experiment" />
+      <recent name="$PROJECT_DIR$/models" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/utils" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/models" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -462,8 +448,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/config/incf.yml" />
-    <entry file="file://$PROJECT_DIR$/config/cncf.yml" />
     <entry file="file://$PROJECT_DIR$/config/vncf.yml" />
     <entry file="file://$PROJECT_DIR$/utils/sampler.py" />
     <entry file="file://$PROJECT_DIR$/providers/split.py">
@@ -626,20 +610,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/cncf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="169">
-          <caret line="72" column="54" lean-forward="true" selection-start-line="72" selection-end-line="73" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/cvncf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="99" column="64" selection-start-line="99" selection-start-column="64" selection-end-line="99" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/models/ivncf.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="334">
@@ -665,13 +635,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="9" selection-start-line="9" selection-end-line="10" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/critique/critique.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="61" selection-start-line="21" selection-start-column="53" selection-end-line="21" selection-end-column="61" />
         </state>
       </provider>
     </entry>
@@ -758,52 +721,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/reproduce_explanation_results.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="26" column="8" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reproduce_critiquing.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="10" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#44#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils/modelnames.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="27" selection-start-line="27" selection-end-line="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/experiment/critiquing.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="604">
-          <caret line="72" column="38" lean-forward="true" selection-start-line="72" selection-start-column="38" selection-end-line="72" selection-end-column="38" />
-          <folding>
-            <element signature="e#0#70#0" expanded="true" />
-            <marker date="1555394647530" expanded="true" signature="3156:3262" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/metrics/critiquing_performance.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-            <marker date="1555380280927" expanded="true" signature="612:613" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/show_curves.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -816,12 +733,103 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/plots/rec_plots.py">
+    <entry file="file://$PROJECT_DIR$/utils/modelnames.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="30" column="1" lean-forward="true" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reproduce_critiquing.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="40" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#44#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reproduce_explanation_results.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="26" column="8" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiment/critiquing.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
-          <caret line="21" column="9" lean-forward="true" selection-start-line="21" selection-start-column="9" selection-end-line="21" selection-end-column="9" />
+          <caret line="17" column="4" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="4" />
           <folding>
+            <element signature="e#0#70#0" expanded="true" />
+            <marker date="1555394647530" expanded="true" signature="3156:3262" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plots/rec_plots.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="30" column="52" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="52" />
+          <folding>
+            <element signature="e#0#16#0" expanded="true" />
             <marker date="1555457838909" expanded="true" signature="995:996" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/critique/critique.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="32" selection-start-line="32" selection-end-line="32" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/cncf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="92" column="48" selection-start-line="92" selection-start-column="48" selection-end-line="92" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/cvncf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="244">
+          <caret line="72" column="40" selection-start-line="72" selection-start-column="40" selection-end-line="72" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reproduce_latent_analysis.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="16" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiment/density.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="694">
+          <caret line="71" column="33" selection-start-line="71" selection-start-column="33" selection-end-line="71" selection-end-column="33" />
+          <folding>
+            <element signature="e#0#70#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/metrics/critiquing_performance.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="259">
+          <caret line="49" column="40" lean-forward="true" selection-start-line="49" selection-start-column="40" selection-end-line="49" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+            <marker date="1555547439507" expanded="true" signature="628:629" ph="..." />
           </folding>
         </state>
       </provider>

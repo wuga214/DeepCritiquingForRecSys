@@ -96,6 +96,7 @@ class CVNCF(object):
                                                    # kernel_regularizer=tf.contrib.layers.l2_regularizer(scale=self.lamb),
                                                    activation=None, name='latent_reconstruction', reuse=True)
 
+            self.modified_mean = tf.nn.relu(modified_latent)[:, :self.embed_dim*2]
             modified_latent = (latent + tf.nn.relu(modified_latent))/2.0
             modified_mean = modified_latent[:, :self.embed_dim*2]
 
@@ -197,6 +198,19 @@ class CVNCF(object):
                                                           feed_dict=feed_dict)
 
         return modified_rating, modified_phrases
+
+    def density_shifting_estimate(self, inputs, critiqued):
+        user_index = inputs[:, 0]
+        item_index = inputs[:, 1]
+        feed_dict = {self.users_index: user_index,
+                     self.items_index: item_index,
+                     self.modified_phrase: critiqued,
+                     self.sampling: False, self.corruption: 0}
+        mean, modified_mean = self.sess.run([self.mean,
+                                             self.modified_mean],
+                                            feed_dict=feed_dict)
+
+        return mean, modified_mean
 
     def create_embeddings(self, df, user_col, item_col, rating_col):
         R = to_sparse_matrix(df, self.num_users, self.num_items, user_col, item_col, rating_col)
