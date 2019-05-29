@@ -1,28 +1,28 @@
 #!/usr/bin/env bash
-python3 tune_parameters.py -d data/CDsVinyl/ -n CDsVinyl/cncf.csv -y config/cncf.yml -gpu
-python3 tune_parameters.py -d data/Beer/ -n Beer/cncf.csv -y config/cncf.yml -gpu
-python3 tune_parameters.py -d data/CDsVinyl/ -n CDsVinyl/cvncf.csv -y config/cvncf.yml -gpu
-python3 tune_parameters.py -d data/Beer/ -n Beer/cvncf.csv -y config/cvncf.yml -gpu
-python3 tune_parameters.py -d data/CDsVinyl/ -n CDsVinyl/incf.csv -y config/incf.yml -gpu
-python3 tune_parameters.py -d data/Beer/ -n Beer/incf.csv -y config/incf.yml -gpu
-python3 tune_parameters.py -d data/CDsVinyl/ -n CDsVinyl/ivncf.csv -y config/ivncf.yml -gpu
-python3 tune_parameters.py -d data/Beer/ -n Beer/ivncf.csv -y config/ivncf.yml -gpu
-python3 tune_parameters.py -d data/CDsVinyl/ -n CDsVinyl/ncf.csv -y config/ncf.yml -gpu
-python3 tune_parameters.py -d data/Beer/ -n Beer/ncf.csv -y config/ncf.yml -gpu
-python3 tune_parameters.py -d data/CDsVinyl/ -n CDsVinyl/vncf.csv -y config/vncf.yml -gpu
-python3 tune_parameters.py -d data/Beer/ -n Beer/vncf.csv -y config/vncf.yml -gpu
+python tune_parameters.py --data_dir data/CDsVinyl/ --save_path CDsVinyl/cncf.csv --parameters config/CDsVinyl/cncf.yml -gpu
+python tune_parameters.py --data_dir data/beer/ --save_path beer/cncf.csv --parameters config/beer/cncf.yml -gpu
+python tune_parameters.py --data_dir data/CDsVinyl/ --save_path CDsVinyl/cvncf.csv --parameters config/CDsVinyl/cvncf.yml -gpu
+python tune_parameters.py --data_dir data/beer/ --save_path beer/cvncf.csv --parameters config/beer/cvncf.yml -gpu
+python tune_parameters.py --data_dir data/CDsVinyl/ --save_path CDsVinyl/incf.csv --parameters config/CDsVinyl/incf.yml -gpu
+python tune_parameters.py --data_dir data/beer/ --save_path beer/incf.csv --parameters config/beer/incf.yml -gpu
+python tune_parameters.py --data_dir data/CDsVinyl/ --save_path CDsVinyl/ivncf.csv --parameters config/CDsVinyl/ivncf.yml -gpu
+python tune_parameters.py --data_dir data/beer/ --save_path beer/ivncf.csv --parameters config/beer/ivncf.yml -gpu
+python tune_parameters.py --data_dir data/CDsVinyl/ --save_path CDsVinyl/ncf.csv --parameters config/CDsVinyl/ncf.yml -gpu
+python tune_parameters.py --data_dir data/beer/ --save_path beer/ncf.csv --parameters config/beer/ncf.yml -gpu
+python tune_parameters.py --data_dir data/CDsVinyl/ --save_path CDsVinyl/vncf.csv --parameters config/CDsVinyl/vncf.yml -gpu
+python tune_parameters.py --data_dir data/beer/ --save_path beer/vncf.csv --parameters config/beer/vncf.yml -gpu
 
 
-#python3 tune_parameters.py -d data/CDsVinyl/ -n CDsVinyl/ncf.csv -y config/ncf.yml -gpu
-#python3 tune_parameters.py -d data/CDsVinyl/ -n CDsVinyl/incf.csv -y config/incf.yml -gpu
-#python3 tune_parameters.py -d data/CDsVinyl/ -n CDsVinyl/cncf.csv -y config/cncf.yml -gpu
-#python3 tune_parameters.py -d data/CDsVinyl/ -n CDsVinyl/vncf.csv -y config/vncf.yml -gpu
-#python3 tune_parameters.py -d data/CDsVinyl/ -n CDsVinyl/ivncf.csv -y config/ivncf.yml -gpu
-#python3 tune_parameters.py -d data/CDsVinyl/ -n CDsVinyl/cvncf.csv -y config/cvncf.yml -gpu
-#python3 tune_parameters.py -d data/Beer/ -n Beer/ncf.csv -y config/ncf.yml -gpu
-#python3 tune_parameters.py -d data/Beer/ -n Beer/incf.csv -y config/incf.yml -gpu
-#python3 tune_parameters.py -d data/Beer/ -n Beer/cncf.csv -y config/cncf.yml -gpu
-#python3 tune_parameters.py -d data/Beer/ -n Beer/vncf.csv -y config/vncf.yml -gpu
-#python3 tune_parameters.py -d data/Beer/ -n Beer/ivncf.csv -y config/ivncf.yml -gpu
-#python3 tune_parameters.py -d data/Beer/ -n Beer/cvncf.csv -y config/cvncf.yml -gpu
+#python tune_parameters.py --data_dir data/CDsVinyl/ --save_path CDsVinyl/ncf.csv --parameters config/CDsVinyl/ncf.yml -gpu
+#python tune_parameters.py --data_dir data/CDsVinyl/ --save_path CDsVinyl/incf.csv --parameters config/CDsVinyl/incf.yml -gpu
+#python tune_parameters.py --data_dir data/CDsVinyl/ --save_path CDsVinyl/cncf.csv --parameters config/CDsVinyl/cncf.yml -gpu
+#python tune_parameters.py --data_dir data/CDsVinyl/ --save_path CDsVinyl/vncf.csv --parameters config/CDsVinyl/vncf.yml -gpu
+#python tune_parameters.py --data_dir data/CDsVinyl/ --save_path CDsVinyl/ivncf.csv --parameters config/CDsVinyl/ivncf.yml -gpu
+#python tune_parameters.py --data_dir data/CDsVinyl/ --save_path CDsVinyl/cvncf.csv --parameters config/CDsVinyl/cvncf.yml -gpu
+#python tune_parameters.py --data_dir data/beer/ --save_path beer/ncf.csv --parameters config/beer/ncf.yml -gpu
+#python tune_parameters.py --data_dir data/beer/ --save_path beer/incf.csv --parameters config/beer/incf.yml -gpu
+#python tune_parameters.py --data_dir data/beer/ --save_path beer/cncf.csv --parameters config/beer/cncf.yml -gpu
+#python tune_parameters.py --data_dir data/beer/ --save_path beer/vncf.csv --parameters config/beer/vncf.yml -gpu
+#python tune_parameters.py --data_dir data/beer/ --save_path beer/ivncf.csv --parameters config/beer/ivncf.yml -gpu
+#python tune_parameters.py --data_dir data/beer/ --save_path beer/cvncf.csv --parameters config/beer/cvncf.yml -gpu
 

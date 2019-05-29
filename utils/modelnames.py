@@ -1,31 +1,32 @@
-from models.cncf import CNCF
-from models.cvncf import CVNCF
-from models.incf import INCF
-from models.ivncf import IVNCF
+from models.item_pop import ItemPop
+from models.user_pop import UserPop
 from models.ncf import NCF
 from models.vncf import VNCF
-from models.user_pop import UserPop
-from models.item_pop import ItemPop
+from models.e_ncf import ENCF
+from models.e_vncf import EVNCF
+from models.ce_ncf import CENCF
+from models.ce_vncf import CEVNCF
+
 
 models = {
     "NCF": NCF,
-    "INCF": INCF,
-    "CNCF": CNCF,
     "VNCF": VNCF,
-    "IVNCF": IVNCF,
-    "CVNCF": CVNCF
+    "E-NCF": ENCF,
+    "E-VNCF": EVNCF,
+    "CE-NCF": CENCF,
+    "CE-VNCF": CEVNCF
 }
 
 explanable_models = {
-    "INCF": INCF,
-    "CNCF": CNCF,
-    "IVNCF": IVNCF,
-    "CVNCF": CVNCF,
+    "ItemPop": ItemPop,
     "UserPop": UserPop,
-    "ItemPop": ItemPop
+    "E-NCF": ENCF,
+    "E-VNCF": EVNCF,
+    "CE-NCF": CENCF,
+    "CE-VNCF": CEVNCF
 }
 
 critiquing_models = {
-    "CNCF": CNCF,
-    "CVNCF": CVNCF
+    "CE-NCF": CENCF,
+    "CE-VNCF": CEVNCF
 }

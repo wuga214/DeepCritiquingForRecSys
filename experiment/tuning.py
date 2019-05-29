@@ -1,18 +1,15 @@
-from metrics.general_performance import evaluate, evaluate_explanation
-from predicts.topk import elementwisepredictor, predict_explanation
-from providers.sampler import Negative_Sampler
-from tqdm import tqdm
+from evaluation.general_performance import evaluate, evaluate_explanation
+from prediction.predictor import predict_elementwise, predict_explanation
 from utils.io import load_dataframe_csv, save_dataframe_csv, load_yaml
 from utils.progress import WorkSplitter
 from utils.reformat import to_sparse_matrix
+from utils.sampler import Negative_Sampler
 
-import inspect
-import numpy as np
 import pandas as pd
 import tensorflow as tf
 
 
-def hyper_parameter_tuning(num_users, num_items, df_train, df_valid, keyPhrase, params, save_path, gpu_on=True):
+def hyper_parameter_tuning(num_users, num_items, user_col, item_col, rating_col, keyphrase_vector_col, df_train, df_valid, keyphrase_names, params, save_path):
     progress = WorkSplitter()
     table_path = load_yaml('config/global.yml', key='path')['tables']
     try:
@@ -31,7 +28,7 @@ def hyper_parameter_tuning(num_users, num_items, df_train, df_valid, keyPhrase, 
 
                     for predict_batch_size in params['predict_batch_size']:
 
-                        for lam in params['lambda']:
+                        for lamb in params['lambda']:
 
                             for learning_rate in params['learning_rate']:
 
@@ -44,7 +41,7 @@ def hyper_parameter_tuning(num_users, num_items, df_train, df_valid, keyPhrase, 
                                             (df['num_layers'] == num_layers) &
                                             (df['train_batch_size'] == train_batch_size) &
                                             (df['predict_batch_size'] == predict_batch_size) &
-                                            (df['lambda'] == lam) &
+                                            (df['lambda'] == lamb) &
                                             (df['learning_rate'] == learning_rate) &
                                             (df['epoch'] == epoch) &
                                             (df['negative_sampling_size'] == negative_sampling_size)).any():
@@ -55,54 +52,75 @@ def hyper_parameter_tuning(num_users, num_items, df_train, df_valid, keyPhrase, 
                                                  "lambda: {5}, learning_rate: {6}, epoch: {7}, " \
                                                  "negative_sampling_size: {8}"
                                         progress.section(format.format(algorithm, rank, num_layers, train_batch_size,
-                                                                       predict_batch_size, lam, learning_rate, epoch,
+                                                                       predict_batch_size, lamb, learning_rate, epoch,
                                                                        negative_sampling_size))
 
                                         progress.subsection("Initializing Negative Sampler")
 
-                                        negative_sampler = Negative_Sampler(df_train[['UserIndex', 'ItemIndex', 'keyVector']],
-                                                                            'UserIndex', 'ItemIndex', 'Binary', 'keyVector',
+                                        negative_sampler = Negative_Sampler(df_train[[user_col,
+                                                                                      item_col,
+                                                                                      keyphrase_vector_col]],
+                                                                            user_col,
+                                                                            item_col,
+                                                                            rating_col,
+                                                                            keyphrase_vector_col,
                                                                             num_items=num_items,
                                                                             batch_size=train_batch_size,
-                                                                            num_keys=len(keyPhrase),
+                                                                            num_keyphrases=len(keyphrase_names),
                                                                             negative_sampling_size=negative_sampling_size)
 
                                         model = params['models'][algorithm](num_users=num_users,
                                                                             num_items=num_items,
-                                                                            text_dim=len(keyPhrase),
+                                                                            text_dim=len(keyphrase_names),
                                                                             embed_dim=rank,
                                                                             num_layers=num_layers,
-                                                                            batch_size=train_batch_size,
                                                                             negative_sampler=negative_sampler,
-                                                                            lamb=lam,
+                                                                            lamb=lamb,
                                                                             learning_rate=learning_rate)
 
-                                        model.train_model(df_train, epoch=epoch)
+                                        progress.subsection("Training")
+
+                                        model.train_model(df_train,
+                                                          user_col,
+                                                          item_col,
+                                                          rating_col,
+                                                          epoch=epoch)
 
                                         progress.subsection("Prediction")
 
-                                        prediction, explanation = elementwisepredictor(model, df_train,
-                                                                                       'UserIndex', 'ItemIndex',
-                                                                                       params['topK'][-1],
-                                                                                       batch_size=predict_batch_size,
-                                                                                       explain=True,
-                                                                                       key_names=keyPhrase)
+                                        prediction, explanation = predict_elementwise(model,
+                                                                                      df_train,
+                                                                                      user_col,
+                                                                                      item_col,
+                                                                                      params['topK'][-1],
+                                                                                      batch_size=predict_batch_size,
+                                                                                      enable_explanation=True,
+                                                                                      keyphrase_names=keyphrase_names)
 
                                         progress.subsection("Evaluation")
 
-                                        R_valid = to_sparse_matrix(df_valid, num_users, num_items,
-                                                                   'UserIndex', 'ItemIndex', 'Binary')
+                                        R_valid = to_sparse_matrix(df_valid,
+                                                                   num_users,
+                                                                   num_items,
+                                                                   user_col,
+                                                                   item_col,
+                                                                   rating_col)
 
                                         result = evaluate(prediction, R_valid, params['metric'], params['topK'])
 
-                                        result_dict = {'model': algorithm, 'rank': rank, 'num_layers': num_layers,
+                                        result_dict = {'model': algorithm,
+                                                       'rank': rank,
+                                                       'num_layers': num_layers,
                                                        'train_batch_size': train_batch_size,
                                                        'predict_batch_size': predict_batch_size,
-                                                       'lambda': lam, 'learning_rate': learning_rate, 'epoch': epoch,
+                                                       'lambda': lamb,
+                                                       'learning_rate': learning_rate,
+                                                       'epoch': epoch,
                                                        'negative_sampling_size': negative_sampling_size}
 
                                         for name in result.keys():
-                                            result_dict[name] = [round(result[name][0], 4), round(result[name][1], 4)]
+                                            result_dict[name] = [round(result[name][0], 4),
+                                                                 round(result[name][1], 4)]
 
                                         df = df.append(result_dict, ignore_index=True)
 
@@ -112,7 +130,7 @@ def hyper_parameter_tuning(num_users, num_items, df_train, df_valid, keyPhrase, 
                                         save_dataframe_csv(df, table_path, save_path)
 
 
-def explanation_parameter_tuning(num_users, num_items, df_train, df_valid, keyPhrase, params, save_path, gpu_on=True):
+def explanation_parameter_tuning(num_users, num_items, user_col, item_col, rating_col, keyphrase_vector_col, df_train, df_valid, keyphrase_names, params, save_path):
     progress = WorkSplitter()
     table_path = load_yaml('config/global.yml', key='path')['tables']
     try:
@@ -131,7 +149,7 @@ def explanation_parameter_tuning(num_users, num_items, df_train, df_valid, keyPh
 
                     for predict_batch_size in params['predict_batch_size']:
 
-                        for lam in params['lambda']:
+                        for lamb in params['lambda']:
 
                             for learning_rate in params['learning_rate']:
 
@@ -144,7 +162,7 @@ def explanation_parameter_tuning(num_users, num_items, df_train, df_valid, keyPh
                                             (df['num_layers'] == num_layers) &
                                             (df['train_batch_size'] == train_batch_size) &
                                             (df['predict_batch_size'] == predict_batch_size) &
-                                            (df['lambda'] == lam) &
+                                            (df['lambda'] == lamb) &
                                             (df['learning_rate'] == learning_rate) &
                                             (df['epoch'] == epoch) &
                                             (df['negative_sampling_size'] == negative_sampling_size)).any():
@@ -155,45 +173,67 @@ def explanation_parameter_tuning(num_users, num_items, df_train, df_valid, keyPh
                                                  "lambda: {5}, learning_rate: {6}, epoch: {7}, " \
                                                  "negative_sampling_size: {8}"
                                         progress.section(format.format(algorithm, rank, num_layers, train_batch_size,
-                                                                       predict_batch_size, lam, learning_rate, epoch,
+                                                                       predict_batch_size, lamb, learning_rate, epoch,
                                                                        negative_sampling_size))
 
                                         progress.subsection("Initializing Negative Sampler")
 
-                                        negative_sampler = Negative_Sampler(df_train[['UserIndex', 'ItemIndex', 'keyVector']],
-                                                                            'UserIndex', 'ItemIndex', 'Binary', 'keyVector',
+                                        negative_sampler = Negative_Sampler(df_train[[user_col,
+                                                                                      item_col,
+                                                                                      keyphrase_vector_col]],
+                                                                            user_col,
+                                                                            item_col,
+                                                                            rating_col,
+                                                                            keyphrase_vector_col,
                                                                             num_items=num_items,
                                                                             batch_size=train_batch_size,
-                                                                            num_keys=len(keyPhrase),
+                                                                            num_keyphrases=len(keyphrase_names),
                                                                             negative_sampling_size=negative_sampling_size)
 
                                         model = params['models'][algorithm](num_users=num_users,
                                                                             num_items=num_items,
-                                                                            text_dim=len(keyPhrase),
+                                                                            text_dim=len(keyphrase_names),
                                                                             embed_dim=rank,
                                                                             num_layers=num_layers,
-                                                                            batch_size=train_batch_size,
                                                                             negative_sampler=negative_sampler,
-                                                                            lamb=lam,
+                                                                            lamb=lamb,
                                                                             learning_rate=learning_rate)
 
-                                        model.train_model(df_train, epoch=epoch)
+                                        progress.subsection("Training")
+
+                                        model.train_model(df_train,
+                                                          user_col,
+                                                          item_col,
+                                                          rating_col,
+                                                          epoch=epoch)
 
                                         progress.subsection("Prediction")
 
-                                        df_valid_explanation = predict_explanation(model, df_valid, 'UserIndex',
-                                                                                   'ItemIndex',
-                                                                                   topk_key=params['topK'][-1])
+                                        df_valid_explanation = predict_explanation(model,
+                                                                                   df_valid,
+                                                                                   user_col,
+                                                                                   item_col,
+                                                                                   topk_keyphrase=params['topK'][-1])
 
                                         progress.subsection("Evaluation")
 
-                                        explanation_result = evaluate_explanation(df_valid_explanation, df_valid,
-                                                                                  params['metric'], params['topK'])
+                                        explanation_result = evaluate_explanation(df_valid_explanation,
+                                                                                  df_valid,
+                                                                                  params['metric'],
+                                                                                  params['topK'],
+                                                                                  user_col,
+                                                                                  item_col,
+                                                                                  rating_col,
+                                                                                  keyphrase_vector_col)
 
-                                        result_dict = {'model': algorithm, 'rank': rank, 'num_layers': num_layers,
+                                        result_dict = {'model': algorithm,
+                                                       'rank': rank,
+                                                       'num_layers': num_layers,
                                                        'train_batch_size': train_batch_size,
                                                        'predict_batch_size': predict_batch_size,
-                                                       'lambda': lam, 'learning_rate': learning_rate, 'epoch': epoch,
+                                                       'lambda': lamb,
+                                                       'learning_rate': learning_rate,
+                                                       'epoch': epoch,
                                                        'negative_sampling_size': negative_sampling_size}
 
                                         for name in explanation_result.keys():

@@ -2,20 +2,40 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="073dbce9-5da6-45d3-90fe-2896643f478b" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/experiment/density.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/reproduce_latent_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/RecSys.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/RecSys.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/Untitled1-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/.ipynb_checkpoints/Untitled1-checkpoint.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Untitled1.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/Untitled1.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/critique/critique.py" beforeDir="false" afterPath="$PROJECT_DIR$/critique/critique.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/figs/CD_Falling_Rank.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/figs/CD_Falling_Rank.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/metrics/critiquing_performance.py" beforeDir="false" afterPath="$PROJECT_DIR$/metrics/critiquing_performance.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/cncf.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/cncf.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/cvncf.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/cvncf.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/CD_Critiquing_FR.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CD_Critiquing_FR.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tables/CD_Critiquing_MAP.csv" beforeDir="false" afterPath="$PROJECT_DIR$/tables/CD_Critiquing_MAP.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/critique_falling_rank_main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/evaluation/critiquing_performance.py" beforeDir="false" afterPath="$PROJECT_DIR$/evaluation/critiquing_performance.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/convergence.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/convergence.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/critiquing.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/critiquing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/density.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/density.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/explanation.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/explanation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/general.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/general.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/experiment/tuning.py" beforeDir="false" afterPath="$PROJECT_DIR$/experiment/tuning.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/general_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/general_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/ce_ncf.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/ce_ncf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/ce_vncf.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/ce_vncf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/e_ncf.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/e_ncf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/e_vncf.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/e_vncf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/ncf.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/ncf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/vncf.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/vncf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prediction/predictor.py" beforeDir="false" afterPath="$PROJECT_DIR$/prediction/predictor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/progress_analysis.py" beforeDir="false" afterPath="$PROJECT_DIR$/progress_analysis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reproduce_explanation_results.py" beforeDir="false" afterPath="$PROJECT_DIR$/reproduce_explanation_results.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tune_parameters.py" beforeDir="false" afterPath="$PROJECT_DIR$/tune_parameters.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/argcheck.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/argcheck.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/bow.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/critique.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/critique.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/io.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/io.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/progress.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/progress.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/reformat.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/reformat.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/sampler.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/sampler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/split.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/split.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/subset.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,115 +93,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/metrics/critiquing_performance.py">
+      <file leaf-file-name="critiquing_performance.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/evaluation/critiquing_performance.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="259">
-              <caret line="49" column="40" lean-forward="true" selection-start-line="49" selection-start-column="40" selection-end-line="49" selection-end-column="40" />
+            <state relative-caret-position="79">
+              <caret line="16" column="4" selection-start-line="16" selection-start-column="4" selection-end-line="16" selection-end-column="4" />
               <folding>
-                <element signature="e#0#18#0" expanded="true" />
-                <marker date="1555547439507" expanded="true" signature="628:629" ph="..." />
+                <element signature="e#0#61#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/plots/rec_plots.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="30" column="52" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="52" />
-              <folding>
-                <element signature="e#0#16#0" expanded="true" />
-                <marker date="1555457838909" expanded="true" signature="995:996" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/cvncf.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="244">
-              <caret line="72" column="40" selection-start-line="72" selection-start-column="40" selection-end-line="72" selection-end-column="40" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/models/cncf.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="92" column="48" selection-start-line="92" selection-start-column="48" selection-end-line="92" selection-end-column="48" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file leaf-file-name="critiquing.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/experiment/critiquing.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" column="4" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="4" />
+            <state relative-caret-position="1258">
+              <caret line="74" column="36" selection-start-line="74" selection-start-column="25" selection-end-line="74" selection-end-column="46" />
               <folding>
-                <element signature="e#0#70#0" expanded="true" />
-                <marker date="1555394647530" expanded="true" signature="3156:3262" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/experiment/density.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="694">
-              <caret line="71" column="33" selection-start-line="71" selection-start-column="33" selection-end-line="71" selection-end-column="33" />
-              <folding>
-                <element signature="e#0#70#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reproduce_latent_analysis.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="21" column="16" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="16" />
-              <folding>
-                <element signature="e#0#56#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reproduce_critiquing.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret selection-end-line="40" selection-end-column="14" />
-              <folding>
-                <element signature="e#0#44#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/reproduce_explanation_results.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="26" column="8" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="8" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/critique/critique.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="364">
-              <caret line="32" selection-start-line="32" selection-end-line="32" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
+                <element signature="e#0#67#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -212,7 +142,22 @@
       <find>meatric</find>
       <find>embed_</find>
       <find>latent_density_estimation</find>
+      <find>column_names</find>
+      <find>affected_falling_rank_result</find>
+      <find>latent_density</find>
+      <find>ast</find>
+      <find>os</find>
+      <find>isfile</find>
+      <find>listdir</find>
+      <find>valid_models</find>
+      <find>gpu</find>
+      <find>critique_keyphrase</find>
     </findStrings>
+    <replaceStrings>
+      <replace>os.path.join</replace>
+      <replace>os.path.isfile</replace>
+      <replace>os.listdir</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -220,57 +165,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/config/cvncf.yml" />
-        <option value="$PROJECT_DIR$/config/default.yml" />
-        <option value="$PROJECT_DIR$/config/incf.yml" />
-        <option value="$PROJECT_DIR$/config/ivncf.yml" />
-        <option value="$PROJECT_DIR$/config/ncf.yml" />
-        <option value="$PROJECT_DIR$/config/vncf.yml" />
-        <option value="$PROJECT_DIR$/cluster_bash/CDsVinyl/run_CDsVinyl.sh" />
-        <option value="$PROJECT_DIR$/models/negative_sampler.py" />
-        <option value="$PROJECT_DIR$/utils/sampler.py" />
-        <option value="$PROJECT_DIR$/providers/sampler.py" />
-        <option value="$PROJECT_DIR$/utils/reformat.py" />
-        <option value="$PROJECT_DIR$/generate_bash.py" />
-        <option value="$PROJECT_DIR$/config/CDsVinyl/vncf.yml" />
-        <option value="$PROJECT_DIR$/config/CDsVinyl/cncf.yml" />
-        <option value="$PROJECT_DIR$/config/CDsVinyl/cvncf.yml" />
-        <option value="$PROJECT_DIR$/config/CDsVinyl/incf.yml" />
         <option value="$PROJECT_DIR$/config/CDsVinyl/ivncf.yml" />
         <option value="$PROJECT_DIR$/config/CDsVinyl/ncf.yml" />
         <option value="$PROJECT_DIR$/models/item_pop.py" />
         <option value="$PROJECT_DIR$/models/user_pop.py" />
         <option value="$PROJECT_DIR$/metrics/general_performance.py" />
-        <option value="$PROJECT_DIR$/experiment/explanation.py" />
-        <option value="$PROJECT_DIR$/reproduce_explanation_results.py" />
         <option value="$PROJECT_DIR$/config/explanation.yml" />
         <option value="$PROJECT_DIR$/cluster_bash/CDsVinyl/progress.sh" />
         <option value="$PROJECT_DIR$/demo_critique.py" />
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/reproduce_general_results.py" />
-        <option value="$PROJECT_DIR$/models/ncf.py" />
         <option value="$PROJECT_DIR$/models/incf.py" />
         <option value="$PROJECT_DIR$/experiment/converge.py" />
         <option value="$PROJECT_DIR$/config/global.yml" />
-        <option value="$PROJECT_DIR$/utils/io.py" />
         <option value="$PROJECT_DIR$/show_curves.py" />
         <option value="$PROJECT_DIR$/utils/modelnames.py" />
-        <option value="$PROJECT_DIR$/progress_analysis.py" />
         <option value="$PROJECT_DIR$/experiment/excute.py" />
         <option value="$PROJECT_DIR$/cluster_bash/CDsVinyl/CDsVinyl-cncf.sh" />
-        <option value="$PROJECT_DIR$/experiment/tuning.py" />
-        <option value="$PROJECT_DIR$/tune_parameters.py" />
         <option value="$PROJECT_DIR$/models/ivncf.py" />
-        <option value="$PROJECT_DIR$/models/vncf.py" />
         <option value="$PROJECT_DIR$/reproduce_critiquing.py" />
-        <option value="$PROJECT_DIR$/experiment/critiquing.py" />
         <option value="$PROJECT_DIR$/reproduce_latent_analysis.py" />
-        <option value="$PROJECT_DIR$/experiment/density.py" />
         <option value="$PROJECT_DIR$/plots/rec_plots.py" />
         <option value="$PROJECT_DIR$/models/cncf.py" />
         <option value="$PROJECT_DIR$/models/cvncf.py" />
         <option value="$PROJECT_DIR$/critique/critique.py" />
         <option value="$PROJECT_DIR$/metrics/critiquing_performance.py" />
+        <option value="$PROJECT_DIR$/prediction/predictor.py" />
+        <option value="$PROJECT_DIR$/utils/bow.py" />
+        <option value="$PROJECT_DIR$/evaluation/critiquing_performance.py" />
+        <option value="$PROJECT_DIR$/utils/io.py" />
+        <option value="$PROJECT_DIR$/experiment/critiquing.py" />
+        <option value="$PROJECT_DIR$/utils/progress.py" />
+        <option value="$PROJECT_DIR$/utils/sampler.py" />
+        <option value="$PROJECT_DIR$/utils/split.py" />
+        <option value="$PROJECT_DIR$/experiment/convergence.py" />
+        <option value="$PROJECT_DIR$/experiment/density.py" />
+        <option value="$PROJECT_DIR$/experiment/explanation.py" />
+        <option value="$PROJECT_DIR$/reproduce_explanation_results.py" />
+        <option value="$PROJECT_DIR$/experiment/general.py" />
+        <option value="$PROJECT_DIR$/experiment/tuning.py" />
+        <option value="$PROJECT_DIR$/models/ce_ncf.py" />
+        <option value="$PROJECT_DIR$/models/ce_vncf.py" />
+        <option value="$PROJECT_DIR$/models/e_ncf.py" />
+        <option value="$PROJECT_DIR$/models/e_vncf.py" />
+        <option value="$PROJECT_DIR$/models/ncf.py" />
+        <option value="$PROJECT_DIR$/models/vncf.py" />
+        <option value="$PROJECT_DIR$/utils/argcheck.py" />
+        <option value="$PROJECT_DIR$/utils/critique.py" />
+        <option value="$PROJECT_DIR$/utils/reformat.py" />
+        <option value="$PROJECT_DIR$/general_main.py" />
+        <option value="$PROJECT_DIR$/progress_analysis.py" />
+        <option value="$PROJECT_DIR$/tune_parameters.py" />
       </list>
     </option>
   </component>
@@ -280,11 +225,10 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="1985" />
-    <option name="y" value="-4" />
-    <option name="width" value="1855" />
-    <option name="height" value="1084" />
+  <component name="ProjectFrameBounds">
+    <option name="y" value="23" />
+    <option name="width" value="1920" />
+    <option name="height" value="1057" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -297,74 +241,34 @@
         <subPane>
           <expand>
             <path>
-              <item name="InterpretableAutoRec" type="b2602c69:ProjectViewProjectNode" />
-              <item name="InterpretableAutoRec" type="462c0819:PsiDirectoryNode" />
+              <item name="DeepCritiquingForRecSys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DeepCritiquingForRecSys" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="InterpretableAutoRec" type="b2602c69:ProjectViewProjectNode" />
-              <item name="InterpretableAutoRec" type="462c0819:PsiDirectoryNode" />
+              <item name="DeepCritiquingForRecSys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DeepCritiquingForRecSys" type="462c0819:PsiDirectoryNode" />
               <item name="cluster_bash" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="InterpretableAutoRec" type="b2602c69:ProjectViewProjectNode" />
-              <item name="InterpretableAutoRec" type="462c0819:PsiDirectoryNode" />
+              <item name="DeepCritiquingForRecSys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DeepCritiquingForRecSys" type="462c0819:PsiDirectoryNode" />
+              <item name="cluster_bash" type="462c0819:PsiDirectoryNode" />
+              <item name="beer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="DeepCritiquingForRecSys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DeepCritiquingForRecSys" type="462c0819:PsiDirectoryNode" />
               <item name="cluster_bash" type="462c0819:PsiDirectoryNode" />
               <item name="CDsVinyl" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="InterpretableAutoRec" type="b2602c69:ProjectViewProjectNode" />
-              <item name="InterpretableAutoRec" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
+              <item name="DeepCritiquingForRecSys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DeepCritiquingForRecSys" type="462c0819:PsiDirectoryNode" />
+              <item name="evaluation" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="InterpretableAutoRec" type="b2602c69:ProjectViewProjectNode" />
-              <item name="InterpretableAutoRec" type="462c0819:PsiDirectoryNode" />
-              <item name="config" type="462c0819:PsiDirectoryNode" />
-              <item name="CDsVinyl" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="InterpretableAutoRec" type="b2602c69:ProjectViewProjectNode" />
-              <item name="InterpretableAutoRec" type="462c0819:PsiDirectoryNode" />
-              <item name="critique" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="InterpretableAutoRec" type="b2602c69:ProjectViewProjectNode" />
-              <item name="InterpretableAutoRec" type="462c0819:PsiDirectoryNode" />
-              <item name="experiment" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="InterpretableAutoRec" type="b2602c69:ProjectViewProjectNode" />
-              <item name="InterpretableAutoRec" type="462c0819:PsiDirectoryNode" />
-              <item name="figs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="InterpretableAutoRec" type="b2602c69:ProjectViewProjectNode" />
-              <item name="InterpretableAutoRec" type="462c0819:PsiDirectoryNode" />
-              <item name="metrics" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="InterpretableAutoRec" type="b2602c69:ProjectViewProjectNode" />
-              <item name="InterpretableAutoRec" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="InterpretableAutoRec" type="b2602c69:ProjectViewProjectNode" />
-              <item name="InterpretableAutoRec" type="462c0819:PsiDirectoryNode" />
-              <item name="plots" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="InterpretableAutoRec" type="b2602c69:ProjectViewProjectNode" />
-              <item name="InterpretableAutoRec" type="462c0819:PsiDirectoryNode" />
-              <item name="pretrained" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="InterpretableAutoRec" type="b2602c69:ProjectViewProjectNode" />
-              <item name="InterpretableAutoRec" type="462c0819:PsiDirectoryNode" />
-              <item name="providers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="InterpretableAutoRec" type="b2602c69:ProjectViewProjectNode" />
-              <item name="InterpretableAutoRec" type="462c0819:PsiDirectoryNode" />
+              <item name="DeepCritiquingForRecSys" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DeepCritiquingForRecSys" type="462c0819:PsiDirectoryNode" />
               <item name="utils" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -413,31 +317,31 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1985" y="-4" width="1855" height="1084" extended-state="6" />
+    <frame x="0" y="23" width="1920" height="1057" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15478165" />
-      <window_info id="Structure" order="1" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Thumbnails" weight="0.3294979" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1546875" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Find" order="1" visible="true" weight="0.2380468" />
+      <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Version Control" order="10" />
+      <window_info anchor="bottom" id="Python Console" order="8" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Terminal" order="9" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="11" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Database Changes" order="12" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Thumbnails" order="7" weight="0.3294979" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="right" id="Data View" order="4" />
+      <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Database Changes" order="12" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="SciView" order="5" />
     </layout>
   </component>
@@ -448,302 +352,305 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/config/vncf.yml" />
-    <entry file="file://$PROJECT_DIR$/utils/sampler.py" />
-    <entry file="file://$PROJECT_DIR$/providers/split.py">
+    <entry file="file://$PROJECT_DIR$/experiment/explanation.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="14" column="23" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/utils/reformat.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="7" selection-start-line="9" selection-start-column="4" selection-end-line="9" selection-end-column="7" />
+        <state relative-caret-position="170">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
           <folding>
-            <element signature="e#0#29#0" />
+            <element signature="e#0#63#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/CDsVinyl/ivncf.yml">
+    <entry file="file://$PROJECT_DIR$/experiment/general.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="31" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
+        <state relative-caret-position="1955">
+          <caret line="115" column="20" selection-start-line="115" selection-start-column="20" selection-end-line="115" selection-end-column="20" />
+          <folding>
+            <element signature="e#0#51#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/config/CDsVinyl/ncf.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/CDsVinyl/vncf.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/predicts/topk.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="20" column="33" lean-forward="true" selection-start-line="20" selection-start-column="33" selection-end-line="20" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/item_pop.py" />
-    <entry file="file://$PROJECT_DIR$/models/user_pop.py" />
-    <entry file="file://$PROJECT_DIR$/config/default.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="9" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cluster_bash/CDsVinyl/CDsVinyl-vncf.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="3" selection-end-column="83" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/explanation.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" selection-start-line="2" selection-end-line="2" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/providers/sampler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="48" column="111" selection-start-line="48" selection-start-column="107" selection-end-line="48" selection-end-column="111" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cluster_bash/CDsVinyl/progress.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="39" selection-start-line="3" selection-start-column="39" selection-end-line="3" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cluster_bash/CDsVinyl/run_CDsVinyl.sh">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="49" selection-start-line="1" selection-end-line="1" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/global.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="12" selection-start-line="4" selection-start-column="12" selection-end-line="4" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/demo_critique.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" selection-start-line="9" selection-end-line="10" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cluster_bash/CDsVinyl/CDsVinyl-cncf.sh">
+    <entry file="file://$PROJECT_DIR$/cluster_bash/beer/tune_explanation/beer-cencf-explanation.sh">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/models/incf.py">
+    <entry file="file://$PROJECT_DIR$/cluster_bash/beer/tune_explanation/beer-encf-explanation.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cluster_bash/beer/tune_explanation/beer-ncf-explanation.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cluster_bash/beer/tune_explanation/beer-vncf-explanation.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cluster_bash/beer/tune_explanation/run_beer-explanation.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cluster_bash/beer/tune_general/beer-cencf.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cluster_bash/beer/tune_general/beer-cevncf.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cluster_bash/beer/tune_general/beer-ncf.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cluster_bash/beer/tune_general/beer-evncf.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cluster_bash/CDsVinyl/tune_explanation/CDsVinyl-cencf-explanation.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cluster_bash/CDsVinyl/tune_explanation/CDsVinyl-cevncf-explanation.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cluster_bash/CDsVinyl/tune_explanation/CDsVinyl-encf-explanation.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cluster_bash/CDsVinyl/tune_explanation/CDsVinyl-ncf-explanation.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cluster_bash/CDsVinyl/tune_general/CDsVinyl-default.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cluster_bash/CDsVinyl/tune_general/CDsVinyl-cevncf.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cluster_bash/CDsVinyl/tune_general/CDsVinyl-evncf.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiment/tuning.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1515">
-          <caret line="105" column="70" selection-start-line="105" selection-start-column="70" selection-end-line="105" selection-end-column="70" />
+        <state relative-caret-position="-1769">
+          <caret line="11" column="157" selection-start-line="11" selection-start-column="157" selection-end-line="11" selection-end-column="157" />
+          <folding>
+            <element signature="e#0#73#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/ce_vncf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="583">
+          <caret line="228" column="71" selection-start-line="228" selection-start-column="71" selection-end-line="228" selection-end-column="71" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/ce_ncf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2766">
+          <caret line="2" selection-start-line="2" selection-end-line="2" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/e_ncf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="144" selection-start-line="144" selection-end-line="144" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/e_vncf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="583">
+          <caret line="169" column="71" selection-start-line="169" selection-start-column="71" selection-end-line="169" selection-end-column="71" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/item_pop.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-97">
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/models/ncf.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1305">
-          <caret line="91" column="48" selection-start-line="91" selection-start-column="48" selection-end-line="91" selection-end-column="48" />
+        <state relative-caret-position="583">
+          <caret line="132" column="71" selection-start-line="132" selection-start-column="71" selection-end-line="132" selection-end-column="71" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/experiment/excute.py">
+    <entry file="file://$PROJECT_DIR$/models/user_pop.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="61" selection-start-line="61" selection-end-line="66" selection-end-column="75" />
+        <state relative-caret-position="-46">
           <folding>
-            <element signature="e#0#70#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/models/vncf.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="583">
+          <caret line="159" column="71" selection-start-line="159" selection-start-column="71" selection-end-line="159" selection-end-column="71" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/prediction/predictor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-369">
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/preprocess/process_raw_beer_advocate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-403">
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/argcheck.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="561">
+          <caret line="33" selection-start-line="33" selection-end-line="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/critique.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="731">
+          <caret line="43" column="70" selection-start-line="43" selection-start-column="70" selection-end-line="43" selection-end-column="70" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/utils/io.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="43" column="22" selection-start-line="43" selection-start-column="22" selection-end-line="43" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/experiment/converge.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="166">
-          <caret line="100" column="79" lean-forward="true" selection-start-line="100" selection-start-column="79" selection-end-line="100" selection-end-column="79" />
-          <folding>
-            <element signature="e#0#70#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="75" column="36" selection-start-line="75" selection-start-column="36" selection-end-line="75" selection-end-column="36" />
-          <folding>
-            <element signature="e#0#70#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/ivncf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="334">
-          <caret line="82" column="55" lean-forward="true" selection-start-line="82" selection-start-column="55" selection-end-line="82" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/vncf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="829">
-          <caret line="97" column="22" selection-start-line="97" selection-start-column="22" selection-end-line="97" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generate_bash.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="750">
-          <caret line="52" selection-start-line="52" selection-end-line="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/CDsVinyl/cncf.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" selection-start-line="9" selection-end-line="10" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/CDsVinyl/incf.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/config/CDsVinyl/cvncf.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="31" selection-start-line="10" selection-start-column="31" selection-end-line="10" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/metrics/general_performance.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="4" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/plots/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/reproduce_general_results.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="555">
-          <caret line="37" column="66" selection-start-line="37" selection-start-column="66" selection-end-line="37" selection-end-column="66" />
-          <folding>
-            <element signature="e#0#36#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/preprocess.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/progress_analysis.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="24" selection-start-line="27" selection-start-column="24" selection-end-line="27" selection-end-column="24" />
+        <state relative-caret-position="-471">
           <folding>
             <element signature="e#0#10#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tune_parameters.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="27" selection-start-line="28" selection-start-column="8" selection-end-line="28" selection-end-column="36" />
-          <folding>
-            <element signature="e#0#82#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/experiment/tuning.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="159" selection-start-line="159" selection-end-line="159" />
-          <folding>
-            <element signature="e#0#70#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/experiment/explanation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="18" column="6" selection-start-line="18" selection-start-column="4" selection-end-line="18" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/show_curves.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-            <marker date="1555014444627" expanded="true" signature="138:274" ph="..." />
-            <marker date="1555014444627" expanded="true" signature="273:274" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/utils/modelnames.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="30" column="1" lean-forward="true" selection-start-line="30" selection-start-column="1" selection-end-line="30" selection-end-column="1" />
+        <state>
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/plot.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#30#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/progress.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-114">
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/reformat.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="782">
+          <caret line="46" selection-start-line="46" selection-end-line="46" />
+          <folding>
+            <element signature="e#0#48#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/sampler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/utils/split.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dataset_split.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-386">
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/general_main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="203" selection-start-line="203" selection-end-line="203" />
+          <folding>
+            <element signature="e#0#73#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generate_tuning_bash.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-284">
+          <folding>
+            <element signature="e#0#58#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/progress_analysis.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="83" selection-start-line="83" selection-end-line="83" />
+          <folding>
+            <element signature="e#0#65#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reproduce_convergence.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#42#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/reproduce_critiquing.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="40" selection-end-column="14" />
+        <state relative-caret-position="-386">
           <folding>
             <element signature="e#0#44#0" expanded="true" />
           </folding>
@@ -752,84 +659,51 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/reproduce_explanation_results.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="26" column="8" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/experiment/critiquing.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="4" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="4" />
+        <state relative-caret-position="697">
+          <caret line="41" column="80" selection-start-line="41" selection-start-column="80" selection-end-line="41" selection-end-column="80" />
           <folding>
-            <element signature="e#0#70#0" expanded="true" />
-            <marker date="1555394647530" expanded="true" signature="3156:3262" ph="..." />
+            <element signature="e#0#42#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/plots/rec_plots.py">
+    <entry file="file://$PROJECT_DIR$/reproduce_general_results.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="30" column="52" selection-start-line="30" selection-start-column="4" selection-end-line="30" selection-end-column="52" />
+        <state>
           <folding>
-            <element signature="e#0#16#0" expanded="true" />
-            <marker date="1555457838909" expanded="true" signature="995:996" ph="..." />
+            <element signature="e#0#38#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/critique/critique.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="32" selection-start-line="32" selection-end-line="32" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/cncf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="92" column="48" selection-start-line="92" selection-start-column="48" selection-end-line="92" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/cvncf.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="72" column="40" selection-start-line="72" selection-start-column="40" selection-end-line="72" selection-end-column="40" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/reproduce_latent_analysis.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="16" selection-start-line="21" selection-start-column="16" selection-end-line="21" selection-end-column="16" />
+        <state relative-caret-position="-352">
           <folding>
             <element signature="e#0#56#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/experiment/density.py">
+    <entry file="file://$PROJECT_DIR$/tune_parameters.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="694">
-          <caret line="71" column="33" selection-start-line="71" selection-start-column="33" selection-end-line="71" selection-end-column="33" />
+        <state relative-caret-position="583">
+          <caret line="70" column="14" selection-start-line="70" selection-start-column="14" selection-end-line="70" selection-end-column="14" />
           <folding>
-            <element signature="e#0#70#0" expanded="true" />
+            <element signature="e#0#82#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/metrics/critiquing_performance.py">
+    <entry file="file://$PROJECT_DIR$/tune_parameters.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/experiment/critiquing.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="49" column="40" lean-forward="true" selection-start-line="49" selection-start-column="40" selection-end-line="49" selection-end-column="40" />
+        <state relative-caret-position="1258">
+          <caret line="74" column="36" selection-start-line="74" selection-start-column="25" selection-end-line="74" selection-end-column="46" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
-            <marker date="1555547439507" expanded="true" signature="628:629" ph="..." />
+            <element signature="e#0#67#0" expanded="true" />
           </folding>
         </state>
       </provider>
