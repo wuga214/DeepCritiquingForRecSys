@@ -1,6 +1,7 @@
-import scipy.sparse as sparse
-import numpy as np
 from sklearn.utils.extmath import randomized_svd
+
+import numpy as np
+import scipy.sparse as sparse
 
 
 def to_sparse_matrix(df, num_user, num_item, user_col, item_col, rating_col):
@@ -43,11 +44,3 @@ def to_svd(R, rank, standard=True):
 
 def standarize(array):
     return (array - np.mean(array, axis=0))/np.std(array, axis=0)
-
-
-def get_phrase_set(df, user_col, explanation_col, set_col):
-    grouped = df.groupby(user_col).agg(list).reset_index()
-    grouped[set_col] = grouped[explanation_col].apply(lambda x:
-                                                      set([item for sublist in x for item in sublist]))
-    return grouped
-
