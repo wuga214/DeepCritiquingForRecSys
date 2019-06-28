@@ -85,7 +85,7 @@ python tune_parameters.py --data_dir data/CDsVinyl/ --save_path CDsVinyl/cvncf.c
 python reproduce_general_results.py --data_dir data/CDsVinyl/ --tuning_result_path CDsVinyl --save_path CD_final/CD_final_result.csv
 ```
 
-#### Explanation Prediction Performance Hyper-parameter Tuning
+### Explanation Prediction Performance Hyper-parameter Tuning
 ```
 python tune_parameters.py --data_dir data/CDsVinyl/ --save_path CD_explanation_tuning/cvncf.csv --parameters config/CDsVinyl/cvncf.yml --explanation
 ```
@@ -100,3 +100,8 @@ python reproduce_explanation_results.py --data_dir data/CDsVinyl/ --load_path ex
 ```
 python reproduce_critiquing.py --data_dir data/beer/ --dataset_name beer --figure_name CD_Falling_Rank --load_path explanation/beer/hyper_parameters.csv --num_critiques 1000 --save_path beer_Critiquing
 ```
+
+### Note
+We expect the reproduced results will have negligible difference due to values used in hyper-parameter sets.
+
+For baselines we used, please refer to [Noise Contrastive Estimation Projected Linear Recommender(NCE-PLRec)](https://github.com/wuga214/NCE_Projected_LRec).
