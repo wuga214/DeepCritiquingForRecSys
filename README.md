@@ -33,9 +33,9 @@ If you are interested in building up your research on this work, please cite:
 
 # Author Affiliate
 <p align="center">
-<a href="https://www.utoronto.ca//"><img src="https://github.com/wuga214/NCE_Projected_LRec/blob/master/logos/U-of-T-logo.svg" width="140"></a> | 
-<a href="https://vectorinstitute.ai/"><img src="https://github.com/wuga214/NCE_Projected_LRec/blob/master/logos/vectorlogo.svg" width="140"></a> | 
-<a href="http://nus.edu.sg/"><img src="https://github.com/wuga214/DeepCritiquingForRecSys/blob/refactor/logos/NUS_Logo.svg" width="82" height="40"></a>
+<a href="https://www.utoronto.ca//"><img src="https://github.com/wuga214/NCE_Projected_LRec/blob/master/logos/U-of-T-logo.svg" height="80"></a> | 
+<a href="https://vectorinstitute.ai/"><img src="https://github.com/wuga214/NCE_Projected_LRec/blob/master/logos/vectorlogo.svg" height="80"></a> | 
+<a href="http://nus.edu.sg/"><img src="https://github.com/wuga214/DeepCritiquingForRecSys/blob/refactor/logos/NUS_Logo.svg"  height="80"></a>
 </p>
 
 # Algorithm Implemented
