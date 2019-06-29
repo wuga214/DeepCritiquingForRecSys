@@ -64,7 +64,7 @@ Please refer to IPython Notebook `Critiquing Demo.ipynb` for critiquing demo.
 
 ### General Recommendation and Explanation Single Run
 ```
-python general_main.py --data_dir data/CDsVinyl/ --epoch 300 --rank 200 --lambda 0.0001 --learning_rate 0.0001 --model CVNCF --topk 50 --disable_validation
+python general_main.py --data_dir data/CDsVinyl/ --epoch 300 --rank 200 --lambda 0.0001 --learning_rate 0.0001 --model CE-VNCF --topk 50 --disable_validation
 ```
 
 ### Dataset Resplit
@@ -77,7 +77,7 @@ Please check out the `cluster_bash` folder for all commands details. Below are o
 
 ### General Recommendation Hyper-parameter Tuning
 ```
-python tune_parameters.py --data_dir data/CDsVinyl/ --save_path CDsVinyl/cvncf.csv --parameters config/CDsVinyl/cvncf.yml
+python tune_parameters.py --data_dir data/CDsVinyl/ --save_path CDsVinyl/cevncf.csv --parameters config/CDsVinyl/cevncf.yml
 ```
 
 ### Reproduce Final General Recommendation Performance
@@ -87,7 +87,7 @@ python reproduce_general_results.py --data_dir data/CDsVinyl/ --tuning_result_pa
 
 ### Explanation Prediction Performance Hyper-parameter Tuning
 ```
-python tune_parameters.py --data_dir data/CDsVinyl/ --save_path CD_explanation_tuning/cvncf.csv --parameters config/CDsVinyl/cvncf.yml --explanation
+python tune_parameters.py --data_dir data/CDsVinyl/ --save_path CD_explanation_tuning/cevncf.csv --parameters config/CDsVinyl/cevncf.yml --explanation
 ```
 
 ### Reproduce Final Explanation Prediction Performance
@@ -98,7 +98,7 @@ python reproduce_explanation_results.py --data_dir data/CDsVinyl/ --load_path ex
 
 ### Reproduce Critiquing
 ```
-python reproduce_critiquing.py --data_dir data/beer/ --dataset_name beer --figure_name CD_Falling_Rank --load_path explanation/beer/hyper_parameters.csv --num_critiques 1000 --save_path beer_Critiquing
+python reproduce_critiquing.py --data_dir data/beer/ --model_saved_path beer --load_path explanation/beer/hyper_parameters.csv --num_users_sampled 1000 --save_path beer_fmap/beer_Critiquing
 ```
 
 ### Note
