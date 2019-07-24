@@ -25,7 +25,7 @@ If you are interested in building up your research on this work, please cite:
 @inproceedings{recsys19,
   author    = {Ga Wu and Kai Luo and Scott Sanner and Harold Soh},
   title     = {Deep Language-based Critiquing for Recommender Systems},
-  booktitle = {Proceedings of the 13th International ACM Conference on Recommender Systems (RecSys-19)},
+  booktitle = {Proceedings of the 13th International {ACM} Conference on Recommender Systems {(RecSys-19)}},
   address   = {Copenhagen, Denmark},
   year      = {2019}
 }
